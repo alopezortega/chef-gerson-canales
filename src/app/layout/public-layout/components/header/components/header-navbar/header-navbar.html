@@ -1,0 +1,11 @@
+<nav aria-label="Navegación principal">
+  <ul>
+    @for (item of navigationItems; track item.route) {
+      <li>
+        <a [routerLink]="item.route" routerLinkActive="active">
+          {{ item.label }}
+        </a>
+      </li>
+    }
+  </ul>
+</nav>
