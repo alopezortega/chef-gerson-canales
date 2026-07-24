@@ -1,9 +1,46 @@
-<nav aria-label="Navegación principal">
+<button
+  type="button"
+  (click)="toggleMenu()"
+  [attr.aria-label]="menuButtonLabel()"
+  [attr.aria-expanded]="menuOpen()"
+  aria-controls="main-navigation social-navigation"
+>
+  @if (menuOpen()) {
+    ✕
+  } @else {
+    ☰
+  }
+</button>
+
+<nav id="main-navigation" aria-label="Navegación principal" [class.open]="menuOpen()">
   <ul>
     @for (item of navigationItems; track item.route) {
       <li>
-        <a [routerLink]="item.route" routerLinkActive="active">
+        <a
+          [routerLink]="item.route"
+          routerLinkActive="active"
+          (click)="closeMenu()"
+          [class.cta]="item.isCta"
+        >
           {{ item.label }}
+        </a>
+      </li>
+    }
+  </ul>
+</nav>
+
+<nav id="social-navigation" aria-label="Redes sociales" [class.open]="menuOpen()">
+  <ul>
+    @for (socialLink of socialLinks; track socialLink.url) {
+      <li>
+        <a
+          [href]="socialLink.url"
+          target="_blank"
+          rel="noopener noreferrer"
+          [attr.aria-label]="socialLink.ariaLabel"
+          (click)="closeMenu()"
+        >
+          {{ socialLink.icon ?? socialLink.ariaLabel }}
         </a>
       </li>
     }

@@ -1,0 +1,32 @@
+:host {
+  display: block;
+}
+
+header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+
+  width: 100%;
+  padding: var(--spacing-md);
+}
+
+a {
+  color: var(--color-text-primary);
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+app-header-navbar {
+  margin-left: auto;
+}
+
+@media (min-width: 768px) {
+  header {
+    align-items: center;
+    padding-inline: var(--spacing-lg);
+  }
+}
