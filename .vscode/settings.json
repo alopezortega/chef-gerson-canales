@@ -21,5 +21,6 @@
 
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "always"
-  }
+  },
+  "files.eol": "\n"
 }
