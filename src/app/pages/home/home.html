@@ -1,1 +1,90 @@
-<p>home works!</p>
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero__content">
+    <p class="hero__eyebrow">Chef Gerson Canales</p>
+
+    <h1 id="hero-title">Experiencias gastronómicas diseñadas para cada ocasión</h1>
+
+    <p class="hero__description">
+      Catering y eventos privados o corporativos con una propuesta personalizada.
+    </p>
+
+    <div class="hero__actions">
+      <a class="hero__primary-action" routerLink="/solicitar-presupuesto">
+        Solicitar presupuesto
+      </a>
+
+      <a class="hero__secondary-action" routerLink="/servicios"> Ver servicios </a>
+    </div>
+  </div>
+</section>
+
+<section class="value-proposition" aria-labelledby="value-proposition-title">
+  <div class="value-proposition__content">
+    <p class="value-proposition__eyebrow">Una experiencia pensada para ti</p>
+
+    <h2 id="value-proposition-title">Cocina profesional, cercana y adaptada a cada evento</h2>
+
+    <div class="value-proposition__items">
+      <article class="value-proposition__item">
+        <h3>Propuesta personalizada</h3>
+
+        <p>
+          Cada evento se diseña según el tipo de celebración, el número de invitados y las
+          necesidades de cada cliente.
+        </p>
+      </article>
+
+      <article class="value-proposition__item">
+        <h3>Experiencia profesional</h3>
+
+        <p>
+          Organización, producto y ejecución cuidada para que el servicio funcione de principio a
+          fin.
+        </p>
+      </article>
+
+      <article class="value-proposition__item">
+        <h3>Eventos privados y empresas</h3>
+
+        <p>
+          Soluciones gastronómicas para celebraciones familiares, encuentros privados y eventos
+          corporativos.
+        </p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="featured-services" aria-labelledby="featured-services-title">
+  <div class="featured-services__content">
+    <p class="featured-services__eyebrow">Servicios destacados</p>
+
+    <h2 id="featured-services-title">Una propuesta para cada tipo de encuentro</h2>
+
+    <div class="featured-services__grid">
+      @for (service of featuredServices; track service.slug) {
+        <article class="featured-services__item">
+          <h3>{{ service.title }}</h3>
+
+          <p>{{ service.description }}</p>
+
+          <a routerLink="/servicios">Ver servicio</a>
+        </article>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="quote-cta" aria-labelledby="quote-cta-title">
+  <div class="quote-cta__content">
+    <p class="quote-cta__eyebrow">Cuéntanos tu idea</p>
+
+    <h2 id="quote-cta-title">Diseñemos juntos una experiencia gastronómica a medida</h2>
+
+    <p class="quote-cta__description">
+      Comparte los detalles de tu evento y prepararemos una propuesta adaptada a tus necesidades.
+    </p>
+
+    <a class="quote-cta__action" routerLink="/solicitar-presupuesto"> Solicitar presupuesto </a>
+  </div>
+</section>
