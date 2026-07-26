@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { QuoteRequest } from './quote-request';
+import { QuoteRequestComponent } from '../quote-request/quote-request';
 
 describe('QuoteRequest', () => {
-  let component: QuoteRequest;
-  let fixture: ComponentFixture<QuoteRequest>;
+  let component: QuoteRequestComponent;
+  let fixture: ComponentFixture<QuoteRequestComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [QuoteRequest],
+      imports: [QuoteRequestComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(QuoteRequest);
+    fixture = TestBed.createComponent(QuoteRequestComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
