@@ -1,16 +1,31 @@
 <footer class="footer">
   <div class="footer__content">
     <div class="footer__brand">
-      <a routerLink="/" aria-label="Ir a la página de inicio"> Gerson Canales </a>
+      <a routerLink="/" [attr.aria-label]="'footer.brand.homeAriaLabel' | translate">
+        Gerson Canales
+      </a>
 
-      <p>Experiencias gastronómicas para eventos privados y empresas.</p>
+      <p>
+        {{ 'footer.brand.description' | translate }}
+      </p>
     </div>
 
-    <nav class="footer__navigation" aria-label="Navegación del pie de página">
-      <a routerLink="/servicios">Servicios</a>
-      <a routerLink="/galeria">Galería</a>
-      <a routerLink="/solicitar-presupuesto">Solicitar presupuesto</a>
-      <a routerLink="/sobre-el-chef">Sobre el Chef</a>
+    <nav class="footer__navigation" [attr.aria-label]="'footer.navigation.ariaLabel' | translate">
+      <a routerLink="/servicios">
+        {{ 'footer.navigation.services' | translate }}
+      </a>
+
+      <a routerLink="/galeria">
+        {{ 'footer.navigation.gallery' | translate }}
+      </a>
+
+      <a routerLink="/solicitar-presupuesto">
+        {{ 'footer.navigation.quoteRequest' | translate }}
+      </a>
+
+      <a routerLink="/sobre-el-chef">
+        {{ 'footer.navigation.about' | translate }}
+      </a>
     </nav>
 
     <div class="footer__social">
@@ -18,7 +33,7 @@
         href="https://www.instagram.com/gersontravel.chef/"
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Visitar el Instagram de Gerson Canales, se abre en una pestaña nueva"
+        [attr.aria-label]="'footer.social.instagramAriaLabel' | translate"
       >
         Instagram
       </a>
@@ -26,6 +41,6 @@
   </div>
 
   <p class="footer__copyright">
-    &copy; {{ currentYear }} Gerson Canales. Todos los derechos reservados.
+    {{ 'footer.copyright' | translate: { year: currentYear } }}
   </p>
 </footer>

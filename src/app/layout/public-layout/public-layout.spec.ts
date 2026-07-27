@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { provideTranslateService } from '@ngx-translate/core';
 
 import { PublicLayout } from './public-layout';
-import { provideRouter } from '@angular/router';
 
 describe('PublicLayout', () => {
   let component: PublicLayout;
@@ -10,12 +11,20 @@ describe('PublicLayout', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [PublicLayout],
-      providers: [provideRouter([])],
+      providers: [
+        provideRouter([]),
+        provideTranslateService({
+          lang: 'es',
+          fallbackLang: 'es',
+        }),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PublicLayout);
     component = fixture.componentInstance;
+
     await fixture.whenStable();
+    fixture.detectChanges();
   });
 
   it('should create', () => {

@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { provideTranslateService } from '@ngx-translate/core';
 
 import { HeaderNavbarComponent } from './header-navbar';
-import { provideRouter } from '@angular/router';
 
 describe('HeaderNavbarComponent', () => {
   let component: HeaderNavbarComponent;
@@ -10,12 +11,20 @@ describe('HeaderNavbarComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HeaderNavbarComponent],
-      providers: [provideRouter([])],
+      providers: [
+        provideRouter([]),
+        provideTranslateService({
+          lang: 'es',
+          fallbackLang: 'es',
+        }),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HeaderNavbarComponent);
     component = fixture.componentInstance;
+
     await fixture.whenStable();
+    fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -24,7 +33,7 @@ describe('HeaderNavbarComponent', () => {
 
   it('should open the menu when the menu button is clicked', () => {
     const compiled = fixture.nativeElement as HTMLElement;
-    const button = compiled.querySelector('button');
+    const button = compiled.querySelector('.menu-toggle') as HTMLButtonElement | null;
 
     expect(button).toBeTruthy();
 
@@ -42,7 +51,7 @@ describe('HeaderNavbarComponent', () => {
 
   it('should close the menu when the menu button is clicked twice', () => {
     const compiled = fixture.nativeElement as HTMLElement;
-    const button = compiled.querySelector('button');
+    const button = compiled.querySelector('.menu-toggle') as HTMLButtonElement | null;
 
     expect(button).toBeTruthy();
 
@@ -63,7 +72,8 @@ describe('HeaderNavbarComponent', () => {
 
   it('should close the menu and return focus to the button when Escape is pressed', () => {
     const compiled = fixture.nativeElement as HTMLElement;
-    const button = compiled.querySelector('button');
+    const button = compiled.querySelector('.menu-toggle') as HTMLButtonElement | null;
+
     const firstNavigationLink = compiled.querySelector(
       '#main-navigation a',
     ) as HTMLAnchorElement | null;
