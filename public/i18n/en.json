@@ -1,0 +1,104 @@
+{
+  "home": {
+    "hero": {
+      "label": "Chef Gerson Canales",
+      "title": "Dining experiences designed for every occasion",
+      "description": "Private and corporate catering tailored to each occasion.",
+      "primaryAction": "Request a quote",
+      "secondaryAction": "View services"
+    },
+    "valueProposition": {
+      "label": "An experience designed for you",
+      "title": "Professional, approachable cuisine tailored to every event",
+      "items": {
+        "personalized": {
+          "title": "Personalized service",
+          "description": "Each event is designed according to the type of celebration, the number of guests and each client's individual needs."
+        },
+        "professionalExperience": {
+          "title": "Professional experience",
+          "description": "Careful planning, quality ingredients and professional execution from beginning to end."
+        },
+        "privateAndCorporate": {
+          "title": "Private and corporate events",
+          "description": "Dining solutions for family celebrations, private gatherings and corporate events."
+        }
+      }
+    },
+    "featuredServices": {
+      "label": "Featured services",
+      "title": "A tailored proposal for every type of gathering",
+      "action": "View service",
+      "items": [
+        {
+          "id": "private-dinners",
+          "title": "Private dinners at home",
+          "description": "A personalized dining experience in an intimate and carefully prepared setting."
+        },
+        {
+          "id": "family-celebrations",
+          "title": "Family celebrations",
+          "description": "Tailored proposals for birthdays, anniversaries and special gatherings."
+        },
+        {
+          "id": "corporate-events",
+          "title": "Small corporate events",
+          "description": "Dining services for team meetings, presentations and professional gatherings."
+        },
+        {
+          "id": "meeting-catering",
+          "title": "Catering for meetings and gatherings",
+          "description": "Flexible options for small groups, adapted to the venue and type of event."
+        },
+        {
+          "id": "gastronomic-workshops",
+          "title": "Cooking workshops and experiences",
+          "description": "Interactive activities designed to learn, cook and enjoy as a group."
+        },
+        {
+          "id": "custom-menus",
+          "title": "Custom menus",
+          "description": "Menus created around the preferences, needs and characteristics of each occasion."
+        }
+      ]
+    },
+    "quoteCta": {
+      "label": "Tell us about your idea",
+      "title": "Let us design a tailored dining experience together",
+      "description": "Share the details of your event and we will prepare a proposal adapted to your needs.",
+      "action": "Request a quote"
+    }
+  },
+  "navigation": {
+    "mainAriaLabel": "Main navigation",
+    "socialAriaLabel": "Social media",
+    "instagramAriaLabel": "Visit Gerson Canales on Instagram",
+    "menu": {
+      "open": "Open menu",
+      "close": "Close menu"
+    },
+    "links": {
+      "services": "Services",
+      "gallery": "Gallery",
+      "quoteRequest": "Request a quote",
+      "about": "About the chef"
+    }
+  },
+  "footer": {
+    "brand": {
+      "homeAriaLabel": "Go to the home page",
+      "description": "Dining experiences for private and corporate events."
+    },
+    "navigation": {
+      "ariaLabel": "Footer navigation",
+      "services": "Services",
+      "gallery": "Gallery",
+      "quoteRequest": "Request a quote",
+      "about": "About the chef"
+    },
+    "social": {
+      "instagramAriaLabel": "Visit Gerson Canales on Instagram; opens in a new tab"
+    },
+    "copyright": "© {{ year }} Gerson Canales. All rights reserved."
+  }
+}

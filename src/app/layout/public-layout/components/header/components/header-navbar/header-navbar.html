@@ -1,8 +1,29 @@
+<div class="language-selector" aria-label="Language selector">
+  <button
+    class="language-selector__button"
+    type="button"
+    (click)="changeLanguage('es')"
+    [attr.aria-pressed]="currentLanguage() === 'es'"
+  >
+    ES
+  </button>
+
+  <button
+    class="language-selector__button"
+    type="button"
+    (click)="changeLanguage('en')"
+    [attr.aria-pressed]="currentLanguage() === 'en'"
+  >
+    EN
+  </button>
+</div>
+
 <button
   #menuButton
+  class="menu-toggle"
   type="button"
   (click)="toggleMenu()"
-  [attr.aria-label]="menuButtonLabel()"
+  [attr.aria-label]="menuButtonLabelKey() | translate"
   [attr.aria-expanded]="menuOpen()"
   aria-controls="main-navigation social-navigation"
 >
@@ -13,37 +34,59 @@
   }
 </button>
 
-<nav id="main-navigation" aria-label="Navegación principal" [class.open]="menuOpen()">
+<nav
+  id="main-navigation"
+  [attr.aria-label]="'navigation.mainAriaLabel' | translate"
+  [class.open]="menuOpen()"
+>
   <ul>
-    @for (item of navigationItems; track item.route) {
-      <li>
-        <a
-          [routerLink]="item.route"
-          routerLinkActive="active"
-          (click)="closeMenu()"
-          [class.cta]="item.isCta"
-        >
-          {{ item.label }}
-        </a>
-      </li>
-    }
+    <li>
+      <a routerLink="/servicios" routerLinkActive="active" (click)="closeMenu()">
+        {{ 'navigation.links.services' | translate }}
+      </a>
+    </li>
+
+    <li>
+      <a routerLink="/galeria" routerLinkActive="active" (click)="closeMenu()">
+        {{ 'navigation.links.gallery' | translate }}
+      </a>
+    </li>
+
+    <li>
+      <a
+        routerLink="/solicitar-presupuesto"
+        routerLinkActive="active"
+        class="cta"
+        (click)="closeMenu()"
+      >
+        {{ 'navigation.links.quoteRequest' | translate }}
+      </a>
+    </li>
+
+    <li>
+      <a routerLink="/sobre-el-chef" routerLinkActive="active" (click)="closeMenu()">
+        {{ 'navigation.links.about' | translate }}
+      </a>
+    </li>
   </ul>
 </nav>
 
-<nav id="social-navigation" aria-label="Redes sociales" [class.open]="menuOpen()">
+<nav
+  id="social-navigation"
+  [attr.aria-label]="'navigation.socialAriaLabel' | translate"
+  [class.open]="menuOpen()"
+>
   <ul>
-    @for (socialLink of socialLinks; track socialLink.url) {
-      <li>
-        <a
-          [href]="socialLink.url"
-          target="_blank"
-          rel="noopener noreferrer"
-          [attr.aria-label]="socialLink.ariaLabel"
-          (click)="closeMenu()"
-        >
-          {{ socialLink.icon ?? socialLink.ariaLabel }}
-        </a>
-      </li>
-    }
+    <li>
+      <a
+        href="https://www.instagram.com/gersontravel.chef/"
+        target="_blank"
+        rel="noopener noreferrer"
+        [attr.aria-label]="'navigation.instagramAriaLabel' | translate"
+        (click)="closeMenu()"
+      >
+        Instagram
+      </a>
+    </li>
   </ul>
 </nav>

@@ -1,1 +1,119 @@
-<p>home works!</p>
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero__content">
+    <p class="hero__label">
+      {{ 'home.hero.label' | translate }}
+    </p>
+
+    <h1 id="hero-title">
+      {{ 'home.hero.title' | translate }}
+    </h1>
+
+    <p class="hero__description">
+      {{ 'home.hero.description' | translate }}
+    </p>
+
+    <div class="hero__actions">
+      <a class="hero__primary-action" routerLink="/solicitar-presupuesto">
+        {{ 'home.hero.primaryAction' | translate }}
+      </a>
+
+      <a class="hero__secondary-action" routerLink="/servicios">
+        {{ 'home.hero.secondaryAction' | translate }}
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="value-proposition" aria-labelledby="value-proposition-title">
+  <div class="value-proposition__content">
+    <p class="value-proposition__label">
+      {{ 'home.valueProposition.label' | translate }}
+    </p>
+
+    <h2 id="value-proposition-title">
+      {{ 'home.valueProposition.title' | translate }}
+    </h2>
+
+    <div class="value-proposition__items">
+      <article class="value-proposition__item">
+        <h3>
+          {{ 'home.valueProposition.items.personalized.title' | translate }}
+        </h3>
+
+        <p>
+          {{ 'home.valueProposition.items.personalized.description' | translate }}
+        </p>
+      </article>
+
+      <article class="value-proposition__item">
+        <h3>
+          {{ 'home.valueProposition.items.professionalExperience.title' | translate }}
+        </h3>
+
+        <p>
+          {{ 'home.valueProposition.items.professionalExperience.description' | translate }}
+        </p>
+      </article>
+
+      <article class="value-proposition__item">
+        <h3>
+          {{ 'home.valueProposition.items.privateAndCorporate.title' | translate }}
+        </h3>
+
+        <p>
+          {{ 'home.valueProposition.items.privateAndCorporate.description' | translate }}
+        </p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="featured-services" aria-labelledby="featured-services-title">
+  <div class="featured-services__content">
+    <p class="featured-services__label">
+      {{ 'home.featuredServices.label' | translate }}
+    </p>
+
+    <h2 id="featured-services-title">
+      {{ 'home.featuredServices.title' | translate }}
+    </h2>
+
+    @let services = 'home.featuredServices.items' | translate;
+
+    @if (services && services !== 'home.featuredServices.items') {
+      <div class="featured-services__grid">
+        @for (service of services; track service.id) {
+          <article class="featured-services__item">
+            <h3>{{ service.title }}</h3>
+
+            <p>{{ service.description }}</p>
+
+            <a routerLink="/servicios">
+              {{ 'home.featuredServices.action' | translate }}
+            </a>
+          </article>
+        }
+      </div>
+    }
+  </div>
+</section>
+
+<section class="quote-cta" aria-labelledby="quote-cta-title">
+  <div class="quote-cta__content">
+    <p class="quote-cta__label">
+      {{ 'home.quoteCta.label' | translate }}
+    </p>
+
+    <h2 id="quote-cta-title">
+      {{ 'home.quoteCta.title' | translate }}
+    </h2>
+
+    <p class="quote-cta__description">
+      {{ 'home.quoteCta.description' | translate }}
+    </p>
+
+    <a class="quote-cta__action" routerLink="/solicitar-presupuesto">
+      {{ 'home.quoteCta.action' | translate }}
+    </a>
+  </div>
+</section>

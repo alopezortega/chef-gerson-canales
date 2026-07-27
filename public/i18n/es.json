@@ -1,0 +1,104 @@
+{
+  "home": {
+    "hero": {
+      "label": "Chef Gerson Canales",
+      "title": "Experiencias gastronómicas diseñadas para cada ocasión",
+      "description": "Catering y eventos privados o corporativos con una propuesta personalizada.",
+      "primaryAction": "Solicitar presupuesto",
+      "secondaryAction": "Ver servicios"
+    },
+    "valueProposition": {
+      "label": "Una experiencia pensada para ti",
+      "title": "Cocina profesional, cercana y adaptada a cada evento",
+      "items": {
+        "personalized": {
+          "title": "Propuesta personalizada",
+          "description": "Cada evento se diseña según el tipo de celebración, el número de invitados y las necesidades de cada cliente."
+        },
+        "professionalExperience": {
+          "title": "Experiencia profesional",
+          "description": "Organización, producto y ejecución cuidada para que el servicio funcione de principio a fin."
+        },
+        "privateAndCorporate": {
+          "title": "Eventos privados y empresas",
+          "description": "Soluciones gastronómicas para celebraciones familiares, encuentros privados y eventos corporativos."
+        }
+      }
+    },
+    "featuredServices": {
+      "label": "Servicios destacados",
+      "title": "Una propuesta para cada tipo de encuentro",
+      "action": "Ver servicio",
+      "items": [
+        {
+          "id": "private-dinners",
+          "title": "Cenas privadas en casa",
+          "description": "Una experiencia gastronómica personalizada en un entorno íntimo y cuidado."
+        },
+        {
+          "id": "family-celebrations",
+          "title": "Celebraciones familiares",
+          "description": "Propuestas adaptadas para cumpleaños, aniversarios y encuentros especiales."
+        },
+        {
+          "id": "corporate-events",
+          "title": "Eventos corporativos pequeños",
+          "description": "Servicios gastronómicos para reuniones de equipo, presentaciones y encuentros profesionales."
+        },
+        {
+          "id": "meeting-catering",
+          "title": "Catering para reuniones y encuentros",
+          "description": "Opciones flexibles para grupos reducidos, adaptadas al espacio y al tipo de evento."
+        },
+        {
+          "id": "gastronomic-workshops",
+          "title": "Talleres y experiencias gastronómicas",
+          "description": "Actividades participativas para aprender, cocinar y disfrutar en grupo."
+        },
+        {
+          "id": "custom-menus",
+          "title": "Menús personalizados",
+          "description": "Propuestas creadas según los gustos, las necesidades y las características de cada ocasión."
+        }
+      ]
+    },
+    "quoteCta": {
+      "label": "Cuéntanos tu idea",
+      "title": "Diseñemos juntos una experiencia gastronómica a medida",
+      "description": "Comparte los detalles de tu evento y prepararemos una propuesta adaptada a tus necesidades.",
+      "action": "Solicitar presupuesto"
+    }
+  },
+  "navigation": {
+    "mainAriaLabel": "Navegación principal",
+    "socialAriaLabel": "Redes sociales",
+    "instagramAriaLabel": "Visitar el Instagram de Gerson Canales",
+    "menu": {
+      "open": "Abrir menú",
+      "close": "Cerrar menú"
+    },
+    "links": {
+      "services": "Servicios",
+      "gallery": "Galería",
+      "quoteRequest": "Solicitar presupuesto",
+      "about": "Sobre el chef"
+    }
+  },
+  "footer": {
+    "brand": {
+      "homeAriaLabel": "Ir a la página de inicio",
+      "description": "Experiencias gastronómicas para eventos privados y empresas."
+    },
+    "navigation": {
+      "ariaLabel": "Navegación del pie de página",
+      "services": "Servicios",
+      "gallery": "Galería",
+      "quoteRequest": "Solicitar presupuesto",
+      "about": "Sobre el chef"
+    },
+    "social": {
+      "instagramAriaLabel": "Visitar el Instagram de Gerson Canales; se abre en una pestaña nueva"
+    },
+    "copyright": "© {{ year }} Gerson Canales. Todos los derechos reservados."
+  }
+}

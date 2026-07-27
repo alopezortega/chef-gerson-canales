@@ -74,13 +74,34 @@ a:focus-visible {
   outline-offset: 4px;
 }
 
+.language-selector {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.language-selector__button {
+  width: auto;
+  height: auto;
+  padding: var(--spacing-xs);
+
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.language-selector__button[aria-pressed='true'] {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
+}
+
 @media (min-width: 768px) {
   :host {
     display: flex;
     align-items: center;
   }
 
-  button {
+  .menu-toggle {
     display: none;
   }
 
