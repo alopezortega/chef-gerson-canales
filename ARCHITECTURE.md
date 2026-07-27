@@ -2,16 +2,20 @@
 
 ## Overview
 
-Chef Gerson Canales is an Angular application for a professional chef offering catering and private event services.
+Chef Gerson Canales is an Angular application for catering, private dining and corporate event services.
 
 The application is designed with:
 
 - Standalone Angular architecture
 - Lazy-loaded routes
-- Mobile First responsive design
+- Server-Side Rendering support
+- Zoneless change detection
+- Mobile-first responsive design
 - Clear separation of responsibilities
 - Accessible navigation
+- Internationalized public content
 - Scalable styling through design tokens
+- Feature-based organization
 
 ---
 
@@ -23,12 +27,15 @@ The application is designed with:
 - Angular Router
 - Angular Signals
 - RxJS
+- Angular SSR
+- `ngx-translate`
+- Vitest
 - ESLint
 - Prettier
 
 ---
 
-## Folder Structure
+## Project Structure
 
 ```text
 src/
@@ -36,8 +43,6 @@ src/
     ├── core/
     ├── features/
     ├── layout/
-    │   ├── admin-layout/
-    │   └── public-layout/
     ├── pages/
     └── shared/
 ```
@@ -46,37 +51,40 @@ src/
 
 Contains application-wide infrastructure and singleton responsibilities.
 
-Examples:
+Current examples:
 
-- Global services
-- Interceptors
-- Guards
-- Application models
-- Authentication infrastructure
+```text
+core/models/supported-language.type.ts
+core/services/language.service.ts
+```
 
 ### `features`
 
-Contains business-specific functionality.
+Contains business-specific models, data and services.
 
-Examples:
+Current gallery structure:
 
-- Quote request
-- Gallery management
-- Testimonials
-- Document management
+```text
+features/gallery/
+├── data/
+│   └── gallery.mock.ts
+├── models/
+│   └── gallery-item.model.ts
+└── services/
+    └── gallery.service.ts
+```
 
 ### `layout`
 
-Contains application shell components and route layouts.
-
-Current layouts:
+Contains the route layouts and shared application shells.
 
 ```text
-PublicLayout
-AdminLayout
+layout/
+├── public-layout/
+└── admin-layout/
 ```
 
-The `PublicLayout` contains:
+The public layout contains:
 
 ```text
 Header
@@ -86,7 +94,7 @@ Footer
 
 ### `pages`
 
-Contains route-level components.
+Contains standalone route-level components.
 
 Current public pages:
 
@@ -98,11 +106,20 @@ Quote Request
 About
 ```
 
+Pages compose complete routed views.
+
+Business models, data and services remain inside their corresponding feature folders when they do not belong directly to the page.
+
 ### `shared`
 
-Contains reusable, presentation-focused components, directives, pipes and shared models.
+Contains reusable presentation-focused elements such as:
 
-Components are only moved to `shared` when there is a real reuse case.
+- UI components
+- Pipes
+- Directives
+- Shared models
+
+Code is moved to `shared` only when a real reuse case exists.
 
 ---
 
@@ -111,22 +128,23 @@ Components are only moved to `shared` when there is a real reuse case.
 ```text
 App
 │
-├── app.routes.ts
+├── App Routes
 │
-└── PublicLayout
+└── Public Layout
     │
-    ├── HeaderComponent
-    │   ├── brand link
-    │   └── HeaderNavbarComponent
+    ├── Header
+    │   ├── Brand
+    │   ├── Navigation
+    │   └── Language selector
     │
-    ├── RouterOutlet
-    │   ├── HomeComponent
-    │   ├── ServicesComponent
-    │   ├── GalleryComponent
-    │   ├── QuoteRequestComponent
-    │   └── AboutComponent
+    ├── Router Outlet
+    │   ├── Home
+    │   ├── Services
+    │   ├── Gallery
+    │   ├── Quote Request
+    │   └── About
     │
-    └── FooterComponent
+    └── Footer
 ```
 
 ---
@@ -136,80 +154,119 @@ App
 Public routes:
 
 ```text
-/                       → HomeComponent
-/servicios              → ServicesComponent
-/galeria                → GalleryComponent
-/solicitar-presupuesto  → QuoteRequestComponent
-/sobre-el-chef          → AboutComponent
+/                       → Home
+/servicios              → Services
+/galeria                → Gallery
+/solicitar-presupuesto  → Quote Request
+/sobre-el-chef          → About
 ```
 
-The application uses standalone lazy loading:
+The application uses standalone lazy loading.
 
 ```ts
 loadChildren;
 ```
 
-for route groups and layouts.
+is used for route groups and layouts.
 
 ```ts
 loadComponent;
 ```
 
-for route-level standalone components.
+is used for standalone route pages.
 
-Public pages are rendered inside the `PublicLayout` `RouterOutlet`.
-
----
-
-## Navigation
-
-Internal and external navigation are represented by separate models.
-
-### Internal navigation
-
-```ts
-export interface NavigationItem {
-  label: string;
-  route: string;
-  isCta?: boolean;
-}
-```
-
-Internal links use:
-
-```html
-[routerLink]
-```
-
-### External navigation
-
-```ts
-export interface SocialLinkItem {
-  ariaLabel: string;
-  url: string;
-  icon?: string;
-}
-```
-
-External links use:
-
-```html
-[href] target="_blank" rel="noopener noreferrer"
-```
-
-This separation reflects their different semantics and behaviours.
+Public pages are rendered inside the `PublicLayout` router outlet.
 
 ---
 
-## Header State
+## Internationalization
 
-The responsive mobile menu uses an Angular signal:
+Public content supports Spanish and English through `ngx-translate`.
 
-```ts
-protected readonly menuOpen = signal(false);
+Translation files are stored in:
+
+```text
+public/i18n/
+├── es.json
+└── en.json
 ```
 
-State changes are explicit:
+Both files maintain the same translation-key structure.
+
+Templates use translation keys instead of hard-coded user-facing text:
+
+```html
+{{ 'gallery.title' | translate }}
+```
+
+Accessibility labels and image alternative text are also translated.
+
+Responsibilities are separated as follows:
+
+```text
+TypeScript
+→ application logic and state
+
+HTML
+→ structure and translation keys
+
+JSON
+→ user-facing content
+```
+
+---
+
+## Language Management
+
+Language state is centralized in `LanguageService`.
+
+The service is responsible for:
+
+- Storing the active language
+- Activating the selected `ngx-translate` language
+- Persisting the user preference
+- Validating values loaded from browser storage
+- Providing SSR-safe access to `localStorage`
+
+The navbar displays the language controls and delegates language changes to the service.
+
+The selected language is persisted in:
+
+```text
+localStorage
+```
+
+under the key:
+
+```text
+preferred-language
+```
+
+---
+
+## State Management
+
+Angular Signals are used for synchronous component and service state.
+
+The project follows this pattern:
+
+```text
+service owns mutable state
+→ service exposes readonly state
+→ components consume the state
+```
+
+This keeps state ownership clear and prevents presentation components from modifying shared state directly.
+
+RxJS is currently used for Angular Router event handling.
+
+---
+
+## Navigation State
+
+The mobile navigation menu uses an Angular Signal.
+
+State changes are handled through explicit methods:
 
 ```ts
 protected toggleMenu(): void {
@@ -221,45 +278,45 @@ protected closeMenu(): void {
 }
 ```
 
-A computed signal derives the accessible button label:
+The accessible menu label is derived from the current menu state.
 
-```ts
-protected readonly menuButtonLabel = computed(() =>
-  this.menuOpen() ? 'Cerrar menú' : 'Abrir menú',
-);
+The menu closes after successful Angular Router navigation.
+
+The Router event subscription uses:
+
+```text
+NavigationEnd
+filter
+takeUntilDestroyed
 ```
+
+This ensures that the menu reacts to route changes and the subscription is cleaned up when the component is destroyed.
 
 ---
 
-## Router Event Handling
+## Browser Event Handling
 
-The mobile menu closes after successful Angular Router navigation.
+The mobile navigation menu also closes when the Escape key is pressed.
 
-```ts
-private readonly router = inject(Router);
+The global keyboard listener is registered with:
 
-constructor() {
-  this.router.events
-    .pipe(
-      filter(
-        (event): event is NavigationEnd =>
-          event instanceof NavigationEnd,
-      ),
-      takeUntilDestroyed(),
-    )
-    .subscribe(() => this.closeMenu());
-}
+```text
+afterNextRender
 ```
 
-This allows the navigation state to react to route changes regardless of which component initiated the navigation.
+and removed through:
 
-`takeUntilDestroyed()` automatically completes the subscription when the component is destroyed.
+```text
+DestroyRef
+```
+
+This keeps browser event handling compatible with SSR and prevents abandoned global listeners.
 
 ---
 
 ## Template Strategy
 
-The application uses modern Angular control flow.
+The application uses Angular's modern template control flow.
 
 Currently used:
 
@@ -267,140 +324,178 @@ Currently used:
 @if
 @else
 @for
+@let
 track
 ```
 
-Planned where appropriate:
+Lists use stable identifiers:
 
-```text
-@empty
-@switch
-@defer
-@placeholder
-@loading
-@error
+```html
+@for (galleryItem of galleryItems(); track galleryItem.id) { }
 ```
 
-Tracked values should be stable identifiers such as:
+`@let` is used when a template expression needs to be reused or simplified.
+
+---
+
+## Data States
+
+The gallery currently handles:
 
 ```text
-item.route
-socialLink.url
+success
+empty
 ```
+
+The empty state is represented separately from a successful result containing data.
+
+Example:
+
+```html
+@if (galleryItems().length > 0) {
+<!-- Gallery content -->
+} @else {
+<p>{{ 'gallery.empty' | translate }}</p>
+}
+```
+
+---
+
+## Gallery Architecture
+
+The gallery follows this data flow:
+
+```text
+Gallery mock
+      ↓
+GalleryService
+      ↓
+GalleryComponent
+      ↓
+Gallery template
+```
+
+Responsibilities:
+
+```text
+gallery.mock.ts
+→ contains the current gallery data
+
+GalleryService
+→ owns and exposes gallery state
+
+GalleryComponent
+→ consumes gallery state
+
+gallery.html
+→ renders the interface
+```
+
+The page does not import the mock directly.
+
+This keeps the routed component independent from the concrete data source.
+
+### Gallery model
+
+```ts
+export interface GalleryItem {
+  id: string;
+  imageUrl: string;
+  titleKey: string;
+  altKey: string;
+}
+```
+
+The model stores translation keys instead of final translated text.
+
+The `id` is used as the stable tracking value in the template.
 
 ---
 
 ## Accessibility
 
-The navigation includes accessible names and state information.
+Accessibility is part of the component implementation.
 
-Examples:
+Current practices include:
 
-```html
-<nav aria-label="Navegación principal"></nav>
-```
+- Semantic HTML
+- Labelled navigation regions
+- Translated accessible names
+- `aria-expanded` for the mobile menu
+- `aria-controls` relationships
+- Keyboard support
+- Meaningful translated image alternative text
+- Labelled page sections
 
-```html
-<nav aria-label="Redes sociales"></nav>
-```
-
-```html
-[attr.aria-label]="menuButtonLabel()"
-```
-
-```html
-[attr.aria-expanded]="menuOpen()"
-```
-
-```html
-aria-controls="main-navigation social-navigation"
-```
-
-Accessibility labels are written in the language presented to the user.
-
-Automated analysis should be combined with manual keyboard and screen-reader-oriented validation.
+Automated analysis is complemented with manual browser and keyboard validation.
 
 ---
 
 ## Styling
 
-Global SCSS entry point:
+Global styles are defined in:
 
 ```text
 src/styles.scss
 ```
 
-Design tokens:
+Reusable visual values are maintained through design tokens:
 
 ```text
 src/styles/_tokens.scss
 ```
 
-Example:
-
-```scss
-:root {
-  --color-text-primary: #1f1f1f;
-  --color-background-primary: #ffffff;
-  --color-accent: #2563eb;
-  --color-accent-hover: #1d4ed8;
-
-  --spacing-sm: 0.5rem;
-  --spacing-md: 1rem;
-  --spacing-lg: 1.5rem;
-}
-```
-
 Rules:
 
-- Reusable global values are defined as CSS custom properties.
-- Component-specific styles remain encapsulated in component SCSS files.
-- New tokens are added only when a real reusable need exists.
-- Existing tokens should be checked before introducing new ones.
+- Shared visual values use CSS custom properties
+- Component-specific styles remain encapsulated
+- Existing tokens are checked before introducing new ones
+- New abstractions require a real reuse case
 
 ---
 
 ## Responsive Design
 
-The project follows a Mobile First strategy.
+Responsive presentation is controlled through CSS.
 
-```text
-Base styles
-→ mobile
+The gallery layout uses CSS Grid, media queries and consistent image proportions.
 
-@media (min-width: 768px)
-→ tablet and desktop
+Images use:
+
+```scss
+aspect-ratio: 4 / 3;
+object-fit: cover;
 ```
 
-CSS controls responsive presentation.
-
-TypeScript should only inspect screen size when behaviour cannot reasonably be expressed through CSS.
+This keeps image cards visually consistent without distorting the source images.
 
 ---
 
-## CTA
+## Testing Strategy
 
-The quote request route is the primary Call To Action.
+The project currently uses minimum meaningful component tests.
 
-It remains a normal Angular route but is visually distinguished through model metadata:
+Tests verify:
 
-```ts
-isCta: true;
+- Component creation
+- Required translation providers
+- Expected rendered elements
+- Gallery item rendering
+
+The gallery test confirms that the three current mock items are rendered.
+
+Current test status:
+
+```text
+10 test files passing
+15 tests passing
 ```
-
-Template binding:
-
-```html
-[class.cta]="item.isCta"
-```
-
-This keeps navigation data and presentation intent explicit without hard-coding route labels in CSS.
 
 ---
 
 ## Naming Conventions
 
-Angular selectors:
+Angular selectors use:
 
 ```text
 app-
@@ -420,37 +515,46 @@ Code is written in English:
 - Methods
 - Classes
 - Interfaces
+- Types
 - Comments
 - Commit messages
 
-User-facing content and accessibility labels are written in Spanish.
+User-facing content is stored in Spanish and English translation files.
 
 ---
 
 ## Architectural Decisions
 
-### Separate public and admin layouts
+### Separate routed pages from feature logic
 
-The public website and administrative area have different navigation, security and presentation responsibilities.
+Pages compose complete routed views.
 
-### Lazy-load route-level functionality
+Feature folders contain their business models, data and services.
 
-Standalone route components are loaded when required.
+### Isolate mock data behind services
 
-### Keep internal and external navigation separate
+The gallery page consumes `GalleryService` instead of importing mock data directly.
 
-Angular routes and external URLs use distinct models and template mechanisms.
+### Keep state ownership inside services
+
+Services manage shared state and expose controlled state to components.
+
+### Centralize language state
+
+Language selection and persistence belong to `LanguageService`.
+
+### Preserve SSR compatibility
+
+Browser-only APIs and global event listeners are handled through SSR-compatible Angular mechanisms.
+
+### Store translation keys in models
+
+Feature models contain stable translation keys instead of user-facing text.
 
 ### Avoid premature abstraction
 
-Reusable components are extracted only when reuse or complexity is demonstrated.
+Components and models are generalized only when a real reuse case exists.
 
-### Keep admin access outside the public interface
+### Keep public and admin responsibilities separate
 
-The public navigation does not expose administrative routes.
-
-Authentication, authorization and guards will provide actual protection.
-
-### Centralize reusable design values
-
-Global visual values are maintained as design tokens instead of being duplicated across component styles.
+Public and administrative areas use separate layouts and navigation responsibilities.
