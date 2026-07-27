@@ -100,5 +100,25 @@
       "instagramAriaLabel": "Visitar el Instagram de Gerson Canales; se abre en una pestaña nueva"
     },
     "copyright": "© {{ year }} Gerson Canales. Todos los derechos reservados."
+  },
+  "gallery": {
+    "label": "Galería",
+    "title": "Momentos y experiencias gastronómicas",
+    "description": "Una selección de platos, eventos privados y experiencias culinarias.",
+    "empty": "Todavía no hay imágenes disponibles.",
+    "items": {
+      "privateDinner": {
+        "title": "Cena privada",
+        "alt": "Mesa preparada para una cena privada"
+      },
+      "privateEvent": {
+        "title": "Evento privado",
+        "alt": "Servicio gastronómico preparado para un evento privado"
+      },
+      "cookingWorkshop": {
+        "title": "Taller de cocina",
+        "alt": "Participantes disfrutando de un taller de cocina"
+      }
+    }
   }
 }

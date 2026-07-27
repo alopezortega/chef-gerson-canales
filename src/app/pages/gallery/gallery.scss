@@ -1,0 +1,78 @@
+.gallery {
+  width: min(100% - 2rem, 75rem);
+  margin-inline: auto;
+  padding-block: 3rem 4rem;
+
+  &__header {
+    max-width: 42rem;
+    margin-bottom: 2rem;
+  }
+
+  &__label {
+    margin: 0 0 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    line-height: 1.1;
+  }
+
+  &__description {
+    margin: 1rem 0 0;
+    max-width: 38rem;
+    line-height: 1.6;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  &__item {
+    overflow: hidden;
+    border-radius: 1rem;
+  }
+
+  &__image {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  &__item-title {
+    margin: 0;
+    padding: 1rem;
+    font-size: 1.125rem;
+  }
+
+  &__empty {
+    padding: 2rem;
+    text-align: center;
+  }
+}
+
+@media (max-width: 56rem) {
+  .gallery {
+    &__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+}
+
+@media (max-width: 40rem) {
+  .gallery {
+    width: min(100% - 1rem, 75rem);
+    padding-block: 2rem 3rem;
+
+    &__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}

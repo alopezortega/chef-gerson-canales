@@ -1,1 +1,38 @@
-<p>gallery works!</p>
+<section class="gallery" aria-labelledby="gallery-title">
+  <header class="gallery__header">
+    <p class="gallery__label">
+      {{ 'gallery.label' | translate }}
+    </p>
+
+    <h1 id="gallery-title">
+      {{ 'gallery.title' | translate }}
+    </h1>
+
+    <p class="gallery__description">
+      {{ 'gallery.description' | translate }}
+    </p>
+  </header>
+
+  @if (galleryItems().length > 0) {
+    <div class="gallery__grid">
+      @for (galleryItem of galleryItems(); track galleryItem.id) {
+        <article class="gallery__item">
+          <img
+            class="gallery__image"
+            [src]="galleryItem.imageUrl"
+            [alt]="galleryItem.altKey | translate"
+            loading="lazy"
+          />
+
+          <h2 class="gallery__item-title">
+            {{ galleryItem.titleKey | translate }}
+          </h2>
+        </article>
+      }
+    </div>
+  } @else {
+    <p class="gallery__empty">
+      {{ 'gallery.empty' | translate }}
+    </p>
+  }
+</section>
