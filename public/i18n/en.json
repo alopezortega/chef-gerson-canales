@@ -181,5 +181,76 @@
       "description": "Share the details of your celebration or gathering and let us prepare a dining proposal tailored to your needs.",
       "action": "Request a quote"
     }
+  },
+  "services": {
+    "hero": {
+      "label": "Private chef & catering",
+      "title": "Dining experiences tailored to every occasion",
+      "description": "Provisional proposals for private celebrations, professional gatherings and personalized experiences."
+    },
+    "experiences": {
+      "label": "What we can prepare",
+      "title": "A proposal for every type of gathering",
+      "empty": "There are no experiences available yet.",
+      "items": [
+        {
+          "id": "private-dinners",
+          "title": "Private dinners at home",
+          "description": "A personalized dining experience to enjoy in an intimate and carefully prepared setting."
+        },
+        {
+          "id": "family-celebrations",
+          "title": "Family celebrations",
+          "description": "Tailored proposals for birthdays, anniversaries and other special gatherings."
+        },
+        {
+          "id": "corporate-events",
+          "title": "Corporate events",
+          "description": "Dining options for team meetings, presentations and professional gatherings."
+        },
+        {
+          "id": "meeting-catering",
+          "title": "Meeting catering",
+          "description": "Flexible formats for small groups, adapted to the venue and the needs of the event."
+        },
+        {
+          "id": "gastronomic-workshops",
+          "title": "Cooking workshops",
+          "description": "Interactive experiences designed to cook, learn and enjoy as a group."
+        },
+        {
+          "id": "custom-menus",
+          "title": "Custom menus",
+          "description": "Proposals designed around the preferences, needs and characteristics of every occasion."
+        }
+      ]
+    },
+    "process": {
+      "label": "How we work",
+      "title": "From the first idea to the final experience",
+      "steps": [
+        {
+          "id": "conversation",
+          "title": "Tell us about your idea",
+          "description": "We learn about the type of event, the number of guests and the main requirements."
+        },
+        {
+          "id": "proposal",
+          "title": "We prepare a proposal",
+          "description": "We design a dining option adapted to the occasion and the format of the gathering."
+        },
+        {
+          "id": "experience",
+          "title": "We take care of the experience",
+          "description": "We organize the necessary details so the service runs smoothly from beginning to end."
+        }
+      ]
+    },
+    "quoteCta": {
+      "label": "Let us talk about your event",
+      "title": "Do you have a celebration or gathering in mind?",
+      "description": "Share the details and we will prepare a proposal tailored to your needs.",
+      "action": "Request a quote"
+    }
   }
 }
