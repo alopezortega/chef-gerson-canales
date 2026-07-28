@@ -1,1 +1,97 @@
-<p>services works!</p>
+<main class="services-page">
+  <section class="services-hero" aria-labelledby="services-hero-title">
+    <div class="services-hero__content">
+      <p class="services-hero__label">
+        {{ 'services.hero.label' | translate }}
+      </p>
+
+      <h1 id="services-hero-title" class="services-hero__title">
+        {{ 'services.hero.title' | translate }}
+      </h1>
+
+      <p class="services-hero__description">
+        {{ 'services.hero.description' | translate }}
+      </p>
+    </div>
+  </section>
+
+  <section class="services-experiences" aria-labelledby="services-experiences-title">
+    <header class="services-experiences__header">
+      <p class="services-experiences__label">
+        {{ 'services.experiences.label' | translate }}
+      </p>
+
+      <h2 id="services-experiences-title" class="services-experiences__title">
+        {{ 'services.experiences.title' | translate }}
+      </h2>
+    </header>
+
+    @let experiences = 'services.experiences.items' | translate;
+
+    @if (experiences && experiences !== 'services.experiences.items') {
+      <div class="services-experiences__grid">
+        @for (experience of experiences; track experience.id) {
+          <article class="services-experiences__card">
+            <h3>{{ experience.title }}</h3>
+            <p>{{ experience.description }}</p>
+          </article>
+        } @empty {
+          <p class="services-experiences__empty">
+            {{ 'services.experiences.empty' | translate }}
+          </p>
+        }
+      </div>
+    }
+  </section>
+
+  <section class="services-process" aria-labelledby="services-process-title">
+    <header class="services-process__header">
+      <p class="services-process__label">
+        {{ 'services.process.label' | translate }}
+      </p>
+
+      <h2 id="services-process-title" class="services-process__title">
+        {{ 'services.process.title' | translate }}
+      </h2>
+    </header>
+
+    @let processSteps = 'services.process.steps' | translate;
+
+    @if (processSteps && processSteps !== 'services.process.steps') {
+      <ol class="services-process__list">
+        @for (processStep of processSteps; track processStep.id; let stepNumber = $index) {
+          <li class="services-process__item">
+            <span class="services-process__number" aria-hidden="true">
+              {{ stepNumber + 1 }}
+            </span>
+
+            <div class="services-process__content">
+              <h3>{{ processStep.title }}</h3>
+              <p>{{ processStep.description }}</p>
+            </div>
+          </li>
+        }
+      </ol>
+    }
+  </section>
+
+  <section class="services-quote" aria-labelledby="services-quote-title">
+    <div class="services-quote__content">
+      <p class="services-quote__label">
+        {{ 'services.quoteCta.label' | translate }}
+      </p>
+
+      <h2 id="services-quote-title" class="services-quote__title">
+        {{ 'services.quoteCta.title' | translate }}
+      </h2>
+
+      <p class="services-quote__description">
+        {{ 'services.quoteCta.description' | translate }}
+      </p>
+
+      <a class="services-quote__link" routerLink="/solicitar-presupuesto">
+        {{ 'services.quoteCta.action' | translate }}
+      </a>
+    </div>
+  </section>
+</main>

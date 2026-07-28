@@ -181,5 +181,76 @@
       "description": "Comparte los detalles de tu celebración o encuentro y preparemos una propuesta gastronómica adaptada a tus necesidades.",
       "action": "Solicitar presupuesto"
     }
+  },
+  "services": {
+    "hero": {
+      "label": "Chef privado & catering",
+      "title": "Experiencias gastronómicas adaptadas a cada ocasión",
+      "description": "Propuestas provisionales para celebraciones privadas, encuentros profesionales y experiencias personalizadas."
+    },
+    "experiences": {
+      "label": "Qué podemos preparar",
+      "title": "Una propuesta para cada tipo de encuentro",
+      "empty": "Todavía no hay experiencias disponibles.",
+      "items": [
+        {
+          "id": "private-dinners",
+          "title": "Cenas privadas en casa",
+          "description": "Una experiencia gastronómica personalizada para disfrutar en un entorno íntimo y cuidado."
+        },
+        {
+          "id": "family-celebrations",
+          "title": "Celebraciones familiares",
+          "description": "Propuestas adaptadas para cumpleaños, aniversarios y otros encuentros especiales."
+        },
+        {
+          "id": "corporate-events",
+          "title": "Eventos corporativos",
+          "description": "Opciones gastronómicas para reuniones de equipo, presentaciones y encuentros profesionales."
+        },
+        {
+          "id": "meeting-catering",
+          "title": "Catering para reuniones",
+          "description": "Formatos flexibles para grupos reducidos, adaptados al espacio y a las necesidades del evento."
+        },
+        {
+          "id": "gastronomic-workshops",
+          "title": "Talleres gastronómicos",
+          "description": "Experiencias participativas para cocinar, aprender y disfrutar en grupo."
+        },
+        {
+          "id": "custom-menus",
+          "title": "Menús personalizados",
+          "description": "Propuestas creadas según los gustos, las necesidades y las características de cada ocasión."
+        }
+      ]
+    },
+    "process": {
+      "label": "Cómo trabajamos",
+      "title": "De la primera idea a la experiencia final",
+      "steps": [
+        {
+          "id": "conversation",
+          "title": "Cuéntanos tu idea",
+          "description": "Conocemos el tipo de evento, el número de invitados y las necesidades principales."
+        },
+        {
+          "id": "proposal",
+          "title": "Preparamos una propuesta",
+          "description": "Diseñamos una opción gastronómica adaptada a la ocasión y al formato del encuentro."
+        },
+        {
+          "id": "experience",
+          "title": "Cuidamos la experiencia",
+          "description": "Organizamos los detalles necesarios para que el servicio funcione de principio a fin."
+        }
+      ]
+    },
+    "quoteCta": {
+      "label": "Hablemos de tu evento",
+      "title": "¿Tienes una celebración o encuentro en mente?",
+      "description": "Cuéntanos los detalles y prepararemos una propuesta adaptada a tus necesidades.",
+      "action": "Solicitar presupuesto"
+    }
   }
 }
