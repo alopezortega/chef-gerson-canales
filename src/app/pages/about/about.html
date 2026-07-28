@@ -1,1 +1,134 @@
-<p>about works!</p>
+<main class="about-page">
+  <section class="about-hero" aria-labelledby="about-hero-title">
+    <div class="about-hero__content">
+      <p class="about-hero__label">
+        {{ 'about.hero.label' | translate }}
+      </p>
+
+      <h1 id="about-hero-title" class="about-hero__title">
+        {{ 'about.hero.title' | translate }}
+      </h1>
+
+      <p class="about-hero__description">
+        {{ 'about.hero.description' | translate }}
+      </p>
+    </div>
+
+    <figure class="about-hero__media">
+      <img
+        class="about-hero__image"
+        src="/images/about/chef-gerson.jpg"
+        [alt]="'about.hero.imageAlt' | translate"
+      />
+    </figure>
+  </section>
+
+  <section class="about-introduction" aria-labelledby="about-introduction-title">
+    <header class="about-introduction__header">
+      <p class="about-introduction__label">
+        {{ 'about.introduction.label' | translate }}
+      </p>
+
+      <h2 id="about-introduction-title" class="about-introduction__title">
+        {{ 'about.introduction.title' | translate }}
+      </h2>
+    </header>
+
+    @let introductionParagraphs = 'about.introduction.paragraphs' | translate;
+
+    @if (introductionParagraphs && introductionParagraphs !== 'about.introduction.paragraphs') {
+      <div class="about-introduction__content">
+        @for (paragraph of introductionParagraphs; track paragraph.id) {
+          <p>{{ paragraph.text }}</p>
+        }
+      </div>
+    }
+  </section>
+
+  <section class="about-philosophy" aria-labelledby="about-philosophy-title">
+    <p class="about-philosophy__label">
+      {{ 'about.philosophy.label' | translate }}
+    </p>
+
+    <h2 id="about-philosophy-title" class="about-philosophy__title">
+      {{ 'about.philosophy.title' | translate }}
+    </h2>
+
+    <p class="about-philosophy__description">
+      {{ 'about.philosophy.description' | translate }}
+    </p>
+  </section>
+
+  @defer (on viewport) {
+    <section class="about-values" aria-labelledby="about-values-title">
+      <header class="about-values__header">
+        <p class="about-values__label">
+          {{ 'about.values.label' | translate }}
+        </p>
+
+        <h2 id="about-values-title" class="about-values__title">
+          {{ 'about.values.title' | translate }}
+        </h2>
+      </header>
+
+      @let aboutChefValues = 'about.values.items' | translate;
+
+      @if (aboutChefValues && aboutChefValues !== 'about.values.items') {
+        <div class="about-values__grid">
+          @for (aboutChefValue of aboutChefValues; track aboutChefValue.id) {
+            <article class="about-values__card">
+              <h3>{{ aboutChefValue.title }}</h3>
+              <p>{{ aboutChefValue.description }}</p>
+            </article>
+          } @empty {
+            <p class="about-values__empty">
+              {{ 'about.values.empty' | translate }}
+            </p>
+          }
+        </div>
+      }
+    </section>
+  } @placeholder {
+    <div class="about-values-placeholder" aria-hidden="true"></div>
+  }
+
+  <section class="about-services" aria-labelledby="about-services-title">
+    <div class="about-services__content">
+      <p class="about-services__label">
+        {{ 'about.services.label' | translate }}
+      </p>
+
+      <h2 id="about-services-title" class="about-services__title">
+        {{ 'about.services.title' | translate }}
+      </h2>
+
+      <p class="about-services__description">
+        {{ 'about.services.description' | translate }}
+      </p>
+
+      <a class="about-services__link" routerLink="/servicios">
+        {{ 'about.services.action' | translate }}
+      </a>
+    </div>
+  </section>
+
+  <section class="about-quote" aria-labelledby="about-quote-title">
+    <div class="about-quote__content">
+      <p class="about-quote__label">
+        {{ 'about.quoteCta.label' | translate }}
+      </p>
+
+      <h2 id="about-quote-title" class="about-quote__title">
+        {{ 'about.quoteCta.title' | translate }}
+      </h2>
+
+      <p class="about-quote__description">
+        {{ 'about.quoteCta.description' | translate }}
+      </p>
+
+      <a class="about-quote__link" routerLink="/solicitar-presupuesto">
+        {{ 'about.quoteCta.action' | translate }}
+      </a>
+    </div>
+  </section>
+</main>

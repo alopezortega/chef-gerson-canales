@@ -5,7 +5,7 @@
       "title": "Experiencias gastronómicas diseñadas para cada ocasión",
       "description": "Catering y eventos privados o corporativos con una propuesta personalizada.",
       "primaryAction": "Solicitar presupuesto",
-      "secondaryAction": "Ver servicios"
+      "secondaryAction": "Ver experiencias"
     },
     "valueProposition": {
       "label": "Una experiencia pensada para ti",
@@ -26,9 +26,9 @@
       }
     },
     "featuredServices": {
-      "label": "Servicios destacados",
+      "label": "Experiencias destacadas",
       "title": "Una propuesta para cada tipo de encuentro",
-      "action": "Ver servicio",
+      "action": "Ver experiencia",
       "items": [
         {
           "id": "private-dinners",
@@ -78,7 +78,7 @@
       "close": "Cerrar menú"
     },
     "links": {
-      "services": "Servicios",
+      "services": "Chef privado & catering",
       "gallery": "Galería",
       "quoteRequest": "Solicitar presupuesto",
       "about": "Sobre el chef"
@@ -91,7 +91,7 @@
     },
     "navigation": {
       "ariaLabel": "Navegación del pie de página",
-      "services": "Servicios",
+      "services": "Chef privado & catering",
       "gallery": "Galería",
       "quoteRequest": "Solicitar presupuesto",
       "about": "Sobre el chef"
@@ -119,6 +119,67 @@
         "title": "Taller de cocina",
         "alt": "Participantes disfrutando de un taller de cocina"
       }
+    }
+  },
+  "about": {
+    "hero": {
+      "label": "Sobre el chef",
+      "title": "Cocina pensada para reunir, compartir y disfrutar",
+      "description": "Una propuesta gastronómica profesional y cercana, adaptada a cada celebración, encuentro privado o evento de empresa.",
+      "imageAlt": "Chef Gerson Canales preparando una propuesta gastronómica"
+    },
+    "introduction": {
+      "label": "Conoce a Gerson",
+      "title": "Cada evento comienza escuchando la idea del cliente",
+      "paragraphs": [
+        {
+          "id": "personalized-experience",
+          "text": "Gerson entiende la cocina como una forma de reunir a las personas y crear momentos especiales alrededor de una mesa."
+        },
+        {
+          "id": "event-adaptation",
+          "text": "Cada propuesta se plantea teniendo en cuenta el tipo de evento, el espacio, el número de invitados y las necesidades particulares de cada cliente."
+        }
+      ]
+    },
+    "philosophy": {
+      "label": "Filosofía de trabajo",
+      "title": "Una forma cercana y profesional de entender la cocina",
+      "description": "El objetivo es ofrecer una experiencia cuidada de principio a fin, combinando organización, atención al detalle y una comunicación clara con el cliente."
+    },
+    "values": {
+      "label": "Su forma de trabajar",
+      "title": "Los valores detrás de cada propuesta",
+      "empty": "Todavía no hay valores profesionales disponibles.",
+      "items": [
+        {
+          "id": "personalization",
+          "title": "Personalización",
+          "description": "Cada menú y cada servicio se adaptan a las características de la ocasión y a las preferencias del cliente."
+        },
+        {
+          "id": "attention-to-detail",
+          "title": "Atención al detalle",
+          "description": "La planificación, la presentación y la coordinación del servicio se cuidan para ofrecer una experiencia coherente."
+        },
+        {
+          "id": "closeness",
+          "title": "Cercanía",
+          "description": "La comunicación directa permite comprender mejor cada idea y convertirla en una propuesta gastronómica realista."
+        }
+      ]
+    },
+    "services": {
+      "label": "Chef privado & catering",
+      "title": "Experiencias para distintos tipos de encuentros",
+      "description": "Cenas privadas, celebraciones, pequeños eventos corporativos y propuestas adaptadas a cada ocasión.",
+      "action": "Ver experiencias"
+    },
+    "quoteCta": {
+      "label": "Cuéntanos tu idea",
+      "title": "¿Estás organizando un evento?",
+      "description": "Comparte los detalles de tu celebración o encuentro y preparemos una propuesta gastronómica adaptada a tus necesidades.",
+      "action": "Solicitar presupuesto"
     }
   }
 }
