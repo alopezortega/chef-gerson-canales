@@ -1,1 +1,261 @@
-<p>quote-request works!</p>
+<section class="quote-request">
+  <div class="quote-request__container">
+    <header class="quote-request__header">
+      <p class="quote-request__eyebrow">
+        {{ 'quoteRequest.eyebrow' | translate }}
+      </p>
+
+      <h1 class="quote-request__title">
+        {{ 'quoteRequest.title' | translate }}
+      </h1>
+
+      <p class="quote-request__description">
+        {{ 'quoteRequest.description' | translate }}
+      </p>
+    </header>
+
+    <form class="quote-form" [formGroup]="quoteForm" (ngSubmit)="submitQuoteRequest()" novalidate>
+      <div class="quote-form__grid">
+        <div class="quote-form__field">
+          <label for="name">
+            {{ 'quoteRequest.form.name.label' | translate }}
+            <span aria-hidden="true">*</span>
+          </label>
+
+          <input
+            id="name"
+            type="text"
+            formControlName="name"
+            autocomplete="name"
+            [placeholder]="'quoteRequest.form.name.placeholder' | translate"
+          />
+
+          @if (quoteForm.controls.name.touched && quoteForm.controls.name.hasError('required')) {
+            <p class="quote-form__error">
+              {{ 'quoteRequest.form.name.required' | translate }}
+            </p>
+          }
+        </div>
+
+        <div class="quote-form__field">
+          <label for="email">
+            {{ 'quoteRequest.form.email.label' | translate }}
+            <span aria-hidden="true">*</span>
+          </label>
+
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            autocomplete="email"
+            [placeholder]="'quoteRequest.form.email.placeholder' | translate"
+          />
+
+          @if (quoteForm.controls.email.touched) {
+            @if (quoteForm.controls.email.hasError('required')) {
+              <p class="quote-form__error">
+                {{ 'quoteRequest.form.email.required' | translate }}
+              </p>
+            }
+
+            @if (quoteForm.controls.email.hasError('email')) {
+              <p class="quote-form__error">
+                {{ 'quoteRequest.form.email.invalid' | translate }}
+              </p>
+            }
+          }
+        </div>
+
+        <div class="quote-form__field">
+          <label for="phone">
+            {{ 'quoteRequest.form.phone.label' | translate }}
+          </label>
+
+          <input
+            id="phone"
+            type="tel"
+            formControlName="phone"
+            autocomplete="tel"
+            [placeholder]="'quoteRequest.form.phone.placeholder' | translate"
+          />
+        </div>
+
+        <div class="quote-form__field">
+          <label for="eventType">
+            {{ 'quoteRequest.form.eventType.label' | translate }}
+            <span aria-hidden="true">*</span>
+          </label>
+
+          <select id="eventType" formControlName="eventType">
+            <option value="">
+              {{ 'quoteRequest.form.eventType.placeholder' | translate }}
+            </option>
+
+            <option value="private-dinner">
+              {{ 'quoteRequest.form.eventType.options.privateDinner' | translate }}
+            </option>
+
+            <option value="family-celebration">
+              {{ 'quoteRequest.form.eventType.options.familyCelebration' | translate }}
+            </option>
+
+            <option value="corporate-event">
+              {{ 'quoteRequest.form.eventType.options.corporateEvent' | translate }}
+            </option>
+
+            <option value="meeting-catering">
+              {{ 'quoteRequest.form.eventType.options.meetingCatering' | translate }}
+            </option>
+
+            <option value="other">
+              {{ 'quoteRequest.form.eventType.options.other' | translate }}
+            </option>
+          </select>
+
+          @if (
+            quoteForm.controls.eventType.touched &&
+            quoteForm.controls.eventType.hasError('required')
+          ) {
+            <p class="quote-form__error">
+              {{ 'quoteRequest.form.eventType.required' | translate }}
+            </p>
+          }
+        </div>
+
+        <div class="quote-form__field">
+          <label for="eventDate">
+            {{ 'quoteRequest.form.eventDate.label' | translate }}
+          </label>
+
+          <input id="eventDate" type="date" formControlName="eventDate" />
+        </div>
+
+        <div class="quote-form__field">
+          <label for="guestCount">
+            {{ 'quoteRequest.form.guestCount.label' | translate }}
+            <span aria-hidden="true">*</span>
+          </label>
+
+          <input id="guestCount" type="number" min="1" formControlName="guestCount" />
+
+          @if (quoteForm.controls.guestCount.touched) {
+            @if (quoteForm.controls.guestCount.hasError('required')) {
+              <p class="quote-form__error">
+                {{ 'quoteRequest.form.guestCount.required' | translate }}
+              </p>
+            }
+
+            @if (quoteForm.controls.guestCount.hasError('min')) {
+              <p class="quote-form__error">
+                {{ 'quoteRequest.form.guestCount.min' | translate }}
+              </p>
+            }
+          }
+        </div>
+
+        <div class="quote-form__field quote-form__field--full">
+          <label for="location">
+            {{ 'quoteRequest.form.location.label' | translate }}
+          </label>
+
+          <input
+            id="location"
+            type="text"
+            formControlName="location"
+            autocomplete="address-level2"
+            [placeholder]="'quoteRequest.form.location.placeholder' | translate"
+          />
+        </div>
+
+        <div class="quote-form__field quote-form__field--full">
+          <label for="dietaryRequirements">
+            {{ 'quoteRequest.form.dietaryRequirements.label' | translate }}
+          </label>
+
+          <textarea
+            id="dietaryRequirements"
+            formControlName="dietaryRequirements"
+            rows="4"
+            [placeholder]="'quoteRequest.form.dietaryRequirements.placeholder' | translate"
+          ></textarea>
+
+          <p class="quote-form__help">
+            {{ 'quoteRequest.form.dietaryRequirements.help' | translate }}
+          </p>
+        </div>
+
+        <div class="quote-form__field quote-form__field--full">
+          <label for="additionalInformation">
+            {{ 'quoteRequest.form.additionalInformation.label' | translate }}
+          </label>
+
+          <textarea
+            id="additionalInformation"
+            formControlName="additionalInformation"
+            rows="5"
+            [placeholder]="'quoteRequest.form.additionalInformation.placeholder' | translate"
+          ></textarea>
+
+          <p class="quote-form__help">
+            {{ 'quoteRequest.form.additionalInformation.help' | translate }}
+          </p>
+        </div>
+
+        <div class="quote-form__field quote-form__field--full">
+          <label for="attachment">
+            {{ 'quoteRequest.form.attachment.label' | translate }}
+          </label>
+
+          <input
+            id="attachment"
+            class="quote-form__file"
+            type="file"
+            accept=".pdf,.jpg,.jpeg,.png"
+            (change)="onAttachmentSelected($event)"
+          />
+
+          <p class="quote-form__help">
+            {{ 'quoteRequest.form.attachment.help' | translate }}
+          </p>
+
+          @if (attachment()) {
+            <p class="quote-form__file-name">
+              {{ 'quoteRequest.form.attachment.selected' | translate }}:
+              <strong>{{ attachment()?.name }}</strong>
+            </p>
+          }
+        </div>
+
+        <div class="quote-form__field quote-form__field--full quote-form__privacy">
+          <label class="quote-form__checkbox" for="privacyAccepted">
+            <input id="privacyAccepted" type="checkbox" formControlName="privacyAccepted" />
+
+            <span>
+              {{ 'quoteRequest.form.privacy.label' | translate }}
+              <span aria-hidden="true">*</span>
+            </span>
+          </label>
+
+          @if (
+            quoteForm.controls.privacyAccepted.touched &&
+            quoteForm.controls.privacyAccepted.hasError('required')
+          ) {
+            <p class="quote-form__error">
+              {{ 'quoteRequest.form.privacy.required' | translate }}
+            </p>
+          }
+        </div>
+      </div>
+
+      <div class="quote-form__actions">
+        <button class="quote-form__submit" type="submit">
+          {{ 'quoteRequest.form.submit' | translate }}
+        </button>
+
+        <p class="quote-form__required-message">
+          {{ 'quoteRequest.form.requiredFields' | translate }}
+        </p>
+      </div>
+    </form>
+  </div>
+</section>

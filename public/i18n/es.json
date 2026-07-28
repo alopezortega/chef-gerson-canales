@@ -252,5 +252,72 @@
       "description": "Cuéntanos los detalles y prepararemos una propuesta adaptada a tus necesidades.",
       "action": "Solicitar presupuesto"
     }
+  },
+  "quoteRequest": {
+    "eyebrow": "Presupuesto personalizado",
+    "title": "Cuéntame cómo imaginas tu evento",
+    "description": "Completa el formulario con los detalles principales. Con esta información podré preparar una propuesta adaptada al tipo de evento, número de invitados y necesidades del servicio.",
+    "form": {
+      "name": {
+        "label": "Nombre",
+        "placeholder": "Tu nombre completo",
+        "required": "El nombre es obligatorio."
+      },
+      "email": {
+        "label": "Correo electrónico",
+        "placeholder": "nombre@ejemplo.com",
+        "required": "El correo electrónico es obligatorio.",
+        "invalid": "Introduce un correo electrónico válido."
+      },
+      "phone": {
+        "label": "Teléfono",
+        "placeholder": "Tu número de teléfono"
+      },
+      "eventType": {
+        "label": "Tipo de evento",
+        "placeholder": "Selecciona una opción",
+        "required": "Selecciona un tipo de evento.",
+        "options": {
+          "privateDinner": "Cena privada",
+          "familyCelebration": "Celebración familiar",
+          "corporateEvent": "Evento corporativo",
+          "meetingCatering": "Catering para reuniones",
+          "other": "Otro tipo de evento"
+        }
+      },
+      "eventDate": {
+        "label": "Fecha del evento"
+      },
+      "guestCount": {
+        "label": "Número de comensales",
+        "required": "El número de comensales es obligatorio.",
+        "min": "Debe haber al menos un comensal."
+      },
+      "location": {
+        "label": "Lugar del evento",
+        "placeholder": "Ciudad, localidad o dirección aproximada"
+      },
+      "dietaryRequirements": {
+        "label": "Alergias, intolerancias y necesidades alimentarias",
+        "placeholder": "Describe cualquier necesidad alimentaria relevante",
+        "help": "Indica alergias, intolerancias, restricciones o preferencias que debamos tener en cuenta."
+      },
+      "additionalInformation": {
+        "label": "Información adicional",
+        "placeholder": "Cuéntanos cualquier otro detalle sobre el evento",
+        "help": "Puedes añadir horarios, características del espacio, estilo del evento o cualquier información que ayude a preparar la propuesta."
+      },
+      "attachment": {
+        "label": "Adjuntar archivo",
+        "help": "Puedes adjuntar un documento o una imagen en formato PDF, JPG o PNG.",
+        "selected": "Archivo seleccionado"
+      },
+      "privacy": {
+        "label": "Acepto el tratamiento de mis datos para gestionar esta solicitud de presupuesto.",
+        "required": "Debes aceptar el tratamiento de datos."
+      },
+      "submit": "Enviar solicitud",
+      "requiredFields": "Los campos marcados con * son obligatorios."
+    }
   }
 }

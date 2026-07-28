@@ -252,5 +252,72 @@
       "description": "Share the details and we will prepare a proposal tailored to your needs.",
       "action": "Request a quote"
     }
+  },
+  "quoteRequest": {
+    "eyebrow": "Personalised quote",
+    "title": "Tell me how you imagine your event",
+    "description": "Complete the form with the main details. This information will help me prepare a proposal adapted to the type of event, number of guests and service requirements.",
+    "form": {
+      "name": {
+        "label": "Name",
+        "placeholder": "Your full name",
+        "required": "Name is required."
+      },
+      "email": {
+        "label": "Email address",
+        "placeholder": "name@example.com",
+        "required": "Email address is required.",
+        "invalid": "Enter a valid email address."
+      },
+      "phone": {
+        "label": "Phone number",
+        "placeholder": "Your phone number"
+      },
+      "eventType": {
+        "label": "Type of event",
+        "placeholder": "Select an option",
+        "required": "Select a type of event.",
+        "options": {
+          "privateDinner": "Private dinner",
+          "familyCelebration": "Family celebration",
+          "corporateEvent": "Corporate event",
+          "meetingCatering": "Meeting catering",
+          "other": "Other type of event"
+        }
+      },
+      "eventDate": {
+        "label": "Event date"
+      },
+      "guestCount": {
+        "label": "Number of guests",
+        "required": "The number of guests is required.",
+        "min": "There must be at least one guest."
+      },
+      "location": {
+        "label": "Event location",
+        "placeholder": "City, town or approximate address"
+      },
+      "dietaryRequirements": {
+        "label": "Allergies, intolerances and dietary requirements",
+        "placeholder": "Describe any relevant dietary requirements",
+        "help": "Include any allergies, intolerances, restrictions or preferences that should be considered."
+      },
+      "additionalInformation": {
+        "label": "Additional information",
+        "placeholder": "Tell us any other relevant details about the event",
+        "help": "You can include timings, venue characteristics, event style or any information that may help prepare the proposal."
+      },
+      "attachment": {
+        "label": "Attach a file",
+        "help": "You can attach a document or image in PDF, JPG or PNG format.",
+        "selected": "Selected file"
+      },
+      "privacy": {
+        "label": "I agree to the processing of my data to manage this quote request.",
+        "required": "You must accept the data processing terms."
+      },
+      "submit": "Send request",
+      "requiredFields": "Fields marked with * are required."
+    }
   }
 }
