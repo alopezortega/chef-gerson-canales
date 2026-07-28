@@ -149,6 +149,55 @@ App
 
 ---
 
+## Public Navigation
+
+The visible Spanish navigation labels are:
+
+```text
+Chef privado & catering
+Galería
+Solicitar presupuesto
+Sobre el chef
+Instagram
+```
+
+The visible English navigation labels are:
+
+```text
+Private chef & catering
+Gallery
+Request a quote
+About the chef
+Instagram
+```
+
+The public commercial label changed from:
+
+```text
+Servicios
+Services
+```
+
+to:
+
+```text
+Chef privado & catering
+Private chef & catering
+```
+
+This is a user-facing content change only.
+
+The following technical names remain unchanged:
+
+```text
+ServicesComponent
+pages/services
+/servicios
+featuredServices
+```
+
+---
+
 ## Routing
 
 Public routes:

@@ -5,7 +5,7 @@
       "title": "Dining experiences designed for every occasion",
       "description": "Private and corporate catering tailored to each occasion.",
       "primaryAction": "Request a quote",
-      "secondaryAction": "View services"
+      "secondaryAction": "View experiences"
     },
     "valueProposition": {
       "label": "An experience designed for you",
@@ -26,9 +26,9 @@
       }
     },
     "featuredServices": {
-      "label": "Featured services",
+      "label": "Featured experiences",
       "title": "A tailored proposal for every type of gathering",
-      "action": "View service",
+      "action": "View experience",
       "items": [
         {
           "id": "private-dinners",
@@ -78,7 +78,7 @@
       "close": "Close menu"
     },
     "links": {
-      "services": "Services",
+      "services": "Private chef & catering",
       "gallery": "Gallery",
       "quoteRequest": "Request a quote",
       "about": "About the chef"
@@ -91,7 +91,7 @@
     },
     "navigation": {
       "ariaLabel": "Footer navigation",
-      "services": "Services",
+      "services": "Private chef & catering",
       "gallery": "Gallery",
       "quoteRequest": "Request a quote",
       "about": "About the chef"
@@ -119,6 +119,67 @@
         "title": "Cooking workshop",
         "alt": "Participants enjoying a cooking workshop"
       }
+    }
+  },
+  "about": {
+    "hero": {
+      "label": "About the chef",
+      "title": "Cuisine designed to bring people together, share and enjoy",
+      "description": "A professional and approachable dining proposal tailored to every celebration, private gathering or corporate event.",
+      "imageAlt": "Chef Gerson Canales preparing a dining experience"
+    },
+    "introduction": {
+      "label": "Meet Gerson",
+      "title": "Every event begins by listening to the client's idea",
+      "paragraphs": [
+        {
+          "id": "personalized-experience",
+          "text": "Gerson sees cooking as a way to bring people together and create special moments around a table."
+        },
+        {
+          "id": "event-adaptation",
+          "text": "Each proposal considers the type of event, the venue, the number of guests and the individual needs of every client."
+        }
+      ]
+    },
+    "philosophy": {
+      "label": "Work philosophy",
+      "title": "A professional and approachable way of understanding cuisine",
+      "description": "The aim is to provide a carefully planned experience from beginning to end, combining organization, attention to detail and clear communication with the client."
+    },
+    "values": {
+      "label": "His way of working",
+      "title": "The values behind every proposal",
+      "empty": "There are no professional values available yet.",
+      "items": [
+        {
+          "id": "personalization",
+          "title": "Personalization",
+          "description": "Every menu and service is adapted to the characteristics of the occasion and the client's preferences."
+        },
+        {
+          "id": "attention-to-detail",
+          "title": "Attention to detail",
+          "description": "Planning, presentation and service coordination are carefully managed to provide a consistent experience."
+        },
+        {
+          "id": "closeness",
+          "title": "Approachability",
+          "description": "Direct communication helps to understand every idea and turn it into a realistic dining proposal."
+        }
+      ]
+    },
+    "services": {
+      "label": "Private chef & catering",
+      "title": "Experiences for different types of gatherings",
+      "description": "Private dinners, celebrations, small corporate events and proposals tailored to every occasion.",
+      "action": "View experiences"
+    },
+    "quoteCta": {
+      "label": "Tell us about your idea",
+      "title": "Are you planning an event?",
+      "description": "Share the details of your celebration or gathering and let us prepare a dining proposal tailored to your needs.",
+      "action": "Request a quote"
     }
   }
 }
