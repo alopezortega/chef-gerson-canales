@@ -317,7 +317,9 @@
         "required": "Debes aceptar el tratamiento de datos."
       },
       "submit": "Enviar solicitud",
-      "requiredFields": "Los campos marcados con * son obligatorios."
+      "requiredFields": "Los campos marcados con * son obligatorios.",
+      "success": "Tu solicitud se ha enviado correctamente.",
+      "error": "No se ha podido enviar la solicitud. Inténtalo de nuevo."
     }
   }
 }

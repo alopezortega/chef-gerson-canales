@@ -317,7 +317,9 @@
         "required": "You must accept the data processing terms."
       },
       "submit": "Send request",
-      "requiredFields": "Fields marked with * are required."
+      "requiredFields": "Fields marked with * are required.",
+      "success": "Your request has been sent successfully.",
+      "error": "Your request could not be sent. Please try again."
     }
   }
 }

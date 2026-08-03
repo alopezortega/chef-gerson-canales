@@ -33,6 +33,7 @@
     "@angular/cli": "^21.2.6",
     "@angular/compiler-cli": "^21.2.0",
     "@eslint/js": "^10.0.1",
+    "@netlify/angular-runtime": "^4.0.0",
     "@types/express": "^5.0.1",
     "@types/node": "^20.17.19",
     "angular-eslint": "21.4.0",
