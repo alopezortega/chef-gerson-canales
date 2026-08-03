@@ -248,7 +248,7 @@
       </div>
 
       <div class="quote-form__actions">
-        <button class="quote-form__submit" type="submit">
+        <button class="quote-form__submit" type="submit" [disabled]="isSubmitting()">
           {{ 'quoteRequest.form.submit' | translate }}
         </button>
 
@@ -257,5 +257,15 @@
         </p>
       </div>
     </form>
+    @if (submissionSuccess()) {
+      <p class="quote-form__status quote-form__status--success" role="status">
+        {{ 'quoteRequest.form.success' | translate }}
+      </p>
+    }
+    @if (submissionError()) {
+      <p class="quote-form__status quote-form__status--error" role="alert">
+        {{ 'quoteRequest.form.error' | translate }}
+      </p>
+    }
   </div>
 </section>
