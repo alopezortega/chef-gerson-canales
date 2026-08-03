@@ -3,12 +3,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { QuoteRequestComponent } from '../quote-request/quote-request';
 import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
+import { QuoteRequestService } from '../../features/quote-request/services/quote-request.service';
 
 describe('QuoteRequest', () => {
   let component: QuoteRequestComponent;
   let fixture: ComponentFixture<QuoteRequestComponent>;
 
   beforeEach(async () => {
+    quoteRequestServiceMock.createQuoteRequest.mockClear();
     await TestBed.configureTestingModule({
       imports: [QuoteRequestComponent],
       providers: [
@@ -17,6 +19,10 @@ describe('QuoteRequest', () => {
           lang: 'es',
           fallbackLang: 'es',
         }),
+        {
+          provide: QuoteRequestService,
+          useValue: quoteRequestServiceMock,
+        },
       ],
     }).compileComponents();
 
@@ -108,8 +114,8 @@ describe('QuoteRequest', () => {
 
     expect(form.valid).toBe(true);
   });
-
-  it('should submit a valid quote request', () => {
+  // TODO: Update legacy submit tests after the Supabase integration.
+  it.skip('should submit a valid quote request', () => {
     const form = component['quoteForm'];
 
     form.patchValue({
@@ -126,8 +132,8 @@ describe('QuoteRequest', () => {
 
     expect(consoleSpy).toHaveBeenCalled();
   });
-
-  it('VERSION 2 : should submit a valid quote request with the expected data', () => {
+  // TODO: Update legacy submit tests after the Supabase integration.
+  it.skip('V.2 : should submit a valid quote request with the expected data', () => {
     const form = component['quoteForm'];
 
     form.patchValue({
@@ -223,8 +229,8 @@ describe('QuoteRequest', () => {
 
     expect(privacyField?.textContent).toContain('quoteRequest.form.privacy.required');
   });
-
-  it('should submit  send all valid values from from and atachment', () => {
+  // TODO: Update legacy submit tests after the Supabase integration.
+  it.skip('should submit  send all valid values from from and atachment', () => {
     const form = component['quoteForm'];
 
     form.patchValue({
@@ -275,5 +281,319 @@ describe('QuoteRequest', () => {
 
     expect(selectedFile?.name).toBe('menu.pdf');
     expect(selectedFile?.type).toBe('application/pdf');
+  });
+
+  const quoteRequestServiceMock = {
+    createQuoteRequest: vi.fn().mockResolvedValue(undefined),
+  };
+
+  it('should call quoteRequestService', async () => {
+    const form = component['quoteForm'];
+
+    form.patchValue({
+      name: 'Alejandro',
+      email: 'alejandro@example.com',
+      phone: '600123123',
+      eventType: 'private-dinner',
+      eventDate: '2026-08-15',
+      guestCount: 4,
+      location: 'Madrid',
+      dietaryRequirements: 'No nuts',
+      additionalInformation: 'Dinner at home',
+      privacyAccepted: true,
+    });
+
+    const file = new File(['test content'], 'menu.pdf', {
+      type: 'application/pdf',
+    });
+
+    component['attachment'].set(file);
+
+    const expectedFormValue = form.getRawValue();
+
+    await component['submitQuoteRequest']();
+
+    expect(quoteRequestServiceMock.createQuoteRequest).toHaveBeenCalledWith(
+      expectedFormValue,
+      file,
+    );
+  });
+  it('should handle service error', async () => {
+    const form = component['quoteForm'];
+
+    form.patchValue({
+      name: 'Alejandro',
+      email: 'alejandro@example.com',
+      eventType: 'private-dinner',
+      guestCount: 2,
+      privacyAccepted: true,
+    });
+
+    const error = new Error('Upload failed');
+
+    quoteRequestServiceMock.createQuoteRequest.mockRejectedValueOnce(error);
+
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+
+    await component['submitQuoteRequest']();
+
+    expect(consoleSpy).toHaveBeenCalledWith('Unable to create quote request:', error);
+  });
+
+  it('should not call quoteRequestService when the form is invalid', async () => {
+    await component['submitQuoteRequest']();
+
+    expect(quoteRequestServiceMock.createQuoteRequest).not.toHaveBeenCalled();
+  });
+
+  it('should call quoteRequestService with null attachment', async () => {
+    const form = component['quoteForm'];
+
+    form.patchValue({
+      name: 'Alejandro',
+      email: 'alejandro@example.com',
+      eventType: 'private-dinner',
+      guestCount: 2,
+      privacyAccepted: true,
+    });
+
+    const expectedFormValue = form.getRawValue();
+
+    await component['submitQuoteRequest']();
+
+    expect(quoteRequestServiceMock.createQuoteRequest).toHaveBeenCalledWith(
+      expectedFormValue,
+      null,
+    );
+  });
+  it('should initialize isSubmitting as false', () => {
+    expect(component['isSubmitting']()).toBe(false);
+  });
+
+  it('should set isSubmitting to true while submitting', async () => {
+    let resolveRequest!: () => void;
+
+    quoteRequestServiceMock.createQuoteRequest.mockImplementationOnce(
+      () =>
+        new Promise<void>((resolve) => {
+          resolveRequest = resolve;
+        }),
+    );
+
+    const form = component['quoteForm'];
+
+    form.patchValue({
+      name: 'Alejandro',
+      email: 'alejandro@example.com',
+      eventType: 'private-dinner',
+      guestCount: 2,
+      privacyAccepted: true,
+    });
+
+    const submitPromise = component['submitQuoteRequest']();
+
+    expect(component['isSubmitting']()).toBe(true);
+
+    resolveRequest();
+
+    await submitPromise;
+  });
+
+  it('should set isSubmitting to false after a successful submission', async () => {
+    const form = component['quoteForm'];
+
+    form.patchValue({
+      name: 'Alejandro',
+      email: 'alejandro@example.com',
+      eventType: 'private-dinner',
+      guestCount: 2,
+      privacyAccepted: true,
+    });
+
+    await component['submitQuoteRequest']();
+
+    expect(component['isSubmitting']()).toBe(false);
+  });
+
+  it('should set isSubmitting to false after a failed submission', async () => {
+    const form = component['quoteForm'];
+
+    form.patchValue({
+      name: 'Alejandro',
+      email: 'alejandro@example.com',
+      eventType: 'private-dinner',
+      guestCount: 2,
+      privacyAccepted: true,
+    });
+
+    const error = new Error('Upload failed');
+
+    quoteRequestServiceMock.createQuoteRequest.mockRejectedValueOnce(error);
+
+    vi.spyOn(console, 'error').mockImplementation(() => undefined);
+
+    await component['submitQuoteRequest']();
+
+    expect(component['isSubmitting']()).toBe(false);
+  });
+  it('should set submissionSuccess to true after a successful submission', async () => {
+    const form = component['quoteForm'];
+
+    form.patchValue({
+      name: 'Alejandro',
+      email: 'alejandro@example.com',
+      eventType: 'private-dinner',
+      guestCount: 2,
+      privacyAccepted: true,
+    });
+
+    await component['submitQuoteRequest']();
+
+    expect(component['submissionSuccess']()).toBe(true);
+  });
+  it('should set submissionError to true after a failed submission', async () => {
+    const form = component['quoteForm'];
+
+    form.patchValue({
+      name: 'Alejandro',
+      email: 'alejandro@example.com',
+      eventType: 'private-dinner',
+      guestCount: 2,
+      privacyAccepted: true,
+    });
+
+    const error = new Error('Upload failed');
+
+    quoteRequestServiceMock.createQuoteRequest.mockRejectedValueOnce(error);
+
+    vi.spyOn(console, 'error').mockImplementation(() => undefined);
+
+    await component['submitQuoteRequest']();
+
+    expect(component['submissionError']()).toBe(true);
+  });
+
+  it('should reset previous submission states before submitting again', async () => {
+    const form = component['quoteForm'];
+
+    form.patchValue({
+      name: 'Alejandro',
+      email: 'alejandro@example.com',
+      eventType: 'private-dinner',
+      guestCount: 2,
+      privacyAccepted: true,
+    });
+
+    component['submissionSuccess'].set(true);
+    component['submissionError'].set(true);
+
+    const submitPromise = component['submitQuoteRequest']();
+
+    expect(component['submissionSuccess']()).toBe(false);
+    expect(component['submissionError']()).toBe(false);
+
+    await submitPromise;
+  });
+
+  it('should display the success message after a successful submission', async () => {
+    const form = component['quoteForm'];
+
+    form.patchValue({
+      name: 'Alejandro',
+      email: 'alejandro@example.com',
+      eventType: 'private-dinner',
+      guestCount: 2,
+      privacyAccepted: true,
+    });
+
+    await component['submitQuoteRequest']();
+
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    const successMessage = compiled.querySelector('.quote-form__status--success');
+
+    expect(successMessage?.textContent).toContain('quoteRequest.form.success');
+  });
+  it('should disable the submit button while submitting', async () => {
+    let resolveRequest!: () => void;
+
+    quoteRequestServiceMock.createQuoteRequest.mockImplementationOnce(
+      () =>
+        new Promise<void>((resolve) => {
+          resolveRequest = resolve;
+        }),
+    );
+
+    const form = component['quoteForm'];
+
+    form.patchValue({
+      name: 'Alejandro',
+      email: 'alejandro@example.com',
+      eventType: 'private-dinner',
+      guestCount: 2,
+      privacyAccepted: true,
+    });
+
+    const submitPromise = component['submitQuoteRequest']();
+
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    const submitButton = compiled.querySelector('.quote-form__submit') as HTMLButtonElement;
+
+    expect(submitButton.disabled).toBe(true);
+
+    resolveRequest();
+
+    await submitPromise;
+  });
+  it('should reset the form after a successful submission', async () => {
+    const form = component['quoteForm'];
+
+    form.patchValue({
+      name: 'Alejandro',
+      email: 'alejandro@example.com',
+      eventType: 'private-dinner',
+      guestCount: 2,
+      privacyAccepted: true,
+    });
+
+    await component['submitQuoteRequest']();
+
+    expect(form.getRawValue()).toEqual({
+      name: '',
+      email: '',
+      phone: '',
+      eventType: '',
+      eventDate: '',
+      guestCount: 1,
+      location: '',
+      dietaryRequirements: '',
+      additionalInformation: '',
+      privacyAccepted: false,
+    });
+  });
+
+  it('should reset the attachment after a successful submission', async () => {
+    const form = component['quoteForm'];
+
+    form.patchValue({
+      name: 'Alejandro',
+      email: 'alejandro@example.com',
+      eventType: 'private-dinner',
+      guestCount: 2,
+      privacyAccepted: true,
+    });
+
+    const file = new File(['test content'], 'menu.pdf', {
+      type: 'application/pdf',
+    });
+
+    component['attachment'].set(file);
+
+    await component['submitQuoteRequest']();
+
+    expect(component['attachment']()).toBeNull();
   });
 });
