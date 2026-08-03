@@ -32,6 +32,11 @@ The application is designed with:
 - Vitest
 - ESLint
 - Prettier
+- Supabase Database
+- Supabase Storage
+- Supabase JavaScript client
+- Netlify
+- `@netlify/angular-runtime`
 
 ---
 
@@ -54,24 +59,37 @@ Contains application-wide infrastructure and singleton responsibilities.
 Current examples:
 
 ```text
+core/config/supabase-client.ts
+core/config/supabase-client.token.ts
 core/models/supported-language.type.ts
 core/services/language.service.ts
 ```
+
+The Supabase client is exposed through an Angular `InjectionToken`.
+
+Production code receives the real client, while tests replace it with a mock through Angular dependency injection.
 
 ### `features`
 
 Contains business-specific models, data and services.
 
-Current gallery structure:
+Current feature structures:
 
 ```text
-features/gallery/
-├── data/
-│   └── gallery.mock.ts
-├── models/
-│   └── gallery-item.model.ts
-└── services/
-    └── gallery.service.ts
+features/
+├── gallery/
+│   ├── data/
+│   │   └── gallery.mock.ts
+│   ├── models/
+│   │   └── gallery-item.model.ts
+│   └── services/
+│       └── gallery.service.ts
+└── quote-request/
+    ├── models/
+    │   └── quote-request.model.ts
+    └── services/
+        ├── quote-request.service.ts
+        └── quote-request.service.spec.ts
 ```
 
 ### `layout`
@@ -461,6 +479,195 @@ The `id` is used as the stable tracking value in the template.
 
 ---
 
+## Quote Request Persistence
+
+The Quote Request feature uses Supabase for persistence and optional file storage.
+
+Data flow:
+
+```text
+QuoteRequestComponent
+        ↓
+QuoteRequestService
+        ↓
+Supabase Storage (optional attachment)
+        ↓
+Supabase Database (quote_requests row)
+```
+
+The component owns UI state through Angular Signals:
+
+```text
+attachment
+isSubmitting
+submissionSuccess
+submissionError
+```
+
+The service is responsible for:
+
+- Uploading the optional attachment.
+- Sanitizing the original filename.
+- Generating a unique storage path.
+- Mapping the Angular form model from camelCase to the database snake_case structure.
+- Inserting the request into the `quote_requests` table.
+- Throwing Storage or Database errors to the component.
+
+### Supabase client injection
+
+The real client is created in:
+
+```text
+src/app/core/config/supabase-client.ts
+```
+
+The dependency-injection token is defined in:
+
+```text
+src/app/core/config/supabase-client.token.ts
+```
+
+The service consumes:
+
+```ts
+private readonly supabaseClient = inject(SUPABASE_CLIENT);
+```
+
+This keeps production configuration separate from test doubles.
+
+### Database
+
+Current table:
+
+```text
+public.quote_requests
+```
+
+Stored attachment metadata:
+
+```text
+attachment_path
+attachment_name
+attachment_type
+attachment_size
+```
+
+Row Level Security is enabled.
+
+The anonymous role can insert quote requests only under the configured public submission policy.
+
+### Storage
+
+Current private bucket:
+
+```text
+quote-request-attachments
+```
+
+Current accepted client file types:
+
+```text
+PDF
+JPEG
+PNG
+```
+
+The public anonymous role can upload files only to this bucket under the configured Storage policy.
+
+The bucket remains private. Public read access is not enabled.
+
+---
+
+## Deployment
+
+The application is deployed through Netlify and connected to the GitHub repository:
+
+```text
+alopezortega/chef-gerson-canales
+```
+
+Netlify uses continuous deployment from Git.
+
+Current deployment configuration:
+
+```text
+Build command:
+npm run build
+
+Publish directory:
+dist/chef-gerson-canales/browser
+```
+
+The application uses Angular SSR and Netlify's Angular Runtime:
+
+```text
+@netlify/angular-runtime
+```
+
+The runtime is installed as a project development dependency so Netlify can build and deploy the Angular SSR output correctly.
+
+The Angular production build generates:
+
+```text
+dist/
+└── chef-gerson-canales/
+    ├── browser/
+    └── server/
+```
+
+Netlify publishes the `browser` output and deploys the SSR integration through its Angular Runtime.
+
+Current prerendered public routes:
+
+```text
+/
+/servicios
+/galeria
+/solicitar-presupuesto
+/sobre-el-chef
+```
+
+The deployment has been validated with:
+
+- Direct navigation to public routes.
+- Browser refresh on routed URLs.
+- Spanish and English content.
+- Supabase Database insertion.
+- Optional PDF upload to Supabase Storage.
+- Translated success feedback after submission.
+- No browser console errors during the validated flow.
+
+During deployment validation, Netlify temporarily uses:
+
+```text
+feature/netlify-deployment
+```
+
+as the production branch.
+
+The stable branch strategy remains:
+
+```text
+feature/*
+→ implementation and validation
+
+develop
+→ integrated development version
+
+main
+→ stable public production version
+```
+
+Once the MVP is approved as stable, Netlify production must point to:
+
+```text
+main
+```
+
+The current Netlify site remains private during validation and should be made public only when the MVP is ready to share.
+
+---
+
 ## Accessibility
 
 Accessibility is part of the component implementation.
@@ -522,22 +729,62 @@ This keeps image cards visually consistent without distorting the source images.
 
 ## Testing Strategy
 
-The project currently uses minimum meaningful component tests.
+The project uses Vitest through Angular's testing configuration.
 
-Tests verify:
+Current coverage includes:
 
-- Component creation
-- Required translation providers
-- Expected rendered elements
-- Gallery item rendering
+- Component creation.
+- Reactive Forms validation.
+- Angular Signal state.
+- Rendered DOM outcomes.
+- Browser `File` objects.
+- Quote Request success, error and submitting states.
+- Form and attachment reset behaviour.
+- Supabase service integration through mocked dependencies.
+- Storage upload success and failure.
+- Database insertion success and failure.
+- Prevention of database insertion after a failed upload.
 
-The gallery test confirms that the three current mock items are rendered.
+Supabase is not contacted during unit tests.
 
-Current test status:
+The real client is replaced in `TestBed`:
+
+```ts
+{
+  provide: SUPABASE_CLIENT,
+  useValue: supabaseClientMock,
+}
+```
+
+Current validation status:
 
 ```text
-10 test files passing
-15 tests passing
+11 test files passing
+52 tests passing
+3 tests skipped
+```
+
+Deployment validation:
+
+```text
+Angular SSR build completed
+5 static routes prerendered
+Netlify deployment completed
+Supabase Database insert validated
+Supabase Storage upload validated
+Spanish and English submission feedback validated
+```
+
+The skipped tests are legacy Quote Request submission tests kept temporarily for later review.
+
+ESLint passes successfully.
+
+The production build completes successfully with one non-blocking component-style budget warning:
+
+```text
+src/app/pages/quote-request/quote-request.scss
+4.13 kB current size
+4.00 kB configured warning budget
 ```
 
 ---
@@ -607,3 +854,57 @@ Components and models are generalized only when a real reuse case exists.
 ### Keep public and admin responsibilities separate
 
 Public and administrative areas use separate layouts and navigation responsibilities.
+
+### Inject external clients through Angular dependency injection
+
+External infrastructure clients must not be imported directly into business services when they need to be replaced in tests.
+
+The Supabase client is provided through `SUPABASE_CLIENT`.
+
+### Keep persistence logic inside feature services
+
+The routed Quote Request component controls form and presentation state.
+
+Database mapping, attachment upload and persistence belong to `QuoteRequestService`.
+
+### Keep Storage private by default
+
+Quote Request attachments are uploaded to a private bucket.
+
+Read access will be granted only through authenticated administrative flows or signed URLs when required.
+
+### Do not call real external services in unit tests
+
+Supabase Database and Storage are replaced with mocks through `TestBed`.
+
+Unit tests must remain deterministic and independent from network connectivity, credentials and remote data.
+
+### Deploy Angular SSR through Netlify Runtime
+
+The project uses Netlify for deployment.
+
+Angular SSR support is provided through:
+
+```text
+@netlify/angular-runtime
+```
+
+The configured publish directory is:
+
+```text
+dist/chef-gerson-canales/browser
+```
+
+The runtime handles the Angular SSR deployment integration while Netlify publishes the generated browser assets.
+
+### Keep production deployment aligned with Git stability
+
+Feature branches may be used temporarily for deployment validation.
+
+The long-term production source remains:
+
+```text
+main
+```
+
+`develop` is the integration branch and must not permanently replace `main` as the public production source.
