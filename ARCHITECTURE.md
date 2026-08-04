@@ -61,9 +61,15 @@ Current examples:
 ```text
 core/config/supabase-client.ts
 core/config/supabase-client.token.ts
+core/guards/auth.guard.ts
 core/models/supported-language.type.ts
+core/services/auth.service.ts
 core/services/language.service.ts
 ```
+
+Authentication is centralized in `AuthService`.
+
+The service owns the current Supabase user, initial-session loading state and authenticated state through Angular Signals.
 
 The Supabase client is exposed through an Angular `InjectionToken`.
 
@@ -110,6 +116,15 @@ RouterOutlet
 Footer
 ```
 
+The administrative layout contains:
+
+```text
+Sign-out control
+RouterOutlet
+```
+
+The login page is intentionally outside `AdminLayout`, while authenticated Admin pages render inside it.
+
 ### `pages`
 
 Contains standalone route-level components.
@@ -122,6 +137,13 @@ Services
 Gallery
 Quote Request
 About
+```
+
+Current administrative pages:
+
+```text
+Admin Login
+Admin Dashboard
 ```
 
 Pages compose complete routed views.
@@ -146,23 +168,25 @@ Code is moved to `shared` only when a real reuse case exists.
 ```text
 App
 │
-├── App Routes
+├── Public route group
+│   └── Public Layout
+│       ├── Header
+│       ├── Router Outlet
+│       │   ├── Home
+│       │   ├── Services
+│       │   ├── Gallery
+│       │   ├── Quote Request
+│       │   └── About
+│       └── Footer
 │
-└── Public Layout
+└── Admin route group
+    ├── /admin/login
+    │   └── Admin Login
     │
-    ├── Header
-    │   ├── Brand
-    │   ├── Navigation
-    │   └── Language selector
-    │
-    ├── Router Outlet
-    │   ├── Home
-    │   ├── Services
-    │   ├── Gallery
-    │   ├── Quote Request
-    │   └── About
-    │
-    └── Footer
+    └── protected Admin Layout
+        ├── Sign-out control
+        └── Router Outlet
+            └── Admin Dashboard
 ```
 
 ---
@@ -244,6 +268,17 @@ is used for standalone route pages.
 
 Public pages are rendered inside the `PublicLayout` router outlet.
 
+Administrative routes:
+
+```text
+/admin/login  → Admin Login
+/admin        → Admin Layout → Admin Dashboard
+```
+
+The private Admin route is protected by `authGuard`.
+
+The login route remains public and is a sibling of the protected Admin layout route.
+
 ---
 
 ## Internationalization
@@ -308,6 +343,46 @@ under the key:
 ```text
 preferred-language
 ```
+
+---
+
+## Authentication and Admin Access
+
+Supabase Auth provides email-and-password authentication for the private Admin area.
+
+`AuthService` is responsible for:
+
+- Recovering the initial Supabase session.
+- Listening to authentication-state changes.
+- Exposing the current user through a readonly Signal.
+- Exposing session-loading state through a readonly Signal.
+- Deriving authenticated state through `computed`.
+- Signing in with email and password.
+- Signing out.
+- Propagating Supabase errors to the consuming UI.
+
+State flow:
+
+```text
+private writable Signals
+→ public readonly Signals
+→ computed authenticated state
+```
+
+The functional `authGuard` waits until the initial session check finishes before deciding whether to:
+
+```text
+return true
+or
+return a UrlTree to /admin/login
+```
+
+The Admin login page uses a typed Reactive Form, translated validation messages, submitting state, authentication-error state and successful navigation to `/admin`.
+
+The Admin layout owns the sign-out interaction and redirects to `/admin/login` after Supabase removes the session.
+
+Admin access is not linked from the public interface.
+
 
 ---
 
@@ -578,6 +653,25 @@ The bucket remains private. Public read access is not enabled.
 
 ---
 
+## Rendering Strategy
+
+Public routes remain prerendered for fast delivery and crawlable public content.
+
+The Admin route group uses client-side rendering:
+
+```text
+admin/** → RenderMode.Client
+**       → RenderMode.Prerender
+```
+
+This is required because the current Supabase browser session is persisted in `localStorage`.
+
+Rendering `/admin/**` in the browser allows `AuthService` to recover the saved session before `authGuard` decides whether access is allowed.
+
+A cookie-based Supabase SSR authentication architecture is not part of the current MVP.
+
+---
+
 ## Deployment
 
 The application is deployed through Netlify and connected to the GitHub repository:
@@ -744,6 +838,13 @@ Current coverage includes:
 - Storage upload success and failure.
 - Database insertion success and failure.
 - Prevention of database insertion after a failed upload.
+- Initial Supabase Auth session recovery.
+- Authentication-state changes.
+- Sign-in and sign-out success and failure.
+- Functional route-guard decisions and loading-state waiting.
+- Admin login validation, navigation, error and submitting states.
+- Admin logout and navigation.
+- Language preference recovery, validation and persistence.
 
 Supabase is not contacted during unit tests.
 
@@ -759,8 +860,8 @@ The real client is replaced in `TestBed`:
 Current validation status:
 
 ```text
-11 test files passing
-52 tests passing
+17 test files passing
+77 tests passing
 3 tests skipped
 ```
 
@@ -878,6 +979,36 @@ Read access will be granted only through authenticated administrative flows or s
 Supabase Database and Storage are replaced with mocks through `TestBed`.
 
 Unit tests must remain deterministic and independent from network connectivity, credentials and remote data.
+
+### Centralize authentication state
+
+`AuthService` owns authentication state and exposes readonly Signals to consumers.
+
+Components and guards do not access the Supabase Auth client directly.
+
+### Wait for initial authentication before guarding routes
+
+`authGuard` waits until `AuthService.isLoading` becomes `false`.
+
+This prevents a temporary unauthenticated state from being treated as the final route decision.
+
+### Keep the login route outside the protected Admin layout
+
+`/admin/login` remains public.
+
+Authenticated Admin pages render inside `AdminLayout` and are protected by `authGuard`.
+
+### Render Admin routes on the client
+
+The public site remains prerendered.
+
+`/admin/**` uses `RenderMode.Client` because the current Supabase session is stored in browser `localStorage`.
+
+### Keep public navigation free from Admin access
+
+The Admin URL is not exposed in the public header, footer or navigation.
+
+Route protection is provided by authentication and the guard rather than URL obscurity.
 
 ### Deploy Angular SSR through Netlify Runtime
 
