@@ -321,5 +321,32 @@
       "success": "Tu solicitud se ha enviado correctamente.",
       "error": "No se ha podido enviar la solicitud. Inténtalo de nuevo."
     }
+  },
+  "admin": {
+    "login": {
+      "eyebrow": "Área privada",
+      "title": "Acceso de administración",
+      "description": "Introduce tus credenciales para acceder al panel de gestión.",
+      "form": {
+        "email": {
+          "label": "Correo electrónico",
+          "placeholder": "admin@ejemplo.com",
+          "required": "El correo electrónico es obligatorio.",
+          "invalid": "Introduce un correo electrónico válido."
+        },
+        "password": {
+          "label": "Contraseña",
+          "placeholder": "Introduce tu contraseña",
+          "required": "La contraseña es obligatoria."
+        },
+        "submit": "Iniciar sesión",
+        "authenticationError": "El correo electrónico o la contraseña no son correctos.",
+        "submitting": "Iniciando sesión..."
+      }
+    },
+    "layout": {
+      "signOut": "Cerrar sesión",
+      "signingOut": "Cerrando sesión..."
+    }
   }
 }
