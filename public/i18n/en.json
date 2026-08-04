@@ -321,5 +321,32 @@
       "success": "Your request has been sent successfully.",
       "error": "Your request could not be sent. Please try again."
     }
+  },
+  "admin": {
+    "login": {
+      "eyebrow": "Private area",
+      "title": "Admin access",
+      "description": "Enter your credentials to access the management dashboard.",
+      "form": {
+        "email": {
+          "label": "Email address",
+          "placeholder": "admin@example.com",
+          "required": "Email address is required.",
+          "invalid": "Enter a valid email address."
+        },
+        "password": {
+          "label": "Password",
+          "placeholder": "Enter your password",
+          "required": "Password is required."
+        },
+        "submit": "Sign in",
+        "submitting": "Signing in...",
+        "authenticationError": "The email address or password is incorrect."
+      }
+    },
+    "layout": {
+      "signOut": "Sign out",
+      "signingOut": "Signing out..."
+    }
   }
 }
