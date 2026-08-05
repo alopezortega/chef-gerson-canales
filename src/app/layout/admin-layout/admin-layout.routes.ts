@@ -20,6 +20,13 @@ export const ADMIN_LAYOUT_ROUTES: Routes = [
             (component) => component.AdminDashboard,
           ),
       },
+      {
+        path: 'quote-requests/:id',
+        loadComponent: () =>
+          import('../../pages/admin-quote-request-detail/admin-quote-request-detail').then(
+            (component) => component.AdminQuoteRequestDetail,
+          ),
+      },
     ],
   },
 ];

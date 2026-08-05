@@ -1,1 +1,50 @@
-<h1>Admin dashboard</h1>
+<section class="admin-dashboard" aria-labelledby="admin-dashboard-title">
+  <header class="admin-dashboard__header">
+    <p>Admin</p>
+    <h1 id="admin-dashboard-title">Quote requests</h1>
+  </header>
+
+  @if (isLoading()) {
+    <p>Loading quote requests...</p>
+  } @else if (hasError()) {
+    <p role="alert">Unable to load quote requests.</p>
+  } @else if (requests().length === 0) {
+    <p>There are no quote requests yet.</p>
+  } @else {
+    <p>Total requests: {{ requests().length }}</p>
+
+    <div class="admin-dashboard__table-wrapper">
+      <table class="admin-dashboard__table">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Event type</th>
+            <th scope="col">Event date</th>
+            <th scope="col">Guests</th>
+            <th scope="col">Created at</th>
+            <th scope="col">Status</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (request of requests(); track request.id) {
+            <tr>
+              <td>{{ request.name }}</td>
+              <td>{{ request.email }}</td>
+              <td>{{ request.eventType }}</td>
+              <td>{{ request.eventDate ?? '—' }}</td>
+              <td>{{ request.guestCount }}</td>
+              <td>{{ request.createdAt }}</td>
+              <td>{{ request.status }}</td>
+              <td>
+                <a [routerLink]="['/admin/quote-requests', request.id]"> View details </a>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

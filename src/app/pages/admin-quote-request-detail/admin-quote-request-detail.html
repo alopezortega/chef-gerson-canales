@@ -1,0 +1,48 @@
+<section aria-labelledby="quote-request-detail-title">
+  <a routerLink="/admin">Back to quote requests</a>
+
+  <h1 id="quote-request-detail-title">Quote request detail</h1>
+
+  @if (isLoading()) {
+    <p>Loading quote request...</p>
+  } @else if (hasError()) {
+    <p role="alert">Unable to load this quote request.</p>
+  } @else if (selectedRequest(); as request) {
+    <dl>
+      <dt>Name</dt>
+      <dd>{{ request.name }}</dd>
+
+      <dt>Email</dt>
+      <dd>{{ request.email }}</dd>
+
+      <dt>Phone</dt>
+      <dd>{{ request.phone ?? '—' }}</dd>
+
+      <dt>Event type</dt>
+      <dd>{{ request.eventType }}</dd>
+
+      <dt>Event date</dt>
+      <dd>{{ request.eventDate ?? '—' }}</dd>
+
+      <dt>Guests</dt>
+      <dd>{{ request.guestCount }}</dd>
+
+      <dt>Location</dt>
+      <dd>{{ request.location ?? '—' }}</dd>
+
+      <dt>Dietary requirements</dt>
+      <dd>{{ request.dietaryRequirements ?? '—' }}</dd>
+
+      <dt>Additional information</dt>
+      <dd>{{ request.additionalInformation ?? '—' }}</dd>
+
+      <dt>Status</dt>
+      <dd>{{ request.status }}</dd>
+
+      <dt>Created at</dt>
+      <dd>{{ request.createdAt }}</dd>
+    </dl>
+  } @else {
+    <p>Quote request not found.</p>
+  }
+</section>
