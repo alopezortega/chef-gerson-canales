@@ -1,0 +1,106 @@
+<section class="admin-service-document">
+  <header>
+    <p>{{ 'admin.serviceDocument.eyebrow' | translate }}</p>
+    <h1>{{ 'admin.serviceDocument.title' | translate }}</h1>
+    <p>{{ 'admin.serviceDocument.description' | translate }}</p>
+  </header>
+
+  @if (isLoading()) {
+    <p>{{ 'admin.serviceDocument.loading' | translate }}</p>
+  } @else {
+    @if (currentDocument(); as document) {
+      <section aria-labelledby="current-service-document-title">
+        <h2 id="current-service-document-title">
+          {{ 'admin.serviceDocument.current.title' | translate }}
+        </h2>
+
+        <p>
+          {{ 'admin.serviceDocument.current.fileName' | translate }}:
+          <strong>{{ document.originalName }}</strong>
+        </p>
+
+        <p>
+          {{ 'admin.serviceDocument.current.updatedAt' | translate }}:
+          {{ document.updatedAt | date: 'medium' }}
+        </p>
+
+        <button type="button" [disabled]="isDeleting()" (click)="deleteDocument()">
+          @if (isDeleting()) {
+            {{ 'admin.serviceDocument.actions.deleting' | translate }}
+          } @else {
+            {{ 'admin.serviceDocument.actions.delete' | translate }}
+          }
+        </button>
+      </section>
+    } @else {
+      <p>{{ 'admin.serviceDocument.empty' | translate }}</p>
+    }
+
+    <section aria-labelledby="upload-service-document-title">
+      <h2 id="upload-service-document-title">
+        @if (currentDocument()) {
+          {{ 'admin.serviceDocument.upload.replaceTitle' | translate }}
+        } @else {
+          {{ 'admin.serviceDocument.upload.title' | translate }}
+        }
+      </h2>
+
+      <label for="serviceDocument">
+        {{ 'admin.serviceDocument.upload.label' | translate }}
+      </label>
+
+      <input
+        id="serviceDocument"
+        #serviceDocumentInput
+        type="file"
+        accept="application/pdf,.pdf"
+        (change)="onFileSelected($event)"
+      />
+
+      @if (selectedFile(); as file) {
+        <p>
+          {{ 'admin.serviceDocument.upload.selectedFile' | translate }}:
+          <strong>{{ file.name }}</strong>
+        </p>
+      }
+
+      @if (invalidFile()) {
+        <p role="alert">
+          {{ 'admin.serviceDocument.feedback.invalidFile' | translate }}
+        </p>
+      }
+
+      <button
+        type="button"
+        [disabled]="!selectedFile() || isUploading()"
+        (click)="uploadDocument()"
+      >
+        @if (isUploading()) {
+          {{ 'admin.serviceDocument.actions.uploading' | translate }}
+        } @else if (currentDocument()) {
+          {{ 'admin.serviceDocument.actions.replace' | translate }}
+        } @else {
+          {{ 'admin.serviceDocument.actions.upload' | translate }}
+        }
+      </button>
+    </section>
+
+    @if (uploadSuccess()) {
+      <p role="status">
+        {{ 'admin.serviceDocument.feedback.uploadSuccess' | translate }}
+      </p>
+    }
+
+    @if (deleteSuccess()) {
+      <p role="status">
+        {{ 'admin.serviceDocument.feedback.deleteSuccess' | translate }}
+      </p>
+    }
+
+    @if (hasError()) {
+      <p role="alert">
+        {{ 'admin.serviceDocument.feedback.error' | translate }}
+      </p>
+    }
+  }
+</section>

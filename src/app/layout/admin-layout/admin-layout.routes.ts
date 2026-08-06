@@ -27,6 +27,13 @@ export const ADMIN_LAYOUT_ROUTES: Routes = [
             (component) => component.AdminQuoteRequestDetail,
           ),
       },
+      {
+        path: 'service-document',
+        loadComponent: () =>
+          import('../../pages/admin-service-document/admin-service-document').then(
+            (component) => component.AdminServiceDocument,
+          ),
+      },
     ],
   },
 ];

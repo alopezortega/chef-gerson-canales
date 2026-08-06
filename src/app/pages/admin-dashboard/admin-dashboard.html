@@ -7,6 +7,15 @@
     </h1>
   </header>
 
+  <nav
+    class="admin-dashboard__actions"
+    [attr.aria-label]="'admin.dashboard.actionsAriaLabel' | translate"
+  >
+    <a routerLink="/admin/service-document">
+      {{ 'admin.dashboard.manageServiceDocument' | translate }}
+    </a>
+  </nav>
+
   @if (isLoading()) {
     <p>{{ 'admin.dashboard.loading' | translate }}</p>
   } @else if (hasError()) {
