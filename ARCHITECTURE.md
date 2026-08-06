@@ -90,15 +90,21 @@ features/
 │   │   └── gallery-item.model.ts
 │   └── services/
 │       └── gallery.service.ts
-└── quote-request/
+├── quote-request/
+│   ├── models/
+│   │   ├── quote-request.model.ts
+│   │   └── admin-quote-request.model.ts
+│   └── services/
+│       ├── quote-request.service.ts
+│       ├── quote-request.service.spec.ts
+│       ├── admin-quote-request.service.ts
+│       └── admin-quote-request.service.spec.ts
+└── service-document/
     ├── models/
-    │   ├── quote-request.model.ts
-    │   └── admin-quote-request.model.ts
+    │   └── service-document.model.ts
     └── services/
-        ├── quote-request.service.ts
-        ├── quote-request.service.spec.ts
-        ├── admin-quote-request.service.ts
-        └── admin-quote-request.service.spec.ts
+        ├── service-document.service.ts
+        └── service-document.service.spec.ts
 ```
 
 ### `layout`
@@ -148,6 +154,7 @@ Current administrative pages:
 Admin Login
 Admin Dashboard
 Admin Quote Request Detail
+Admin Service Document
 ```
 
 Pages compose complete routed views.
@@ -191,7 +198,8 @@ App
         ├── Sign-out control
         └── Router Outlet
             ├── Admin Dashboard
-            └── Admin Quote Request Detail
+            ├── Admin Quote Request Detail
+            └── Admin Service Document
 ```
 
 ---
@@ -279,6 +287,7 @@ Administrative routes:
 /admin/login                 → Admin Login
 /admin                       → Admin Layout → Admin Dashboard
 /admin/quote-requests/:id    → Admin Layout → Admin Quote Request Detail
+/admin/service-document      → Admin Layout → Admin Service Document
 ```
 
 The private Admin route is protected by `authGuard`.
@@ -846,6 +855,7 @@ status
 eventTypes
 dashboard
 quoteRequestDetail
+serviceDocument
 ```
 
 The dashboard and detail templates translate:
@@ -859,6 +869,246 @@ The dashboard and detail templates translate:
 - Status-update actions.
 
 Both standalone components import `TranslatePipe`, and their specs provide `TranslateService` through `provideTranslateService`.
+
+---
+
+## Service Document Management
+
+The Service Document feature allows the authenticated Admin user to manage one downloadable PDF for the public Services page.
+
+The feature keeps a single active document and does not maintain document history.
+
+Data flow:
+
+```text
+AdminServiceDocument
+        ↓
+ServiceDocumentService
+        ↓
+Supabase Storage
+        ↓
+Supabase Database
+        ↓
+ServicesComponent
+        ↓
+short-lived signed download URL
+```
+
+### Feature structure
+
+```text
+features/service-document/
+├── models/
+│   └── service-document.model.ts
+└── services/
+    ├── service-document.service.ts
+    └── service-document.service.spec.ts
+```
+
+The administrative page is stored in:
+
+```text
+pages/admin-service-document/
+```
+
+The public consumer remains the existing:
+
+```text
+pages/services/
+```
+
+### Service state
+
+`ServiceDocumentService` owns the shared state through private writable Signals and exposes readonly Signals:
+
+```text
+currentDocument
+isLoading
+hasError
+isUploading
+isDeleting
+```
+
+The Admin page consumes upload and deletion state.
+
+The public Services page consumes the active document and requests a signed URL only when the visitor selects the download action.
+
+### Database model
+
+Current table:
+
+```text
+public.service_documents
+```
+
+The table stores metadata for one active PDF:
+
+```text
+id
+storage_path
+original_name
+mime_type
+size
+created_at
+updated_at
+```
+
+The database row uses `snake_case`.
+
+The Angular application model uses `camelCase`.
+
+The conversion occurs inside `ServiceDocumentService`:
+
+```text
+ServiceDocumentRow
+→ raw Supabase row
+
+ServiceDocument
+→ Angular application model
+```
+
+### Storage
+
+Current private bucket:
+
+```text
+service-documents
+```
+
+The bucket accepts:
+
+```text
+application/pdf
+```
+
+with a maximum file size of:
+
+```text
+10 MB
+```
+
+Files receive a unique generated path.
+
+When an Admin replaces the current document:
+
+```text
+upload new object
+→ update the existing database row
+→ synchronize the service Signal
+→ delete the previous Storage object
+```
+
+If the database operation fails after the new file has been uploaded, the service attempts to remove the newly uploaded object.
+
+When deleting the active document, the database record is removed first so the public page immediately stops exposing the download action. Storage cleanup follows afterwards.
+
+### Authorization
+
+Database privileges and RLS policies allow:
+
+```text
+anon
+→ SELECT the active document metadata
+
+authenticated
+→ SELECT document metadata
+→ INSERT document metadata
+→ UPDATE document metadata
+→ DELETE document metadata
+```
+
+Storage policies allow:
+
+```text
+authenticated
+→ INSERT into service-documents
+→ SELECT from service-documents
+→ DELETE from service-documents
+
+anon
+→ SELECT from service-documents
+```
+
+Anonymous Storage `SELECT` permission is required for Supabase to create a signed URL from the public Services page.
+
+The bucket remains private. The application does not expose a permanent public URL.
+
+### Public download
+
+Public flow:
+
+```text
+ServicesComponent
+→ load active document metadata
+→ render the download section only when a document exists
+→ request createSignedUrl(storagePath, 60)
+→ open the temporary URL in a new browser tab
+```
+
+The signed URL expires after 60 seconds.
+
+The new tab is opened with:
+
+```text
+noopener
+noreferrer
+```
+
+to prevent the opened document from controlling the originating page and to avoid sending referrer information.
+
+The public page handles:
+
+```text
+loading
+document available
+no document available
+downloading
+download error
+```
+
+The downloadable-document copy is internationalized under:
+
+```text
+services.document
+```
+
+The Admin management copy is internationalized under:
+
+```text
+admin.serviceDocument
+```
+
+### Administrative workflow
+
+The protected route is:
+
+```text
+/admin/service-document
+```
+
+The Admin user can:
+
+```text
+upload the first PDF
+replace the current PDF
+delete the current PDF
+```
+
+The file input is reset after successful upload, replacement or deletion by querying the native input with Angular `viewChild`.
+
+Only PDF files are accepted by both the browser input and the component validation.
+
+Manual validation completed for:
+
+```text
+first upload
+replacement
+deletion
+native file-input reset
+public document detection
+signed URL creation
+PDF opening in a new tab
+```
 
 ---
 
@@ -1064,6 +1314,7 @@ Current coverage includes:
 - Signed attachment URL success and failure.
 - Attachment opening, pending state and error handling.
 - Language preference recovery, validation and persistence.
+- Service-document test files have been created for the feature service and Admin page; their final coverage is completed before the feature commit.
 
 Supabase is not contacted during unit tests.
 
@@ -1325,3 +1576,29 @@ The bucket remains private and the generated URL expires after 60 seconds.
 Admin Dashboard and Admin Quote Request Detail use the same Spanish/English translation architecture as the public site.
 
 Component tests provide `TranslateService` explicitly when templates depend on `TranslatePipe`.
+
+### Keep one active service document
+
+The Service Document feature intentionally stores one active PDF rather than document history.
+
+Replacement updates the existing metadata row and removes the previous Storage object after the new document has been persisted successfully.
+
+### Keep the service document bucket private
+
+The public Services page never uses a permanent public Storage URL.
+
+It requests a short-lived signed URL only when a visitor selects the download action.
+
+### Share service-owned document state
+
+`ServiceDocumentService` owns the active-document state.
+
+The Admin management page and the public Services page consume the same readonly Signal instead of implementing separate persistence logic.
+
+### Separate document metadata from file storage
+
+The database stores the active document metadata.
+
+Supabase Storage stores the PDF object.
+
+This allows the application to query document availability without embedding file contents or permanent URLs in the database.

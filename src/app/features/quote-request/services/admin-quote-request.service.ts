@@ -52,6 +52,9 @@ export class AdminQuoteRequestService {
     }
   }
 
+  // Mapping from database (snake_case) to Angular model (camelCase).
+  // Supabase stores fields in snake_case while Angular/TypeScript
+  // conventions use camelCase for object properties.
   private mapRowToQuoteRequest(row: AdminQuoteRequestRow): AdminQuoteRequest {
     return {
       id: row.id,

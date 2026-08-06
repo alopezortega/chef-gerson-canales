@@ -251,6 +251,14 @@
       "title": "Do you have a celebration or gathering in mind?",
       "description": "Share the details and we will prepare a proposal tailored to your needs.",
       "action": "Request a quote"
+    },
+    "document": {
+      "loading": "Checking available document...",
+      "title": "Download the services brochure",
+      "description": "View the document with the latest information about the available services.",
+      "download": "Download brochure",
+      "downloading": "Preparing download...",
+      "error": "The download could not be prepared. Please try again."
     }
   },
   "quoteRequest": {
@@ -377,7 +385,9 @@
         "status": "Status",
         "actions": "Actions"
       },
-      "viewDetails": "View details"
+      "viewDetails": "View details",
+      "actionsAriaLabel": "Administration actions",
+      "manageServiceDocument": "Manage service document"
     },
     "quoteRequestDetail": {
       "back": "Back to quote requests",
@@ -409,6 +419,37 @@
         "label": "Status",
         "updating": "Updating...",
         "update": "Update status"
+      }
+    },
+    "serviceDocument": {
+      "eyebrow": "Service document",
+      "title": "Manage service document",
+      "description": "Upload, replace or delete the PDF that visitors can download from the Services page.",
+      "loading": "Loading current document...",
+      "empty": "There is no service document published yet.",
+      "current": {
+        "title": "Current document",
+        "fileName": "File name",
+        "updatedAt": "Last updated"
+      },
+      "upload": {
+        "title": "Upload document",
+        "replaceTitle": "Replace document",
+        "label": "Select a PDF file",
+        "selectedFile": "Selected file"
+      },
+      "actions": {
+        "upload": "Upload document",
+        "uploading": "Uploading document...",
+        "replace": "Replace document",
+        "delete": "Delete document",
+        "deleting": "Deleting document..."
+      },
+      "feedback": {
+        "invalidFile": "Select a valid PDF file.",
+        "uploadSuccess": "The document was saved successfully.",
+        "deleteSuccess": "The document was deleted successfully.",
+        "error": "The operation could not be completed. Please try again."
       }
     }
   }

@@ -15,6 +15,43 @@
     </div>
   </section>
 
+  @if (isDocumentLoading()) {
+    <p class="services-document__loading">
+      {{ 'services.document.loading' | translate }}
+    </p>
+  } @else if (currentDocument()) {
+    <section class="services-document" aria-labelledby="services-document-title">
+      <div class="services-document__content">
+        <h2 id="services-document-title" class="services-document__title">
+          {{ 'services.document.title' | translate }}
+        </h2>
+
+        <p class="services-document__description">
+          {{ 'services.document.description' | translate }}
+        </p>
+
+        <button
+          class="services-document__button"
+          type="button"
+          [disabled]="isDownloading()"
+          (click)="downloadServiceDocument()"
+        >
+          @if (isDownloading()) {
+            {{ 'services.document.downloading' | translate }}
+          } @else {
+            {{ 'services.document.download' | translate }}
+          }
+        </button>
+
+        @if (downloadError()) {
+          <p class="services-document__error" role="alert">
+            {{ 'services.document.error' | translate }}
+          </p>
+        }
+      </div>
+    </section>
+  }
+
   <section class="services-experiences" aria-labelledby="services-experiences-title">
     <header class="services-experiences__header">
       <p class="services-experiences__label">

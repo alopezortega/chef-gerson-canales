@@ -251,6 +251,14 @@
       "title": "¿Tienes una celebración o encuentro en mente?",
       "description": "Cuéntanos los detalles y prepararemos una propuesta adaptada a tus necesidades.",
       "action": "Solicitar presupuesto"
+    },
+    "document": {
+      "loading": "Comprobando documento disponible...",
+      "title": "Descarga el dossier de servicios",
+      "description": "Consulta el documento con la información actualizada sobre los servicios disponibles.",
+      "download": "Descargar dossier",
+      "downloading": "Preparando descarga...",
+      "error": "No se ha podido preparar la descarga. Inténtalo de nuevo."
     }
   },
   "quoteRequest": {
@@ -377,7 +385,9 @@
         "status": "Estado",
         "actions": "Acciones"
       },
-      "viewDetails": "Ver detalle"
+      "viewDetails": "Ver detalle",
+      "actionsAriaLabel": "Acciones de administración",
+      "manageServiceDocument": "Gestionar documento de servicios"
     },
     "quoteRequestDetail": {
       "back": "Volver a las solicitudes",
@@ -409,6 +419,37 @@
         "label": "Estado",
         "updating": "Actualizando...",
         "update": "Actualizar estado"
+      }
+    },
+    "serviceDocument": {
+      "eyebrow": "Documento de servicios",
+      "title": "Gestionar documento de servicios",
+      "description": "Sube, reemplaza o elimina el PDF que podrán descargar los visitantes desde la página de servicios.",
+      "loading": "Cargando documento actual...",
+      "empty": "Todavía no hay ningún documento de servicios publicado.",
+      "current": {
+        "title": "Documento actual",
+        "fileName": "Nombre del archivo",
+        "updatedAt": "Última actualización"
+      },
+      "upload": {
+        "title": "Subir documento",
+        "replaceTitle": "Reemplazar documento",
+        "label": "Selecciona un archivo PDF",
+        "selectedFile": "Archivo seleccionado"
+      },
+      "actions": {
+        "upload": "Subir documento",
+        "uploading": "Subiendo documento...",
+        "replace": "Reemplazar documento",
+        "delete": "Eliminar documento",
+        "deleting": "Eliminando documento..."
+      },
+      "feedback": {
+        "invalidFile": "Selecciona un archivo PDF válido.",
+        "uploadSuccess": "El documento se ha guardado correctamente.",
+        "deleteSuccess": "El documento se ha eliminado correctamente.",
+        "error": "No se ha podido completar la operación. Inténtalo de nuevo."
       }
     }
   }
