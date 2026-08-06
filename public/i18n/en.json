@@ -347,6 +347,69 @@
     "layout": {
       "signOut": "Sign out",
       "signingOut": "Signing out..."
+    },
+    "status": {
+      "pending": "Pending",
+      "contacted": "Contacted",
+      "closed": "Closed"
+    },
+    "eventTypes": {
+      "privateDinner": "Private dinner",
+      "familyCelebration": "Family celebration",
+      "corporateEvent": "Corporate event",
+      "meetingCatering": "Meeting catering",
+      "other": "Other type of event"
+    },
+    "dashboard": {
+      "eyebrow": "Admin",
+      "title": "Quote requests",
+      "loading": "Loading quote requests...",
+      "error": "Unable to load quote requests.",
+      "empty": "There are no quote requests yet.",
+      "total": "Total requests: {{ count }}",
+      "table": {
+        "name": "Name",
+        "email": "Email",
+        "eventType": "Event type",
+        "eventDate": "Event date",
+        "guests": "Guests",
+        "createdAt": "Created at",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "viewDetails": "View details"
+    },
+    "quoteRequestDetail": {
+      "back": "Back to quote requests",
+      "title": "Quote request detail",
+      "loading": "Loading quote request...",
+      "error": "Unable to load this quote request.",
+      "notFound": "Quote request not found.",
+      "fields": {
+        "name": "Name",
+        "email": "Email",
+        "phone": "Phone",
+        "eventType": "Event type",
+        "eventDate": "Event date",
+        "guests": "Guests",
+        "location": "Location",
+        "dietaryRequirements": "Dietary requirements",
+        "additionalInformation": "Additional information",
+        "currentStatus": "Current status",
+        "createdAt": "Created at"
+      },
+      "attachment": {
+        "title": "Attachment",
+        "fallbackName": "Attached file",
+        "opening": "Opening attachment...",
+        "open": "Open attachment",
+        "none": "No attachment provided."
+      },
+      "statusControl": {
+        "label": "Status",
+        "updating": "Updating...",
+        "update": "Update status"
+      }
     }
   }
 }

@@ -1,6 +1,12 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { SUPABASE_CLIENT } from '../../../core/config/supabase-client.token';
-import type { AdminQuoteRequest, AdminQuoteRequestRow } from '../models/admin-quote-request.model';
+import type {
+  AdminQuoteRequest,
+  AdminQuoteRequestRow,
+  QuoteRequestStatus,
+} from '../models/admin-quote-request.model';
+
+const QUOTE_ATTACHMENTS_BUCKET = 'quote-request-attachments';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +22,9 @@ export class AdminQuoteRequestService {
   readonly requests = this.requestsState.asReadonly();
   private readonly selectedRequestState = signal<AdminQuoteRequest | null>(null);
   readonly selectedRequest = this.selectedRequestState.asReadonly();
+
+  private readonly updatingStatusState = signal<boolean>(false);
+  readonly isUpdatingStatus = this.updatingStatusState.asReadonly();
 
   async loadQuoteRequests(): Promise<void> {
     this.loadingState.set(true);
@@ -90,5 +99,56 @@ export class AdminQuoteRequestService {
     } finally {
       this.loadingState.set(false);
     }
+  }
+
+  async updateQuoteRequestStatus(id: string, status: QuoteRequestStatus): Promise<void> {
+    this.updatingStatusState.set(true);
+    this.errorState.set(false);
+
+    try {
+      const { error } = await this.supabaseClient
+        .from('quote_requests')
+        .update({ status })
+        .eq('id', id);
+
+      if (error) {
+        throw error;
+      }
+      this.selectedRequestState.update((currentRequest) => {
+        if (!currentRequest || currentRequest.id !== id) {
+          return currentRequest;
+        }
+
+        return {
+          ...currentRequest,
+          status,
+        };
+      });
+
+      this.requestsState.update((requests) =>
+        requests.map((request) => (request.id === id ? { ...request, status } : request)),
+      );
+    } catch (error) {
+      console.error('Unable to update status:', error);
+      this.errorState.set(true);
+    } finally {
+      this.updatingStatusState.set(false);
+    }
+  }
+
+  async createAttachmentSignedUrl(attachmentPath: string): Promise<string> {
+    const { data, error } = await this.supabaseClient.storage
+      .from(QUOTE_ATTACHMENTS_BUCKET)
+      .createSignedUrl(attachmentPath, 60);
+
+    if (error) {
+      throw error;
+    }
+
+    if (!data.signedUrl) {
+      throw new Error('Unable to create attachment signed URL');
+    }
+
+    return data.signedUrl;
   }
 }

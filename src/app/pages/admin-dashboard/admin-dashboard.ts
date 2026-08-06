@@ -1,10 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { AdminQuoteRequestService } from '../../features/quote-request/services/admin-quote-request.service';
 import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
+
+import { AdminQuoteRequestService } from '../../features/quote-request/services/admin-quote-request.service';
 
 @Component({
   selector: 'admin-dashboard',
-  imports: [RouterLink],
+  imports: [RouterLink, TranslatePipe],
   templateUrl: './admin-dashboard.html',
   styleUrl: './admin-dashboard.scss',
 })
