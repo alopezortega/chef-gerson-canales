@@ -347,6 +347,69 @@
     "layout": {
       "signOut": "Cerrar sesión",
       "signingOut": "Cerrando sesión..."
+    },
+    "status": {
+      "pending": "Pendiente",
+      "contacted": "Contactado",
+      "closed": "Cerrado"
+    },
+    "eventTypes": {
+      "privateDinner": "Cena privada",
+      "familyCelebration": "Celebración familiar",
+      "corporateEvent": "Evento corporativo",
+      "meetingCatering": "Catering para reuniones",
+      "other": "Otro tipo de evento"
+    },
+    "dashboard": {
+      "eyebrow": "Administración",
+      "title": "Solicitudes",
+      "loading": "Cargando solicitudes...",
+      "error": "No se han podido cargar las solicitudes.",
+      "empty": "Todavía no hay solicitudes.",
+      "total": "Solicitudes totales: {{ count }}",
+      "table": {
+        "name": "Nombre",
+        "email": "Correo electrónico",
+        "eventType": "Tipo de evento",
+        "eventDate": "Fecha del evento",
+        "guests": "Comensales",
+        "createdAt": "Fecha de creación",
+        "status": "Estado",
+        "actions": "Acciones"
+      },
+      "viewDetails": "Ver detalle"
+    },
+    "quoteRequestDetail": {
+      "back": "Volver a las solicitudes",
+      "title": "Detalle de la solicitud",
+      "loading": "Cargando solicitud...",
+      "error": "No se ha podido cargar esta solicitud.",
+      "notFound": "No se ha encontrado la solicitud.",
+      "fields": {
+        "name": "Nombre",
+        "email": "Correo electrónico",
+        "phone": "Teléfono",
+        "eventType": "Tipo de evento",
+        "eventDate": "Fecha del evento",
+        "guests": "Comensales",
+        "location": "Lugar",
+        "dietaryRequirements": "Necesidades alimentarias",
+        "additionalInformation": "Información adicional",
+        "currentStatus": "Estado actual",
+        "createdAt": "Fecha de creación"
+      },
+      "attachment": {
+        "title": "Archivo adjunto",
+        "fallbackName": "Archivo adjunto",
+        "opening": "Abriendo archivo...",
+        "open": "Abrir archivo",
+        "none": "No se adjuntó ningún archivo."
+      },
+      "statusControl": {
+        "label": "Estado",
+        "updating": "Actualizando...",
+        "update": "Actualizar estado"
+      }
     }
   }
 }
