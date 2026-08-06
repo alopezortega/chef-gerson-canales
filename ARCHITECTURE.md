@@ -92,10 +92,13 @@ features/
 │       └── gallery.service.ts
 └── quote-request/
     ├── models/
-    │   └── quote-request.model.ts
+    │   ├── quote-request.model.ts
+    │   └── admin-quote-request.model.ts
     └── services/
         ├── quote-request.service.ts
-        └── quote-request.service.spec.ts
+        ├── quote-request.service.spec.ts
+        ├── admin-quote-request.service.ts
+        └── admin-quote-request.service.spec.ts
 ```
 
 ### `layout`
@@ -144,6 +147,7 @@ Current administrative pages:
 ```text
 Admin Login
 Admin Dashboard
+Admin Quote Request Detail
 ```
 
 Pages compose complete routed views.
@@ -186,7 +190,8 @@ App
     └── protected Admin Layout
         ├── Sign-out control
         └── Router Outlet
-            └── Admin Dashboard
+            ├── Admin Dashboard
+            └── Admin Quote Request Detail
 ```
 
 ---
@@ -271,8 +276,9 @@ Public pages are rendered inside the `PublicLayout` router outlet.
 Administrative routes:
 
 ```text
-/admin/login  → Admin Login
-/admin        → Admin Layout → Admin Dashboard
+/admin/login                 → Admin Login
+/admin                       → Admin Layout → Admin Dashboard
+/admin/quote-requests/:id    → Admin Layout → Admin Quote Request Detail
 ```
 
 The private Admin route is protected by `authGuard`.
@@ -283,7 +289,7 @@ The login route remains public and is a sibling of the protected Admin layout ro
 
 ## Internationalization
 
-Public content supports Spanish and English through `ngx-translate`.
+Public and administrative user-facing content supports Spanish and English through `ngx-translate`.
 
 Translation files are stored in:
 
@@ -382,7 +388,6 @@ The Admin login page uses a typed Reactive Form, translated validation messages,
 The Admin layout owns the sign-out interaction and redirects to `/admin/login` after Supabase removes the session.
 
 Admin access is not linked from the public interface.
-
 
 ---
 
@@ -629,7 +634,7 @@ attachment_size
 
 Row Level Security is enabled.
 
-The anonymous role can insert quote requests only under the configured public submission policy.
+The anonymous and authenticated roles can insert quote requests under the configured public submission policy. Supporting `authenticated` insertion is necessary because an Admin user may remain signed in while manually validating the public form.
 
 ### Storage
 
@@ -647,9 +652,213 @@ JPEG
 PNG
 ```
 
-The public anonymous role can upload files only to this bucket under the configured Storage policy.
+The anonymous and authenticated roles can upload files to this bucket under the configured Storage insertion policy.
 
 The bucket remains private. Public read access is not enabled.
+
+Authenticated Admin users can read objects under a dedicated Storage `SELECT` policy. The application still does not expose permanent public URLs; it creates short-lived signed URLs when an Admin opens an attachment.
+
+---
+
+## Admin Quote Request Management
+
+The public submission flow and the private administrative workflow are treated as separate responsibilities.
+
+```text
+QuoteRequestService
+→ public creation
+→ optional attachment upload
+→ Database insertion
+
+AdminQuoteRequestService
+→ authenticated list and detail reads
+→ status updates
+→ local Signal synchronization
+→ private attachment signed URLs
+```
+
+The administrative service owns mutable state through private Signals and exposes readonly Signals:
+
+```text
+requests
+selectedRequest
+isLoading
+hasError
+isUpdatingStatus
+```
+
+The Admin dashboard loads the complete request list and displays loading, error, empty and success states.
+
+The detail view uses a dedicated mobile-friendly route:
+
+```text
+/admin/quote-requests/:id
+```
+
+A separate route was preferred over a large modal because it provides:
+
+- More space on small screens.
+- Native browser back navigation.
+- Direct refresh support.
+- Clear separation between list and detail.
+- A stable location for status and attachment actions.
+
+### Administrative models
+
+The database response and the Angular model use separate interfaces:
+
+```text
+AdminQuoteRequestRow
+→ raw Supabase row
+→ snake_case
+
+AdminQuoteRequest
+→ application model
+→ camelCase
+```
+
+`AdminQuoteRequestService` maps each database field explicitly:
+
+```text
+event_type      → eventType
+guest_count     → guestCount
+attachment_path → attachmentPath
+created_at      → createdAt
+```
+
+This prevents routed components from depending directly on the Supabase naming format.
+
+### Request status
+
+PostgreSQL defines the restricted enum:
+
+```text
+quote_request_status
+→ pending
+→ contacted
+→ closed
+```
+
+The `quote_requests.status` column is:
+
+```text
+NOT NULL
+DEFAULT 'pending'
+```
+
+TypeScript mirrors the same allowed values through:
+
+```ts
+export type QuoteRequestStatus = 'pending' | 'contacted' | 'closed';
+```
+
+The Admin detail view allows the user to select and save one of these values.
+
+Status update flow:
+
+```text
+AdminQuoteRequestDetail
+→ selectedStatus Signal
+→ AdminQuoteRequestService.updateQuoteRequestStatus(id, status)
+→ Supabase UPDATE filtered by id
+→ update selectedRequest when it matches
+→ update the matching item inside requests
+→ reset isUpdatingStatus in finally
+```
+
+The component synchronizes `selectedStatus` with the loaded request through an Angular `effect`.
+
+### Private attachment access
+
+The Storage bucket remains private:
+
+```text
+quote-request-attachments
+```
+
+Admin attachment flow:
+
+```text
+authenticated Admin
+→ request short-lived signed URL
+→ createSignedUrl(path, 60)
+→ open URL in a new tab
+```
+
+The URL expires after 60 seconds.
+
+The detail component exposes a local readonly `isOpeningAttachment` Signal so the button can be disabled and its copy can change while the signed URL is being created.
+
+Errors are handled without making the bucket public.
+
+### Database and Storage authorization
+
+Database policies and privileges allow:
+
+```text
+anon
+→ INSERT public quote requests
+
+authenticated
+→ INSERT public quote requests
+→ SELECT quote requests
+→ UPDATE quote requests
+```
+
+PostgreSQL table privileges include:
+
+```sql
+grant insert on table public.quote_requests to authenticated;
+grant select on table public.quote_requests to authenticated;
+grant update on table public.quote_requests to authenticated;
+```
+
+Storage policies allow:
+
+```text
+anon, authenticated
+→ INSERT into quote-request-attachments
+
+authenticated
+→ SELECT from quote-request-attachments
+```
+
+Authentication and authorization remain separate concerns:
+
+```text
+Supabase Auth
+→ identifies the signed-in user
+
+GRANT + RLS / Storage policies
+→ determine allowed operations and object or row access
+```
+
+### Admin internationalization
+
+The Admin login, layout, dashboard and quote-request detail use `ngx-translate`.
+
+The `admin` namespace contains:
+
+```text
+login
+layout
+status
+eventTypes
+dashboard
+quoteRequestDetail
+```
+
+The dashboard and detail templates translate:
+
+- Loading, error and empty states.
+- Table headings.
+- Event types.
+- Request statuses.
+- Detail field labels.
+- Attachment actions.
+- Status-update actions.
+
+Both standalone components import `TranslatePipe`, and their specs provide `TranslateService` through `provideTranslateService`.
 
 ---
 
@@ -728,6 +937,11 @@ The deployment has been validated with:
 - Spanish and English content.
 - Supabase Database insertion.
 - Optional PDF upload to Supabase Storage.
+- Public submission while authenticated as an Admin user.
+- Admin request listing and detail navigation.
+- Admin status changes.
+- Private attachment opening through a signed URL.
+- Spanish and English Admin copy.
 - Translated success feedback after submission.
 - No browser console errors during the validated flow.
 
@@ -844,6 +1058,11 @@ Current coverage includes:
 - Functional route-guard decisions and loading-state waiting.
 - Admin login validation, navigation, error and submitting states.
 - Admin logout and navigation.
+- Admin quote-request list and detail loading.
+- Snake-case to camel-case mapping.
+- Status updates and local list/detail synchronization.
+- Signed attachment URL success and failure.
+- Attachment opening, pending state and error handling.
 - Language preference recovery, validation and persistence.
 
 Supabase is not contacted during unit tests.
@@ -860,8 +1079,8 @@ The real client is replaced in `TestBed`:
 Current validation status:
 
 ```text
-17 test files passing
-77 tests passing
+19 test files passing
+103 tests passing
 3 tests skipped
 ```
 
@@ -972,7 +1191,7 @@ Database mapping, attachment upload and persistence belong to `QuoteRequestServi
 
 Quote Request attachments are uploaded to a private bucket.
 
-Read access will be granted only through authenticated administrative flows or signed URLs when required.
+Authenticated Admin users receive read permission through a Storage policy, while the UI opens files through short-lived signed URLs instead of permanent public access.
 
 ### Do not call real external services in unit tests
 
@@ -1039,3 +1258,70 @@ main
 ```
 
 `develop` is the integration branch and must not permanently replace `main` as the public production source.
+
+### Separate public submission from private administration
+
+`QuoteRequestService` remains focused on public submission and persistence.
+
+`AdminQuoteRequestService` owns authenticated reading and management state.
+
+This prevents one service from mixing two workflows with different reasons to change.
+
+### Map database rows at the service boundary
+
+Supabase rows remain represented in `snake_case` through `AdminQuoteRequestRow`.
+
+Angular components consume `AdminQuoteRequest` in `camelCase`.
+
+The conversion occurs only inside `AdminQuoteRequestService`.
+
+### Use a routed Admin detail view
+
+The request detail uses:
+
+```text
+/admin/quote-requests/:id
+```
+
+instead of a large modal.
+
+This is the preferred mobile-first navigation model and provides direct URL, refresh and back-navigation support.
+
+### Combine table privileges with RLS
+
+RLS policies do not replace PostgreSQL table privileges.
+
+Authenticated Admin reads and updates require both:
+
+```text
+GRANT
++
+RLS policy
+```
+
+### Synchronize Admin state after successful mutations
+
+After a successful status update, `AdminQuoteRequestService` updates both:
+
+```text
+selectedRequest
+requests
+```
+
+This keeps the detail view and dashboard list consistent without an immediate full reload.
+
+### Use short-lived signed URLs for private attachments
+
+Private attachments are opened through:
+
+```text
+createSignedUrl(path, 60)
+```
+
+The bucket remains private and the generated URL expires after 60 seconds.
+
+### Keep Admin user-facing copy internationalized
+
+Admin Dashboard and Admin Quote Request Detail use the same Spanish/English translation architecture as the public site.
+
+Component tests provide `TranslateService` explicitly when templates depend on `TranslatePipe`.
