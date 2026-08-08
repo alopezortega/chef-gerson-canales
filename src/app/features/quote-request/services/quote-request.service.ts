@@ -1,18 +1,26 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable } from "@angular/core";
 
-import { SUPABASE_CLIENT } from '../../../core/config/supabase-client.token';
-import { QuoteRequest, QuoteRequestInsert } from '../models/quote-request.model';
+import { SUPABASE_CLIENT } from "../../../core/config/supabase-client.token";
+import {
+  QuoteRequest,
+  QuoteRequestInsert,
+} from "../models/quote-request.model";
 
-const QUOTE_ATTACHMENTS_BUCKET = 'quote-request-attachments';
+const QUOTE_ATTACHMENTS_BUCKET = "quote-request-attachments";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class QuoteRequestService {
   private readonly supabaseClient = inject(SUPABASE_CLIENT);
 
-  async createQuoteRequest(request: QuoteRequest, attachment: File | null): Promise<void> {
-    const attachmentPath = attachment ? await this.uploadAttachment(attachment) : null;
+  async createQuoteRequest(
+    request: QuoteRequest,
+    attachment: File | null,
+  ): Promise<void> {
+    const attachmentPath = attachment
+      ? await this.uploadAttachment(attachment)
+      : null;
 
     const quoteRequestInsert: QuoteRequestInsert = {
       name: request.name,
@@ -31,10 +39,33 @@ export class QuoteRequestService {
       attachment_size: attachment?.size ?? null,
     };
 
-    const { error } = await this.supabaseClient.from('quote_requests').insert(quoteRequestInsert);
+    const { data, error } = await this.supabaseClient
+      .from("quote_requests")
+      .insert(quoteRequestInsert)
+      .select("id")
+      .single();
 
     if (error) {
       throw error;
+    }
+    // Invoke a Supabase Edge Function to notify the system about the new quote request
+    const { error: notificationError } = await this.supabaseClient.functions
+      .invoke(
+        "notify-quote-request",
+        {
+          body: {
+            // Send the inserted quote request id to the notification function
+            quoteRequestId: data.id,
+          },
+        },
+      );
+
+    if (notificationError) {
+      // Log notification errors but do not fail the quote request creation
+      console.error(
+        "Unable to send quote request notification:",
+        notificationError,
+      );
     }
   }
 
@@ -58,9 +89,9 @@ export class QuoteRequestService {
 
   private sanitizeFileName(fileName: string): string {
     return fileName
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/[^a-zA-Z0-9._-]/g, '-')
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-zA-Z0-9._-]/g, "-")
       .toLowerCase();
   }
 }

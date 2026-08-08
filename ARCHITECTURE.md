@@ -35,6 +35,9 @@ The application is designed with:
 - Supabase Database
 - Supabase Storage
 - Supabase JavaScript client
+- Supabase Edge Functions
+- Deno
+- Resend
 - Netlify
 - `@netlify/angular-runtime`
 
@@ -1112,6 +1115,182 @@ PDF opening in a new tab
 
 ---
 
+
+## Quote Request Email Notification
+
+A successful Quote Request now triggers a backend email notification without exposing email-provider credentials to Angular.
+
+Data flow:
+
+```text
+QuoteRequestComponent
+        ↓
+QuoteRequestService
+        ↓
+Supabase Database INSERT
+        ↓
+returned request id
+        ↓
+Supabase Edge Function: notify-quote-request
+        ↓
+load quote request with backend privileges
+        ↓
+Resend API
+        ↓
+notification email delivered to Gerson
+```
+
+### Angular contract
+
+After the Database insert succeeds, `QuoteRequestService` requests only the generated row id:
+
+```text
+insert quote request
+→ select id
+→ single row
+→ invoke notify-quote-request
+→ body: { quoteRequestId }
+```
+
+The browser therefore receives the generated UUID required to invoke the backend function, but it does not receive backend secrets.
+
+If the notification call fails, the successfully persisted Quote Request remains saved. Email delivery is treated as a secondary notification step and must not invalidate the original customer submission.
+
+### Edge Function
+
+The function is stored under:
+
+```text
+supabase/functions/notify-quote-request/
+```
+
+It runs with Deno and is deployed to Supabase independently from the Angular application.
+
+Responsibilities:
+
+```text
+handle CORS preflight
+→ parse quoteRequestId from the request body
+→ read backend environment configuration
+→ create a Supabase service-role client
+→ load the matching quote_requests row
+→ send a transactional email through Resend
+→ return only { success: true } to the browser
+```
+
+The function does not return the full Quote Request payload to the browser after successful processing.
+
+### Secrets
+
+The email provider key and notification recipient are stored as Supabase Edge Function secrets:
+
+```text
+RESEND_API_KEY
+GERSON_NOTIFICATION_EMAIL
+```
+
+Supabase-provided backend variables are read with:
+
+```text
+SUPABASE_URL
+SUPABASE_SERVICE_ROLE_KEY
+```
+
+Security rule:
+
+```text
+backend secret
+→ Supabase Edge Function environment
+
+never
+→ Angular source
+→ public environment files
+→ translation JSON
+→ Git repository
+```
+
+### Database authorization
+
+The Edge Function uses the backend `service_role` client to load the newly created request.
+
+The required PostgreSQL table privilege is:
+
+```sql
+grant select on table public.quote_requests to service_role;
+```
+
+This does not grant public read access to `anon`.
+
+The browser-side anonymous role still cannot list Quote Requests. Administrative reads remain protected through the existing authenticated permissions and RLS policies.
+
+### Resend
+
+The current provider is:
+
+```text
+Resend
+```
+
+Development validation uses the Resend onboarding sender:
+
+```text
+Chef Gerson Canales <onboarding@resend.dev>
+```
+
+A verified custom sender/domain should replace the onboarding sender for the final production configuration when available.
+
+The email currently includes the main Quote Request details required for operational follow-up:
+
+```text
+name
+email
+phone
+event type
+event date
+guest count
+location
+dietary requirements
+additional information
+```
+
+The Edge Function calls the Resend email API from the backend. Angular never communicates directly with Resend.
+
+### Failure behaviour
+
+```text
+Database insert fails
+→ throw to Quote Request UI
+→ notification is not invoked
+
+Database insert succeeds
+but email notification fails
+→ keep saved request
+→ log notification failure
+→ do not report the whole customer submission as lost
+```
+
+This preserves the Quote Request as the system of record even when email delivery is temporarily unavailable.
+
+### Manual validation
+
+Completed end-to-end validation:
+
+```text
+public form submission
+→ attachment upload when present
+→ quote_requests row created
+→ generated id returned
+→ notify-quote-request invoked
+→ Edge Function loads the correct row
+→ Resend accepts the email
+→ email received in Gmail
+→ Edge Function response is { success: true }
+```
+
+The first delivered test message was initially classified as spam because the development sender uses `onboarding@resend.dev`; it was manually marked as not spam.
+
+---
+
 ## Rendering Strategy
 
 Public routes remain prerendered for fast delivery and crawlable public content.
@@ -1302,6 +1481,9 @@ Current coverage includes:
 - Storage upload success and failure.
 - Database insertion success and failure.
 - Prevention of database insertion after a failed upload.
+- Quote Request notification invocation with the generated request id.
+- Prevention of notification invocation after a failed Database insert.
+- Notification failure does not invalidate an already persisted Quote Request.
 - Initial Supabase Auth session recovery.
 - Authentication-state changes.
 - Sign-in and sign-out success and failure.
@@ -1314,7 +1496,7 @@ Current coverage includes:
 - Signed attachment URL success and failure.
 - Attachment opening, pending state and error handling.
 - Language preference recovery, validation and persistence.
-- Service-document test files have been created for the feature service and Admin page; their final coverage is completed before the feature commit.
+- Service-document service, Admin page and public download behaviour.
 
 Supabase is not contacted during unit tests.
 
@@ -1330,8 +1512,8 @@ The real client is replaced in `TestBed`:
 Current validation status:
 
 ```text
-19 test files passing
-103 tests passing
+21 test files passing
+128 tests passing
 3 tests skipped
 ```
 
@@ -1343,6 +1525,9 @@ Angular SSR build completed
 Netlify deployment completed
 Supabase Database insert validated
 Supabase Storage upload validated
+Supabase Edge Function deployment validated
+Quote Request notification invocation validated
+Resend email delivery validated
 Spanish and English submission feedback validated
 ```
 
@@ -1602,3 +1787,48 @@ The database stores the active document metadata.
 Supabase Storage stores the PDF object.
 
 This allows the application to query document availability without embedding file contents or permanent URLs in the database.
+
+
+### Keep email-provider secrets behind the Edge Function boundary
+
+Resend credentials and notification-recipient configuration are stored as Supabase Edge Function secrets.
+
+Angular receives no email-provider secret and never calls Resend directly.
+
+### Keep Quote Request persistence authoritative when notification fails
+
+The Database insert is the primary operation.
+
+Email delivery is a secondary notification step:
+
+```text
+persist request successfully
+→ attempt notification
+→ preserve request even if notification fails
+```
+
+This avoids losing customer submissions because of a temporary email-provider or network failure.
+
+### Pass only the generated request id to the notification backend
+
+Angular invokes:
+
+```text
+notify-quote-request
+→ { quoteRequestId }
+```
+
+The Edge Function loads the authoritative row itself instead of trusting a complete Quote Request payload supplied by the browser.
+
+### Return minimal backend responses to the browser
+
+The production notification response is:
+
+```json
+{
+  "success": true
+}
+```
+
+The full Quote Request is used only inside the backend function and is not returned to the browser after processing.
+
