@@ -1,92 +1,188 @@
-<div class="language-selector" aria-label="Language selector">
-  <button
-    class="language-selector__button"
-    type="button"
-    (click)="changeLanguage('es')"
-    [attr.aria-pressed]="currentLanguage() === 'es'"
-  >
-    ES
-  </button>
+<div class="header-actions">
+  <div class="language">
+    <button
+      #languageButton
+      class="language__toggle"
+      type="button"
+      aria-label="Cambiar idioma"
+      aria-haspopup="menu"
+      aria-controls="language-menu"
+      [attr.aria-expanded]="languageOpen()"
+      (click)="toggleLanguageMenu()"
+    >
+      <svg class="language__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6" />
+
+        <path
+          d="M3 12h18"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          stroke-linecap="round"
+        />
+
+        <path
+          d="M12 3c2.6 2.5 4 5.6 4 9s-1.4 6.5-4 9"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          stroke-linecap="round"
+        />
+
+        <path
+          d="M12 3c-2.6 2.5-4 5.6-4 9s1.4 6.5 4 9"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          stroke-linecap="round"
+        />
+      </svg>
+    </button>
+
+    @if (languageOpen()) {
+      <div id="language-menu" class="language__menu" role="menu" aria-label="Seleccionar idioma">
+        <button
+          type="button"
+          role="menuitemradio"
+          [attr.aria-checked]="currentLanguage() === 'es'"
+          (click)="selectLanguage('es')"
+        >
+          <span>Español</span>
+
+          @if (currentLanguage() === 'es') {
+            <span class="language__check" aria-hidden="true">✓</span>
+          }
+        </button>
+
+        <button
+          type="button"
+          role="menuitemradio"
+          [attr.aria-checked]="currentLanguage() === 'en'"
+          (click)="selectLanguage('en')"
+        >
+          <span>English</span>
+
+          @if (currentLanguage() === 'en') {
+            <span class="language__check" aria-hidden="true">✓</span>
+          }
+        </button>
+      </div>
+    }
+  </div>
 
   <button
-    class="language-selector__button"
+    #menuButton
+    class="menu-toggle"
     type="button"
-    (click)="changeLanguage('en')"
-    [attr.aria-pressed]="currentLanguage() === 'en'"
+    (click)="toggleMenu()"
+    [attr.aria-label]="menuButtonLabelKey() | translate"
+    [attr.aria-expanded]="menuOpen()"
+    aria-controls="mobile-navigation"
   >
-    EN
+    <span class="menu-toggle__line"></span>
+    <span class="menu-toggle__line"></span>
+    <span class="menu-toggle__line"></span>
   </button>
 </div>
 
-<button
-  #menuButton
-  class="menu-toggle"
-  type="button"
-  (click)="toggleMenu()"
-  [attr.aria-label]="menuButtonLabelKey() | translate"
-  [attr.aria-expanded]="menuOpen()"
-  aria-controls="main-navigation social-navigation"
->
-  @if (menuOpen()) {
-    ✕
-  } @else {
-    ☰
-  }
-</button>
+@if (menuRendered()) {
+  <div
+    id="mobile-navigation"
+    class="mobile-navigation"
+    [class.mobile-navigation--closing]="menuClosing()"
+  >
+    <nav class="mobile-navigation__main" [attr.aria-label]="'navigation.mainAriaLabel' | translate">
+      <ul>
+        <li>
+          <a routerLink="/servicios" routerLinkActive="active" (click)="closeMenu()">
+            {{ 'navigation.links.services' | translate }}
+          </a>
+        </li>
 
-<nav
-  id="main-navigation"
-  [attr.aria-label]="'navigation.mainAriaLabel' | translate"
-  [class.open]="menuOpen()"
->
-  <ul>
-    <li>
-      <a routerLink="/servicios" routerLinkActive="active" (click)="closeMenu()">
-        {{ 'navigation.links.services' | translate }}
-      </a>
-    </li>
+        <li>
+          <a routerLink="/galeria" routerLinkActive="active" (click)="closeMenu()">
+            {{ 'navigation.links.gallery' | translate }}
+          </a>
+        </li>
 
-    <li>
-      <a routerLink="/galeria" routerLinkActive="active" (click)="closeMenu()">
-        {{ 'navigation.links.gallery' | translate }}
-      </a>
-    </li>
+        <li>
+          <a
+            routerLink="/solicitar-presupuesto"
+            routerLinkActive="active"
+            class="cta"
+            (click)="closeMenu()"
+          >
+            {{ 'navigation.links.quoteRequest' | translate }}
+          </a>
+        </li>
 
-    <li>
+        <li>
+          <a routerLink="/sobre-el-chef" routerLinkActive="active" (click)="closeMenu()">
+            {{ 'navigation.links.about' | translate }}
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <nav
+      class="mobile-navigation__social"
+      [attr.aria-label]="'navigation.socialAriaLabel' | translate"
+    >
       <a
-        routerLink="/solicitar-presupuesto"
-        routerLinkActive="active"
-        class="cta"
-        (click)="closeMenu()"
-      >
-        {{ 'navigation.links.quoteRequest' | translate }}
-      </a>
-    </li>
-
-    <li>
-      <a routerLink="/sobre-el-chef" routerLinkActive="active" (click)="closeMenu()">
-        {{ 'navigation.links.about' | translate }}
-      </a>
-    </li>
-  </ul>
-</nav>
-
-<nav
-  id="social-navigation"
-  [attr.aria-label]="'navigation.socialAriaLabel' | translate"
-  [class.open]="menuOpen()"
->
-  <ul>
-    <li>
-      <a
+        class="instagram-link"
         href="https://www.instagram.com/gersontravel.chef/"
         target="_blank"
         rel="noopener noreferrer"
         [attr.aria-label]="'navigation.instagramAriaLabel' | translate"
         (click)="closeMenu()"
       >
-        Instagram
+        <svg class="instagram-link__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <rect
+            x="3"
+            y="3"
+            width="18"
+            height="18"
+            rx="5"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.7"
+          />
+
+          <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.7" />
+
+          <circle cx="17.4" cy="6.7" r="1" fill="currentColor" />
+        </svg>
+
+        <span>Instagram</span>
+        <span aria-hidden="true">↗</span>
       </a>
-    </li>
-  </ul>
+    </nav>
+  </div>
+}
+
+<nav class="desktop-navigation" [attr.aria-label]="'navigation.mainAriaLabel' | translate">
+  <a routerLink="/servicios" routerLinkActive="active">
+    {{ 'navigation.links.services' | translate }}
+  </a>
+
+  <a routerLink="/galeria" routerLinkActive="active">
+    {{ 'navigation.links.gallery' | translate }}
+  </a>
+
+  <a routerLink="/solicitar-presupuesto" routerLinkActive="active" class="cta">
+    {{ 'navigation.links.quoteRequest' | translate }}
+  </a>
+
+  <a routerLink="/sobre-el-chef" routerLinkActive="active">
+    {{ 'navigation.links.about' | translate }}
+  </a>
+
+  <a
+    href="https://www.instagram.com/gersontravel.chef/"
+    target="_blank"
+    rel="noopener noreferrer"
+    [attr.aria-label]="'navigation.instagramAriaLabel' | translate"
+  >
+    Instagram
+  </a>
 </nav>

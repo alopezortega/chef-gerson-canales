@@ -1,32 +1,74 @@
 :host {
+  position: relative;
+  z-index: 100;
+
   display: block;
+
+  background-color: var(--color-background-primary);
 }
 
-header {
+.header {
+  position: relative;
+
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  gap: var(--spacing-md);
+  gap: 0.5rem;
 
   width: 100%;
-  padding: var(--spacing-md);
+  max-width: 26rem;
+  margin-inline: auto;
+
+  padding: 0.85rem 1rem;
+
+  background-color: var(--color-background-primary);
 }
 
-a {
-  color: var(--color-text-primary);
-  font-size: 1.25rem;
-  font-weight: 700;
+.header__brand {
+  display: block;
+  flex: 0 1 auto;
+
+  width: min(13rem, 65%);
+  min-width: 0;
+
   text-decoration: none;
-  white-space: nowrap;
 }
 
-app-header-navbar {
-  margin-left: auto;
+.header__brand img {
+  display: block;
+
+  width: 100%;
+  height: auto;
 }
 
-@media (min-width: 768px) {
-  header {
-    align-items: center;
-    padding-inline: var(--spacing-lg);
+/* =========================
+   Tablet
+   ========================= */
+
+@media (min-width: 48rem) {
+  .header {
+    max-width: 42rem;
+
+    padding-inline: var(--page-padding);
+  }
+
+  .header__brand {
+    width: 14rem;
+  }
+}
+
+/* =========================
+   Desktop
+   ========================= */
+
+@media (min-width: 64rem) {
+  .header {
+    max-width: var(--container-max-width);
+
+    padding-block: 1rem;
+  }
+
+  .header__brand {
+    width: 16rem;
   }
 }
