@@ -1,14 +1,19 @@
 <footer class="footer">
   <div class="footer__content">
-    <div class="footer__brand">
-      <a routerLink="/" [attr.aria-label]="'footer.brand.homeAriaLabel' | translate">
-        Gerson Canales
-      </a>
-
-      <p>
-        {{ 'footer.brand.description' | translate }}
-      </p>
-    </div>
+    <a
+      class="footer__brand-link"
+      routerLink="/"
+      [attr.aria-label]="'footer.brand.homeAriaLabel' | translate"
+    >
+      <img
+        class="footer__logo"
+        src="/images/brand/gerson-canales-logo.webp"
+        alt="Gerson Canales - Chef privado y catering"
+        width="600"
+        height="450"
+        loading="lazy"
+      />
+    </a>
 
     <nav class="footer__navigation" [attr.aria-label]="'footer.navigation.ariaLabel' | translate">
       <a routerLink="/servicios">
@@ -35,12 +40,33 @@
         rel="noopener noreferrer"
         [attr.aria-label]="'footer.social.instagramAriaLabel' | translate"
       >
-        Instagram
+        <svg
+          class="footer__instagram-icon"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <rect
+            x="3"
+            y="3"
+            width="18"
+            height="18"
+            rx="5"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+          />
+
+          <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8" />
+
+          <circle cx="17.4" cy="6.7" r="1" fill="currentColor" />
+        </svg>
+
+        <span>Instagram</span>
+        <span class="footer__external-icon" aria-hidden="true">↗</span>
       </a>
     </div>
-  </div>
 
-  <p class="footer__copyright">
-    {{ 'footer.copyright' | translate: { year: currentYear } }}
-  </p>
+    <p class="footer__copyright">© {{ currentYear }} Gerson Canales</p>
+  </div>
 </footer>

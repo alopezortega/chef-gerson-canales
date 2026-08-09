@@ -3,51 +3,205 @@
 }
 
 .footer {
-  margin-top: auto;
-  padding: 2rem 1rem 1rem;
-  border-top: 1px solid currentColor;
+  padding: 1.5rem 1rem;
+
+  background-color: var(--color-background-primary);
+  color: var(--color-text-primary);
 }
 
 .footer__content {
-  display: grid;
-  gap: 2rem;
-  max-width: 75rem;
-  margin: 0 auto;
+  width: 100%;
+  max-width: 26rem;
+  margin-inline: auto;
 }
 
-.footer__brand {
-  display: grid;
-  gap: 0.75rem;
+/* =========================
+   Brand
+   ========================= */
+
+.footer__brand-link {
+  display: block;
+
+  margin-bottom: 1.4rem;
+
+  text-decoration: none;
 }
 
-.footer__brand p {
-  margin: 0;
+.footer__logo {
+  display: block;
+
+  width: 100%;
+  max-width: 24rem;
+  height: auto;
+  margin-inline: auto;
 }
 
-.footer__navigation,
-.footer__social {
+/* =========================
+   Navigation
+   ========================= */
+
+.footer__navigation {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 0.75rem;
+  gap: 1.15rem;
+
+  margin-bottom: 2rem;
 }
 
-.footer a:focus-visible {
-  outline: 2px solid currentColor;
-  outline-offset: 4px;
+.footer__navigation a {
+  position: relative;
+
+  width: fit-content;
+
+  color: var(--color-text-primary);
+
+  font-family: var(--font-family-body);
+  font-size: 0.82rem;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+
+  text-decoration: none;
+  text-transform: uppercase;
+
+  transition: color var(--transition-fast);
 }
+
+.footer__navigation a::after {
+  content: '';
+
+  position: absolute;
+  right: 0;
+  bottom: -0.3rem;
+  left: 0;
+
+  height: 1px;
+
+  background-color: var(--color-accent);
+
+  transform: scaleX(0);
+  transform-origin: left;
+
+  transition: transform var(--transition-fast);
+}
+
+.footer__navigation a:hover,
+.footer__navigation a:focus-visible {
+  color: var(--color-accent);
+}
+
+.footer__navigation a:hover::after,
+.footer__navigation a:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* =========================
+   Instagram
+   ========================= */
+
+.footer__social {
+  margin-bottom: 1.75rem;
+}
+
+.footer__social a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+
+  color: var(--color-accent);
+
+  font-family: var(--font-family-body);
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.1em;
+
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.footer__instagram-icon {
+  width: 1.2rem;
+  height: 1.2rem;
+
+  flex: 0 0 auto;
+}
+
+.footer__external-icon {
+  margin-left: 0.1rem;
+
+  font-size: 0.95rem;
+
+  transition: transform var(--transition-fast);
+}
+
+.footer__social a:hover .footer__external-icon,
+.footer__social a:focus-visible .footer__external-icon {
+  transform: translate(0.15rem, -0.15rem);
+}
+
+/* =========================
+   Copyright
+   ========================= */
 
 .footer__copyright {
-  max-width: 75rem;
-  margin: 2rem auto 0;
-  padding-top: 1rem;
-  border-top: 1px solid currentColor;
+  margin: 0;
+  padding-top: 1.25rem;
+
+  border-top: 1px solid var(--color-border);
+
+  color: var(--color-text-secondary);
+
+  font-family: var(--font-family-body);
+  font-size: 0.72rem;
+  line-height: 1.4;
+
   text-align: center;
 }
 
+/* =========================
+   Tablet
+   ========================= */
+
 @media (min-width: 48rem) {
+  .footer {
+    padding: 2.5rem var(--page-padding) 1.75rem;
+  }
+
   .footer__content {
-    grid-template-columns: 2fr 1fr 1fr;
-    align-items: start;
+    max-width: 42rem;
+  }
+
+  .footer__logo {
+    max-width: 25rem;
+  }
+
+  .footer__navigation {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem 2rem;
+  }
+
+  .footer__social {
+    text-align: center;
+  }
+}
+
+/* =========================
+   Desktop
+   ========================= */
+
+@media (min-width: 64rem) {
+  .footer__content {
+    max-width: 52rem;
+  }
+
+  .footer__logo {
+    max-width: 27rem;
+  }
+
+  .footer__navigation {
+    gap: 2.5rem;
   }
 }
