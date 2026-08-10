@@ -126,6 +126,7 @@ The public layout contains:
 Header
 RouterOutlet
 Footer
+ScrollToTop
 ```
 
 The administrative layout contains:
@@ -191,7 +192,8 @@ App
 │       │   ├── Gallery
 │       │   ├── Quote Request
 │       │   └── About
-│       └── Footer
+│       ├── Footer
+│       └── ScrollToTop
 │
 └── Admin route group
     ├── /admin/login
@@ -214,7 +216,7 @@ The visible Spanish navigation labels are:
 ```text
 Chef privado & catering
 Galería
-Solicitar presupuesto
+Contacto
 Sobre el chef
 Instagram
 ```
@@ -224,7 +226,7 @@ The visible English navigation labels are:
 ```text
 Private chef & catering
 Gallery
-Request a quote
+Contact
 About the chef
 Instagram
 ```
@@ -1512,8 +1514,8 @@ The real client is replaced in `TestBed`:
 Current validation status:
 
 ```text
-21 test files passing
-128 tests passing
+22 test files passing
+132 tests passing
 3 tests skipped
 ```
 
@@ -1535,11 +1537,21 @@ The skipped tests are legacy Quote Request submission tests kept temporarily for
 
 ESLint passes successfully.
 
-The production build completes successfully with one non-blocking component-style budget warning:
+The production build completes successfully.
+
+Current non-blocking component-style budget warnings:
 
 ```text
 src/app/pages/quote-request/quote-request.scss
 4.13 kB current size
+4.00 kB configured warning budget
+
+src/app/layout/public-layout/components/header/components/header-navbar/header-navbar.scss
+4.61 kB current size
+4.00 kB configured warning budget
+
+src/app/pages/home/home.scss
+6.60 kB current size
 4.00 kB configured warning budget
 ```
 
@@ -1832,3 +1844,294 @@ The production notification response is:
 
 The full Quote Request is used only inside the backend function and is not returned to the browser after processing.
 
+---
+
+## Visual Design System — Public Experience
+
+The current visual-design work is implemented on:
+
+```text
+feature/visual-design
+```
+
+The public interface follows a Mobile First strategy and uses a shared design system based on:
+
+```text
+cream backgrounds
+charcoal surfaces and text
+olive accents
+editorial serif display typography
+clean sans-serif body typography
+warm gastronomic photography
+botanical olive details
+```
+
+Reusable visual values remain centralized in:
+
+```text
+src/styles/_tokens.scss
+```
+
+Global styling remains in:
+
+```text
+src/styles.scss
+```
+
+Current public visual assets are organized under:
+
+```text
+public/images/
+├── about/
+├── backgrounds/
+├── brand/
+├── gallery/
+├── home/
+└── ui/
+```
+
+### Responsive Header and Navbar
+
+The Header uses a dedicated horizontal brand asset and remains part of the shared `PublicLayout`.
+
+Mobile composition:
+
+```text
+brand
+language selector
+menu toggle
+```
+
+Desktop composition:
+
+```text
+brand
+primary navigation
+Instagram
+language selector
+```
+
+The mobile navigation keeps separate state for functional visibility and exit animation:
+
+```text
+menuOpen
+menuRendered
+menuClosing
+```
+
+The menu continues to close through:
+
+```text
+NavigationEnd
+Escape key
+explicit navigation actions
+```
+
+Desktop navigation includes:
+
+```text
+responsive spacing
+active route treatment
+hover/focus underline
+larger social and language controls
+```
+
+The Header establishes the positioning context used by the absolute mobile navigation panel.
+
+### Home Responsive Architecture
+
+The Home keeps one semantic template and changes composition through responsive SCSS.
+
+Mobile structure:
+
+```text
+Hero
+Cooking with purpose
+Featured experiences
+About preview
+Closing CTA
+```
+
+Desktop structure uses the same content with a different layout:
+
+```text
+Hero
+→ editorial text column
+→ large gastronomic image
+
+Cooking with purpose
+→ oversized decorative olive asset
+→ editorial copy block
+
+Featured experiences
+→ three-column card grid
+
+About preview
+→ two-column portrait and editorial copy
+
+Closing CTA
+→ full-width dark textured block
+→ decorative olive assets
+→ centered action
+```
+
+This avoids duplicating Angular content for different breakpoints.
+
+The current Home assets include:
+
+```text
+public/images/home/hero-gastronomy.png
+public/images/home/private-dining.png
+public/images/home/events-celebrations.png
+public/images/home/custom-catering.png
+public/images/home/olivo-home.png
+public/images/home/olivo1.png
+public/images/home/olivo2.png
+public/images/home/olivo3.png
+```
+
+The closing CTA uses:
+
+```text
+public/images/backgrounds/dark-stone-texture.png
+```
+
+### Footer Responsive Architecture
+
+The Footer uses different brand assets by breakpoint while preserving one shared component.
+
+Desktop brand asset:
+
+```text
+public/images/brand/gerson-canales-footer.png
+```
+
+Mobile brand asset:
+
+```text
+public/images/brand/gerson-canales-logo.webp
+```
+
+Desktop Footer composition:
+
+```text
+brand
+navigation
+Instagram
+decorative divider
+copyright
+```
+
+Mobile keeps a vertical composition with stronger brand presence.
+
+### Scroll-To-Top
+
+The reusable control remains mounted once in:
+
+```text
+PublicLayout
+```
+
+Implementation:
+
+```text
+Signal
+afterNextRender
+fromEvent(window, 'scroll')
+takeUntilDestroyed
+@if
+```
+
+Visibility rule:
+
+```text
+window.scrollY > 400
+→ show control
+```
+
+Interaction:
+
+```text
+click
+→ smooth scroll to document top
+```
+
+### Responsive Strategy
+
+The public site does not maintain separate mobile and desktop Angular templates.
+
+Responsive behaviour is implemented primarily through:
+
+```text
+CSS Grid
+Flexbox
+media queries
+clamp()
+aspect-ratio
+object-fit
+responsive max-width containers
+```
+
+The desktop Home has been recomposed specifically for wider screens rather than simply scaling the mobile layout.
+
+## Latest Quality Baseline — 2026-08-10
+
+Current validation status:
+
+```text
+Test files
+→ 22 passed
+
+Tests
+→ 132 passed
+→ 3 skipped
+
+Lint
+→ all files pass
+
+Production build
+→ completed successfully
+→ 5 public routes prerendered
+```
+
+The Angular component-style budget was adjusted to accommodate the completed responsive visual layer.
+
+Current production validation is green.
+
+
+## Current Visual Design Status — 2026-08-10
+
+Completed on the current visual-design branch:
+
+```text
+shared visual tokens
+responsive Header
+responsive Navbar
+mobile navigation animation
+responsive Home
+desktop Home composition
+responsive Footer
+global ScrollToTop
+brand and decorative assets
+Spanish and English public copy adjustments
+```
+
+The Home visual architecture is considered complete unless a functional or responsive defect is discovered.
+
+The next public page scheduled for visual redesign is:
+
+```text
+/sobre-el-chef
+→ About
+```
+
+The About page remains a route-level editorial component and should reuse the established public design system rather than introduce a separate visual language.
+
+The existing architecture remains:
+
+```text
+AboutComponent
+→ translated editorial content
+→ responsive SCSS
+→ no service or model unless dynamic behaviour creates a real requirement
+```
