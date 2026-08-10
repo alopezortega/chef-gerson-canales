@@ -46,7 +46,7 @@
         {
           "id": "custom-catering",
           "title": "Catering personalizado",
-          "description": "Catering de autor con atención al detalle, presentación impecable y sabores que conectan.",
+          "description": "Propuestas a medida que combinan cocina salada, repostería y pequeños detalles dulces para crear una experiencia completa.",
           "image": "/images/home/custom-catering.png"
         }
       ]
@@ -206,7 +206,7 @@
         {
           "id": "meeting-catering",
           "title": "Catering para reuniones",
-          "description": "Formatos flexibles para grupos reducidos, adaptados al espacio y a las necesidades del evento."
+          "description": "Formatos flexibles para grupos reducidos, con propuestas saladas y dulces adaptadas al espacio y a las necesidades del evento."
         },
         {
           "id": "gastronomic-workshops",
@@ -216,7 +216,7 @@
         {
           "id": "custom-menus",
           "title": "Menús personalizados",
-          "description": "Propuestas creadas según los gustos, las necesidades y las características de cada ocasión."
+          "description": "Propuestas creadas según los gustos y las características de cada ocasión, incluyendo repostería cuando forma parte de la experiencia."
         }
       ]
     },

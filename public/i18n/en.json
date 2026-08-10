@@ -50,7 +50,7 @@
         {
           "id": "custom-catering",
           "title": "Tailored catering",
-          "description": "Signature catering with attention to detail, refined presentation and flavours that connect.",
+          "description": "Bespoke proposals combining savoury cuisine, pastry and thoughtful sweet details to create a complete dining experience.",
           "image": "/images/home/custom-catering.png"
         }
       ]
@@ -210,7 +210,7 @@
         {
           "id": "meeting-catering",
           "title": "Meeting catering",
-          "description": "Flexible formats for small groups, adapted to the venue and the needs of the event."
+          "description": "Flexible formats for small groups, with savoury and sweet options adapted to the venue and the needs of the event."
         },
         {
           "id": "gastronomic-workshops",
@@ -220,7 +220,7 @@
         {
           "id": "custom-menus",
           "title": "Custom menus",
-          "description": "Proposals designed around the preferences, needs and characteristics of every occasion."
+          "description": "Proposals designed around the preferences and characteristics of each occasion, including pastry when it forms part of the experience."
         }
       ]
     },

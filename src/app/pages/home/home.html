@@ -25,15 +25,19 @@
 
 <section class="home-intro" aria-labelledby="home-intro-title">
   <div class="home-intro__content">
-    <img class="home-intro__ornament" src="/images/ui/olive-sprig.png" alt="" aria-hidden="true" />
+    <div class="home-intro__ornament-wrapper" aria-hidden="true">
+      <img class="home-intro__ornament" src="/images/home/olivo-home.png" alt="" loading="lazy" />
+    </div>
 
-    <h2 id="home-intro-title">
-      {{ 'home.intro.title' | translate }}
-    </h2>
+    <div class="home-intro__copy">
+      <h2 id="home-intro-title">
+        {{ 'home.intro.title' | translate }}
+      </h2>
 
-    <p>
-      {{ 'home.intro.description' | translate }}
-    </p>
+      <p>
+        {{ 'home.intro.description' | translate }}
+      </p>
+    </div>
   </div>
 </section>
 
@@ -103,6 +107,14 @@
 </section>
 
 <section class="home-cta" aria-labelledby="home-cta-title">
+  <img
+    class="home-cta__olive home-cta__olive--left"
+    src="/images/home/olivo1.png"
+    alt=""
+    aria-hidden="true"
+    loading="lazy"
+  />
+
   <div class="home-cta__content">
     <h2 id="home-cta-title">
       {{ 'home.quoteCta.title' | translate }}
@@ -116,4 +128,12 @@
       {{ 'home.quoteCta.action' | translate }}
     </a>
   </div>
+
+  <img
+    class="home-cta__olive home-cta__olive--right"
+    src="/images/home/olivo3.png"
+    alt=""
+    aria-hidden="true"
+    loading="lazy"
+  />
 </section>
