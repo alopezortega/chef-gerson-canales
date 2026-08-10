@@ -7,10 +7,6 @@
   margin-left: auto;
 }
 
-/* =========================
-   Header actions
-   ========================= */
-
 .header-actions {
   display: flex;
   align-items: center;
@@ -53,6 +49,17 @@ button {
   height: 1.25rem;
 
   color: var(--color-accent);
+
+  transition:
+    color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.language__toggle:hover .language__icon,
+.language__toggle:focus-visible .language__icon {
+  color: var(--color-accent-hover);
+
+  transform: scale(1.08);
 }
 
 .language__menu {
@@ -197,10 +204,6 @@ button {
   }
 }
 
-/* =========================
-   Menu content
-   ========================= */
-
 .mobile-navigation ul {
   display: flex;
   flex-direction: column;
@@ -253,10 +256,6 @@ button {
   color: var(--color-text-light);
 }
 
-/* =========================
-   Instagram mobile
-   ========================= */
-
 .mobile-navigation__social {
   margin-top: 1rem;
   padding-top: 1rem;
@@ -285,10 +284,6 @@ button {
   display: none;
 }
 
-/* =========================
-   Focus
-   ========================= */
-
 button:focus-visible,
 a:focus-visible {
   outline: 2px solid var(--color-accent);
@@ -296,7 +291,7 @@ a:focus-visible {
 }
 
 /* =========================
-   Tablet / Desktop
+   Tablet
    ========================= */
 
 @media (min-width: 48rem) {
@@ -322,7 +317,7 @@ a:focus-visible {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 1.2rem;
+    gap: 1.3rem;
 
     margin-right: 0.75rem;
   }
@@ -330,22 +325,56 @@ a:focus-visible {
   .desktop-navigation a {
     position: relative;
 
+    padding-block: 0.45rem;
+
     color: var(--color-text-primary);
 
     font-family: var(--font-family-body);
-    font-size: 0.72rem;
+    font-size: 0.78rem;
     font-weight: 400;
 
     text-decoration: none;
     white-space: nowrap;
+
+    transition: color var(--transition-fast);
   }
 
+  /*
+   * Animated underline for normal links.
+   * CTA and Instagram are excluded.
+   */
+  .desktop-navigation a:not(.cta):not(.desktop-navigation__instagram)::after {
+    content: '';
+
+    position: absolute;
+    right: 0;
+    bottom: 0.15rem;
+    left: 0;
+
+    height: 1px;
+
+    background-color: var(--color-accent);
+
+    transform: scaleX(0);
+    transform-origin: left center;
+
+    transition: transform var(--transition-fast);
+  }
+
+  .desktop-navigation a:not(.cta):not(.desktop-navigation__instagram):hover::after,
+  .desktop-navigation a:not(.cta):not(.desktop-navigation__instagram):focus-visible::after,
+  .desktop-navigation a.active:not(.cta):not(.desktop-navigation__instagram)::after {
+    transform: scaleX(1);
+  }
+
+  .desktop-navigation a:not(.cta):hover,
+  .desktop-navigation a:not(.cta):focus-visible,
   .desktop-navigation a.active:not(.cta) {
     color: var(--color-accent);
   }
 
   .desktop-navigation .cta {
-    padding: 0.55rem 0.85rem;
+    padding: 0.6rem 1rem;
 
     border: 1px solid var(--color-accent);
     border-radius: var(--border-radius-pill);
@@ -353,22 +382,118 @@ a:focus-visible {
     color: var(--color-accent);
 
     font-weight: 600;
+
+    transition:
+      background-color var(--transition-fast),
+      color var(--transition-fast),
+      border-color var(--transition-fast),
+      transform var(--transition-fast);
   }
 
   .desktop-navigation .cta:hover,
   .desktop-navigation .cta:focus-visible {
     background-color: var(--color-accent);
     color: var(--color-text-light);
+
+    transform: translateY(-1px);
+  }
+
+  .desktop-navigation__instagram {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0.4rem;
+
+    color: var(--color-text-primary);
+
+    transition:
+      color var(--transition-fast),
+      transform var(--transition-fast);
+  }
+
+  .desktop-navigation__instagram:hover,
+  .desktop-navigation__instagram:focus-visible {
+    color: var(--color-accent);
+
+    transform: translateY(-1px) scale(1.06);
+  }
+
+  .desktop-navigation__instagram svg {
+    width: 1.25rem;
+    height: 1.25rem;
   }
 }
 
+/* =========================
+   Desktop
+   ========================= */
+
 @media (min-width: 64rem) {
+  :host {
+    gap: 1rem;
+  }
+
   .desktop-navigation {
-    gap: 1.5rem;
+    gap: clamp(1.5rem, 1.8vw, 2.2rem);
+
+    margin-right: 0.4rem;
   }
 
   .desktop-navigation a {
-    font-size: 0.78rem;
+    /*
+     * Same font family as before.
+     * Only increasing the visual scale.
+     */
+    font-family: var(--font-family-body);
+    font-size: clamp(0.86rem, 0.82vw, 0.98rem);
+  }
+
+  .desktop-navigation .cta {
+    padding: 0.7rem 1.25rem;
+  }
+
+  .desktop-navigation__instagram {
+    padding: 0.45rem;
+  }
+
+  .desktop-navigation__instagram svg {
+    width: clamp(1.35rem, 1.25vw, 1.5rem);
+    height: clamp(1.35rem, 1.25vw, 1.5rem);
+  }
+
+  .language__toggle {
+    width: 2.8rem;
+    height: 2.8rem;
+  }
+
+  .language__icon {
+    width: 1.35rem;
+    height: 1.35rem;
+  }
+}
+
+/* =========================
+   Wide desktop
+   ========================= */
+
+@media (min-width: 90rem) {
+  .desktop-navigation {
+    gap: clamp(1.8rem, 2vw, 2.6rem);
+  }
+
+  .desktop-navigation a {
+    font-size: 0.95rem;
+  }
+
+  .desktop-navigation__instagram svg {
+    width: 1.45rem;
+    height: 1.45rem;
+  }
+
+  .language__icon {
+    width: 1.4rem;
+    height: 1.4rem;
   }
 }
 
@@ -382,7 +507,12 @@ a:focus-visible {
     animation-duration: 1ms;
   }
 
-  .menu-toggle__line {
+  .menu-toggle__line,
+  .desktop-navigation a,
+  .desktop-navigation a::after,
+  .desktop-navigation .cta,
+  .desktop-navigation__instagram,
+  .language__icon {
     transition-duration: 1ms;
   }
 }

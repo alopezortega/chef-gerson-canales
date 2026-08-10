@@ -1,35 +1,40 @@
 :host {
-  position: relative;
-  z-index: 100;
-
   display: block;
 
   background-color: var(--color-background-primary);
 }
 
 .header {
+  /*
+   * IMPORTANT:
+   * This establishes the positioning context for the
+   * absolute mobile navigation menu.
+   */
   position: relative;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.5rem;
+  gap: 1rem;
 
   width: 100%;
-  max-width: 26rem;
+  max-width: var(--container-wide-max-width);
   margin-inline: auto;
 
-  padding: 0.85rem 1rem;
+  padding: 0.85rem var(--page-padding);
 
   background-color: var(--color-background-primary);
 }
 
-.header__brand {
-  display: block;
-  flex: 0 1 auto;
+/* =========================
+   Brand
+   ========================= */
 
-  width: min(13rem, 65%);
-  min-width: 0;
+.header__brand {
+  display: inline-flex;
+  align-items: center;
+
+  flex: 0 0 auto;
 
   text-decoration: none;
 }
@@ -37,8 +42,11 @@
 .header__brand img {
   display: block;
 
-  width: 100%;
+  width: clamp(13.5rem, 55vw, 15rem);
   height: auto;
+
+  object-fit: contain;
+  object-position: left center;
 }
 
 /* =========================
@@ -47,13 +55,13 @@
 
 @media (min-width: 48rem) {
   .header {
-    max-width: 42rem;
+    gap: 1.5rem;
 
-    padding-inline: var(--page-padding);
+    padding: 1rem var(--page-padding);
   }
 
-  .header__brand {
-    width: 14rem;
+  .header__brand img {
+    width: 15rem;
   }
 }
 
@@ -63,12 +71,25 @@
 
 @media (min-width: 64rem) {
   .header {
-    max-width: var(--container-max-width);
+    gap: clamp(2rem, 3vw, 4rem);
 
-    padding-block: 1rem;
+    width: min(calc(100% - (var(--page-padding) * 2)), var(--container-wide-max-width));
+
+    padding: 1.15rem 0;
   }
 
-  .header__brand {
-    width: 16rem;
+  .header__brand img {
+    width: clamp(18rem, 19vw, 21rem);
+    max-width: none;
+  }
+}
+
+/* =========================
+   Wide desktop
+   ========================= */
+
+@media (min-width: 90rem) {
+  .header__brand img {
+    width: clamp(19rem, 18vw, 22rem);
   }
 }
