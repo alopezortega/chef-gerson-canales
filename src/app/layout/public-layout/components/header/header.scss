@@ -1,32 +1,95 @@
 :host {
   display: block;
+
+  background-color: var(--color-background-primary);
 }
 
-header {
+.header {
+  /*
+   * IMPORTANT:
+   * This establishes the positioning context for the
+   * absolute mobile navigation menu.
+   */
+  position: relative;
+
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  gap: var(--spacing-md);
+  gap: 1rem;
 
   width: 100%;
-  padding: var(--spacing-md);
+  max-width: var(--container-wide-max-width);
+  margin-inline: auto;
+
+  padding: 0.85rem var(--page-padding);
+
+  background-color: var(--color-background-primary);
 }
 
-a {
-  color: var(--color-text-primary);
-  font-size: 1.25rem;
-  font-weight: 700;
+/* =========================
+   Brand
+   ========================= */
+
+.header__brand {
+  display: inline-flex;
+  align-items: center;
+
+  flex: 0 0 auto;
+
   text-decoration: none;
-  white-space: nowrap;
 }
 
-app-header-navbar {
-  margin-left: auto;
+.header__brand img {
+  display: block;
+
+  width: clamp(13.5rem, 55vw, 15rem);
+  height: auto;
+
+  object-fit: contain;
+  object-position: left center;
 }
 
-@media (min-width: 768px) {
-  header {
-    align-items: center;
-    padding-inline: var(--spacing-lg);
+/* =========================
+   Tablet
+   ========================= */
+
+@media (min-width: 48rem) {
+  .header {
+    gap: 1.5rem;
+
+    padding: 1rem var(--page-padding);
+  }
+
+  .header__brand img {
+    width: 15rem;
+  }
+}
+
+/* =========================
+   Desktop
+   ========================= */
+
+@media (min-width: 64rem) {
+  .header {
+    gap: clamp(2rem, 3vw, 4rem);
+
+    width: min(calc(100% - (var(--page-padding) * 2)), var(--container-wide-max-width));
+
+    padding: 1.15rem 0;
+  }
+
+  .header__brand img {
+    width: clamp(18rem, 19vw, 21rem);
+    max-width: none;
+  }
+}
+
+/* =========================
+   Wide desktop
+   ========================= */
+
+@media (min-width: 90rem) {
+  .header__brand img {
+    width: clamp(19rem, 18vw, 22rem);
   }
 }

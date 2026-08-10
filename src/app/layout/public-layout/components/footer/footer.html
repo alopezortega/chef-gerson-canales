@@ -1,46 +1,89 @@
 <footer class="footer">
   <div class="footer__content">
-    <div class="footer__brand">
-      <a routerLink="/" [attr.aria-label]="'footer.brand.homeAriaLabel' | translate">
-        Gerson Canales
-      </a>
-
-      <p>
-        {{ 'footer.brand.description' | translate }}
-      </p>
-    </div>
-
-    <nav class="footer__navigation" [attr.aria-label]="'footer.navigation.ariaLabel' | translate">
-      <a routerLink="/servicios">
-        {{ 'footer.navigation.services' | translate }}
-      </a>
-
-      <a routerLink="/galeria">
-        {{ 'footer.navigation.gallery' | translate }}
-      </a>
-
-      <a routerLink="/solicitar-presupuesto">
-        {{ 'footer.navigation.quoteRequest' | translate }}
-      </a>
-
-      <a routerLink="/sobre-el-chef">
-        {{ 'footer.navigation.about' | translate }}
-      </a>
-    </nav>
-
-    <div class="footer__social">
+    <div class="footer__main">
       <a
-        href="https://www.instagram.com/gersontravel.chef/"
-        target="_blank"
-        rel="noopener noreferrer"
-        [attr.aria-label]="'footer.social.instagramAriaLabel' | translate"
+        class="footer__brand-link"
+        routerLink="/"
+        [attr.aria-label]="'footer.brand.homeAriaLabel' | translate"
       >
-        Instagram
-      </a>
-    </div>
-  </div>
+        <img
+          class="footer__logo footer__logo--mobile"
+          src="/images/brand/gerson-canales-logo.webp"
+          alt="Gerson Canales - Chef privado y catering"
+          loading="lazy"
+        />
 
-  <p class="footer__copyright">
-    {{ 'footer.copyright' | translate: { year: currentYear } }}
-  </p>
+        <img
+          class="footer__logo footer__logo--desktop"
+          src="/images/brand/gerson-canales-footer.png"
+          alt="Gerson Canales - Chef privado y catering"
+          loading="lazy"
+        />
+      </a>
+
+      <div class="footer__vertical-divider" aria-hidden="true"></div>
+
+      <nav class="footer__navigation" [attr.aria-label]="'footer.navigation.ariaLabel' | translate">
+        <a routerLink="/servicios">
+          {{ 'footer.navigation.services' | translate }}
+        </a>
+
+        <a routerLink="/galeria">
+          {{ 'footer.navigation.gallery' | translate }}
+        </a>
+
+        <a routerLink="/solicitar-presupuesto">
+          {{ 'footer.navigation.quoteRequest' | translate }}
+        </a>
+
+        <a routerLink="/sobre-el-chef">
+          {{ 'footer.navigation.about' | translate }}
+        </a>
+      </nav>
+
+      <div class="footer__social">
+        <a
+          href="https://www.instagram.com/gersontravel.chef/"
+          target="_blank"
+          rel="noopener noreferrer"
+          [attr.aria-label]="'footer.social.instagramAriaLabel' | translate"
+        >
+          <svg
+            class="footer__instagram-icon"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <rect
+              x="3"
+              y="3"
+              width="18"
+              height="18"
+              rx="5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+            />
+
+            <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8" />
+
+            <circle cx="17.4" cy="6.7" r="1" fill="currentColor" />
+          </svg>
+
+          <span class="footer__instagram-text">Instagram</span>
+          <span class="footer__external-icon" aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer__ornament-divider" aria-hidden="true">
+      <span class="footer__ornament-line"></span>
+
+      <img class="footer__ornament" src="/images/home/olivo2.png" alt="" loading="lazy" />
+
+      <span class="footer__ornament-line"></span>
+    </div>
+
+    <p class="footer__copyright">© {{ currentYear }} Gerson Canales</p>
+  </div>
 </footer>

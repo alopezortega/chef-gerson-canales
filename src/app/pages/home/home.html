@@ -1,119 +1,139 @@
-<section class="hero" aria-labelledby="hero-title">
-  <div class="hero__content">
-    <p class="hero__label">
-      {{ 'home.hero.label' | translate }}
-    </p>
+<section class="home-hero" aria-labelledby="home-hero-title">
+  <div class="home-hero__media">
+    <img
+      src="/images/home/hero-gastronomy.png"
+      alt="Plato gastronómico preparado para una experiencia privada"
+      fetchpriority="high"
+    />
+  </div>
 
-    <h1 id="hero-title">
-      {{ 'home.hero.title' | translate }}
+  <div class="home-hero__content">
+    <h1 id="home-hero-title">
+      <span>{{ 'home.hero.titleLine1' | translate }}</span>
+      <span>{{ 'home.hero.titleLine2' | translate }}</span>
     </h1>
 
-    <p class="hero__description">
+    <p class="home-hero__description">
       {{ 'home.hero.description' | translate }}
     </p>
 
-    <div class="hero__actions">
-      <a class="hero__primary-action" routerLink="/solicitar-presupuesto">
-        {{ 'home.hero.primaryAction' | translate }}
-      </a>
+    <a class="home-hero__action" routerLink="/solicitar-presupuesto">
+      {{ 'home.hero.primaryAction' | translate }}
+    </a>
+  </div>
+</section>
 
-      <a class="hero__secondary-action" routerLink="/servicios">
-        {{ 'home.hero.secondaryAction' | translate }}
-      </a>
+<section class="home-intro" aria-labelledby="home-intro-title">
+  <div class="home-intro__content">
+    <div class="home-intro__ornament-wrapper" aria-hidden="true">
+      <img class="home-intro__ornament" src="/images/home/olivo-home.png" alt="" loading="lazy" />
+    </div>
+
+    <div class="home-intro__copy">
+      <h2 id="home-intro-title">
+        {{ 'home.intro.title' | translate }}
+      </h2>
+
+      <p>
+        {{ 'home.intro.description' | translate }}
+      </p>
     </div>
   </div>
 </section>
 
-<section class="value-proposition" aria-labelledby="value-proposition-title">
-  <div class="value-proposition__content">
-    <p class="value-proposition__label">
-      {{ 'home.valueProposition.label' | translate }}
-    </p>
+<section class="home-services" aria-labelledby="home-services-title">
+  <h2 id="home-services-title" class="sr-only">
+    {{ 'home.featuredServices.sectionTitle' | translate }}
+  </h2>
 
-    <h2 id="value-proposition-title">
-      {{ 'home.valueProposition.title' | translate }}
-    </h2>
+  @let services = 'home.featuredServices.items' | translate;
 
-    <div class="value-proposition__items">
-      <article class="value-proposition__item">
-        <h3>
-          {{ 'home.valueProposition.items.personalized.title' | translate }}
-        </h3>
-
-        <p>
-          {{ 'home.valueProposition.items.personalized.description' | translate }}
-        </p>
-      </article>
-
-      <article class="value-proposition__item">
-        <h3>
-          {{ 'home.valueProposition.items.professionalExperience.title' | translate }}
-        </h3>
-
-        <p>
-          {{ 'home.valueProposition.items.professionalExperience.description' | translate }}
-        </p>
-      </article>
-
-      <article class="value-proposition__item">
-        <h3>
-          {{ 'home.valueProposition.items.privateAndCorporate.title' | translate }}
-        </h3>
-
-        <p>
-          {{ 'home.valueProposition.items.privateAndCorporate.description' | translate }}
-        </p>
-      </article>
-    </div>
-  </div>
-</section>
-
-<section class="featured-services" aria-labelledby="featured-services-title">
-  <div class="featured-services__content">
-    <p class="featured-services__label">
-      {{ 'home.featuredServices.label' | translate }}
-    </p>
-
-    <h2 id="featured-services-title">
-      {{ 'home.featuredServices.title' | translate }}
-    </h2>
-
-    @let services = 'home.featuredServices.items' | translate;
-
-    @if (services && services !== 'home.featuredServices.items') {
-      <div class="featured-services__grid">
-        @for (service of services; track service.id) {
-          <article class="featured-services__item">
+  @if (services && services !== 'home.featuredServices.items') {
+    <div class="home-services__list">
+      @for (service of services.slice(0, 3); track service.id) {
+        <article class="home-service-card">
+          <div class="home-service-card__text">
             <h3>{{ service.title }}</h3>
 
             <p>{{ service.description }}</p>
+          </div>
 
-            <a routerLink="/servicios">
-              {{ 'home.featuredServices.action' | translate }}
-            </a>
-          </article>
-        }
-      </div>
-    }
+          <div class="home-service-card__media">
+            <img [src]="service.image" [alt]="service.title" loading="lazy" />
+          </div>
+        </article>
+      }
+    </div>
+  }
+</section>
+
+<section class="home-about-preview" aria-labelledby="home-about-preview-title">
+  <div class="home-about-preview__media">
+    <img
+      src="/images/about/chef-gerson-portrait.png"
+      [alt]="'about.hero.imageAlt' | translate"
+      loading="lazy"
+    />
+  </div>
+
+  <div class="home-about-preview__content">
+    <div class="home-about-preview__eyebrow">
+      <span>
+        {{ 'home.aboutPreview.label' | translate }}
+      </span>
+
+      <img
+        class="home-about-preview__ornament"
+        src="/images/ui/olive-sprig.png"
+        alt=""
+        aria-hidden="true"
+      />
+    </div>
+
+    <h2 id="home-about-preview-title">
+      {{ 'home.aboutPreview.title' | translate }}
+    </h2>
+
+    <p>
+      {{ 'home.aboutPreview.description' | translate }}
+    </p>
+
+    <a class="home-about-preview__action" routerLink="/sobre-el-chef">
+      {{ 'home.aboutPreview.action' | translate }}
+
+      <span aria-hidden="true">→</span>
+    </a>
   </div>
 </section>
 
-<section class="quote-cta" aria-labelledby="quote-cta-title">
-  <div class="quote-cta__content">
-    <p class="quote-cta__label">
-      {{ 'home.quoteCta.label' | translate }}
-    </p>
+<section class="home-cta" aria-labelledby="home-cta-title">
+  <img
+    class="home-cta__olive home-cta__olive--left"
+    src="/images/home/olivo1.png"
+    alt=""
+    aria-hidden="true"
+    loading="lazy"
+  />
 
-    <h2 id="quote-cta-title">
+  <div class="home-cta__content">
+    <h2 id="home-cta-title">
       {{ 'home.quoteCta.title' | translate }}
     </h2>
 
-    <p class="quote-cta__description">
+    <p>
       {{ 'home.quoteCta.description' | translate }}
     </p>
 
-    <a class="quote-cta__action" routerLink="/solicitar-presupuesto">
+    <a class="home-cta__action" routerLink="/solicitar-presupuesto">
       {{ 'home.quoteCta.action' | translate }}
     </a>
   </div>
+
+  <img
+    class="home-cta__olive home-cta__olive--right"
+    src="/images/home/olivo3.png"
+    alt=""
+    aria-hidden="true"
+    loading="lazy"
+  />
 </section>

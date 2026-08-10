@@ -1,11 +1,14 @@
 {
   "home": {
     "hero": {
-      "label": "Chef Gerson Canales",
-      "title": "Dining experiences designed for every occasion",
-      "description": "Private and corporate catering tailored to each occasion.",
-      "primaryAction": "Request a quote",
-      "secondaryAction": "View experiences"
+      "titleLine1": "An experience",
+      "titleLine2": "around the table.",
+      "description": "Private chef and tailored catering for moments that deserve to be extraordinary.",
+      "primaryAction": "Book an experience"
+    },
+    "intro": {
+      "title": "Cooking with purpose",
+      "description": "Every menu tells a story. We work with thoughtful ingredients, technique and sensitivity to create authentic, elegant and memorable experiences."
     },
     "valueProposition": {
       "label": "An experience designed for you",
@@ -28,45 +31,41 @@
     "featuredServices": {
       "label": "Featured experiences",
       "title": "A tailored proposal for every type of gathering",
+      "sectionTitle": "Featured experiences",
       "action": "View experience",
+      "viewAll": "View all experiences",
       "items": [
         {
           "id": "private-dinners",
-          "title": "Private dinners at home",
-          "description": "A personalized dining experience in an intimate and carefully prepared setting."
+          "title": "Private dining",
+          "description": "Intimate, personalized experiences in the comfort of your home.",
+          "image": "/images/home/private-dining.png"
         },
         {
-          "id": "family-celebrations",
-          "title": "Family celebrations",
-          "description": "Tailored proposals for birthdays, anniversaries and special gatherings."
+          "id": "events-celebrations",
+          "title": "Events & celebrations",
+          "description": "Tailored menus designed for social and corporate events.",
+          "image": "/images/home/events-celebrations.png"
         },
         {
-          "id": "corporate-events",
-          "title": "Small corporate events",
-          "description": "Dining services for team meetings, presentations and professional gatherings."
-        },
-        {
-          "id": "meeting-catering",
-          "title": "Catering for meetings and gatherings",
-          "description": "Flexible options for small groups, adapted to the venue and type of event."
-        },
-        {
-          "id": "gastronomic-workshops",
-          "title": "Cooking workshops and experiences",
-          "description": "Interactive activities designed to learn, cook and enjoy as a group."
-        },
-        {
-          "id": "custom-menus",
-          "title": "Custom menus",
-          "description": "Menus created around the preferences, needs and characteristics of each occasion."
+          "id": "custom-catering",
+          "title": "Tailored catering",
+          "description": "Bespoke proposals combining savoury cuisine, pastry and thoughtful sweet details to create a complete dining experience.",
+          "image": "/images/home/custom-catering.png"
         }
       ]
     },
+    "aboutPreview": {
+      "label": "About me",
+      "title": "Passion, technique and dedication in every detail.",
+      "description": "My cooking is rooted in origin, honesty and a contemporary approach.",
+      "action": "Discover my story"
+    },
     "quoteCta": {
-      "label": "Tell us about your idea",
-      "title": "Let us design a tailored dining experience together",
-      "description": "Share the details of your event and we will prepare a proposal adapted to your needs.",
-      "action": "Request a quote"
+      "label": "Tell me your idea",
+      "title": "Let's talk about your next experience.",
+      "description": "Let's create unforgettable moments together.",
+      "action": "Contact"
     }
   },
   "navigation": {
@@ -80,7 +79,7 @@
     "links": {
       "services": "Private chef & catering",
       "gallery": "Gallery",
-      "quoteRequest": "Request a quote",
+      "quoteRequest": "Contact",
       "about": "About the chef"
     }
   },
@@ -93,7 +92,7 @@
       "ariaLabel": "Footer navigation",
       "services": "Private chef & catering",
       "gallery": "Gallery",
-      "quoteRequest": "Request a quote",
+      "quoteRequest": "Contact",
       "about": "About the chef"
     },
     "social": {
@@ -176,10 +175,10 @@
       "action": "View experiences"
     },
     "quoteCta": {
-      "label": "Tell us about your idea",
+      "label": "Tell me your idea",
       "title": "Are you planning an event?",
       "description": "Share the details of your celebration or gathering and let us prepare a dining proposal tailored to your needs.",
-      "action": "Request a quote"
+      "action": "Contact"
     }
   },
   "services": {
@@ -211,7 +210,7 @@
         {
           "id": "meeting-catering",
           "title": "Meeting catering",
-          "description": "Flexible formats for small groups, adapted to the venue and the needs of the event."
+          "description": "Flexible formats for small groups, with savoury and sweet options adapted to the venue and the needs of the event."
         },
         {
           "id": "gastronomic-workshops",
@@ -221,7 +220,7 @@
         {
           "id": "custom-menus",
           "title": "Custom menus",
-          "description": "Proposals designed around the preferences, needs and characteristics of every occasion."
+          "description": "Proposals designed around the preferences and characteristics of each occasion, including pastry when it forms part of the experience."
         }
       ]
     },
@@ -250,7 +249,7 @@
       "label": "Let us talk about your event",
       "title": "Do you have a celebration or gathering in mind?",
       "description": "Share the details and we will prepare a proposal tailored to your needs.",
-      "action": "Request a quote"
+      "action": "Contact"
     },
     "document": {
       "loading": "Checking available document...",

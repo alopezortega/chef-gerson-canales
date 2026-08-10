@@ -1,11 +1,14 @@
 {
   "home": {
     "hero": {
-      "label": "Chef Gerson Canales",
-      "title": "Experiencias gastronómicas diseñadas para cada ocasión",
-      "description": "Catering y eventos privados o corporativos con una propuesta personalizada.",
-      "primaryAction": "Solicitar presupuesto",
-      "secondaryAction": "Ver experiencias"
+      "titleLine1": "Una experiencia",
+      "titleLine2": "alrededor de la mesa.",
+      "description": "Chef privado y catering personalizado para momentos que merecen ser extraordinarios.",
+      "primaryAction": "Reservar una experiencia"
+    },
+    "intro": {
+      "title": "Cocina con propósito",
+      "description": "Cada menú es una historia. Trabajamos con ingredientes de origen, técnica y sensibilidad para crear experiencias auténticas, elegantes y memorables."
     },
     "valueProposition": {
       "label": "Una experiencia pensada para ti",
@@ -26,47 +29,39 @@
       }
     },
     "featuredServices": {
-      "label": "Experiencias destacadas",
-      "title": "Una propuesta para cada tipo de encuentro",
-      "action": "Ver experiencia",
+      "sectionTitle": "Experiencias destacadas",
       "items": [
         {
           "id": "private-dinners",
-          "title": "Cenas privadas en casa",
-          "description": "Una experiencia gastronómica personalizada en un entorno íntimo y cuidado."
+          "title": "Cenas privadas",
+          "description": "Experiencias íntimas y personalizadas en la comodidad de tu hogar.",
+          "image": "/images/home/private-dining.png"
         },
         {
-          "id": "family-celebrations",
-          "title": "Celebraciones familiares",
-          "description": "Propuestas adaptadas para cumpleaños, aniversarios y encuentros especiales."
+          "id": "events-celebrations",
+          "title": "Eventos & celebraciones",
+          "description": "Diseñamos menús a la medida para eventos sociales y corporativos.",
+          "image": "/images/home/events-celebrations.png"
         },
         {
-          "id": "corporate-events",
-          "title": "Eventos corporativos pequeños",
-          "description": "Servicios gastronómicos para reuniones de equipo, presentaciones y encuentros profesionales."
-        },
-        {
-          "id": "meeting-catering",
-          "title": "Catering para reuniones y encuentros",
-          "description": "Opciones flexibles para grupos reducidos, adaptadas al espacio y al tipo de evento."
-        },
-        {
-          "id": "gastronomic-workshops",
-          "title": "Talleres y experiencias gastronómicas",
-          "description": "Actividades participativas para aprender, cocinar y disfrutar en grupo."
-        },
-        {
-          "id": "custom-menus",
-          "title": "Menús personalizados",
-          "description": "Propuestas creadas según los gustos, las necesidades y las características de cada ocasión."
+          "id": "custom-catering",
+          "title": "Catering personalizado",
+          "description": "Propuestas a medida que combinan cocina salada, repostería y pequeños detalles dulces para crear una experiencia completa.",
+          "image": "/images/home/custom-catering.png"
         }
       ]
     },
+    "aboutPreview": {
+      "label": "Sobre mí",
+      "title": "Pasión, técnica y dedicación en cada detalle.",
+      "description": "Mi cocina es de origen, honesta y contemporánea.",
+      "action": "Conoce mi historia"
+    },
     "quoteCta": {
-      "label": "Cuéntanos tu idea",
-      "title": "Diseñemos juntos una experiencia gastronómica a medida",
-      "description": "Comparte los detalles de tu evento y prepararemos una propuesta adaptada a tus necesidades.",
-      "action": "Solicitar presupuesto"
+      "label": "Cuéntame tu idea",
+      "title": "Hablemos de tu próxima experiencia.",
+      "description": "Creamos juntos momentos inolvidables.",
+      "action": "Contactar"
     }
   },
   "navigation": {
@@ -80,7 +75,7 @@
     "links": {
       "services": "Chef privado & catering",
       "gallery": "Galería",
-      "quoteRequest": "Solicitar presupuesto",
+      "quoteRequest": "Contacto",
       "about": "Sobre el chef"
     }
   },
@@ -93,7 +88,7 @@
       "ariaLabel": "Navegación del pie de página",
       "services": "Chef privado & catering",
       "gallery": "Galería",
-      "quoteRequest": "Solicitar presupuesto",
+      "quoteRequest": "Contacto",
       "about": "Sobre el chef"
     },
     "social": {
@@ -176,10 +171,10 @@
       "action": "Ver experiencias"
     },
     "quoteCta": {
-      "label": "Cuéntanos tu idea",
+      "label": "Cuéntame tu idea",
       "title": "¿Estás organizando un evento?",
       "description": "Comparte los detalles de tu celebración o encuentro y preparemos una propuesta gastronómica adaptada a tus necesidades.",
-      "action": "Solicitar presupuesto"
+      "action": "Contactar"
     }
   },
   "services": {
@@ -211,7 +206,7 @@
         {
           "id": "meeting-catering",
           "title": "Catering para reuniones",
-          "description": "Formatos flexibles para grupos reducidos, adaptados al espacio y a las necesidades del evento."
+          "description": "Formatos flexibles para grupos reducidos, con propuestas saladas y dulces adaptadas al espacio y a las necesidades del evento."
         },
         {
           "id": "gastronomic-workshops",
@@ -221,7 +216,7 @@
         {
           "id": "custom-menus",
           "title": "Menús personalizados",
-          "description": "Propuestas creadas según los gustos, las necesidades y las características de cada ocasión."
+          "description": "Propuestas creadas según los gustos y las características de cada ocasión, incluyendo repostería cuando forma parte de la experiencia."
         }
       ]
     },
@@ -250,7 +245,7 @@
       "label": "Hablemos de tu evento",
       "title": "¿Tienes una celebración o encuentro en mente?",
       "description": "Cuéntanos los detalles y prepararemos una propuesta adaptada a tus necesidades.",
-      "action": "Solicitar presupuesto"
+      "action": "Contactar"
     },
     "document": {
       "loading": "Comprobando documento disponible...",
