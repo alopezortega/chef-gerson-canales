@@ -2,8 +2,12 @@
   display: block;
 }
 
+/* =========================
+   Mobile
+   ========================= */
+
 .footer {
-  padding: 1.5rem 1rem;
+  padding: 1.75rem 1rem 1.25rem;
 
   background-color: var(--color-background-primary);
   color: var(--color-text-primary);
@@ -15,6 +19,11 @@
   margin-inline: auto;
 }
 
+.footer__main {
+  display: flex;
+  flex-direction: column;
+}
+
 /* =========================
    Brand
    ========================= */
@@ -22,7 +31,7 @@
 .footer__brand-link {
   display: block;
 
-  margin-bottom: 1.4rem;
+  margin-bottom: 1.75rem;
 
   text-decoration: none;
 }
@@ -30,10 +39,25 @@
 .footer__logo {
   display: block;
 
-  width: 100%;
-  max-width: 24rem;
   height: auto;
   margin-inline: auto;
+}
+
+.footer__logo--mobile {
+  width: 100%;
+  max-width: 23rem;
+}
+
+.footer__logo--desktop {
+  display: none;
+}
+
+/* =========================
+   Desktop-only divider
+   ========================= */
+
+.footer__vertical-divider {
+  display: none;
 }
 
 /* =========================
@@ -45,7 +69,7 @@
   flex-direction: column;
   gap: 1.15rem;
 
-  margin-bottom: 2rem;
+  margin-bottom: 1.8rem;
 }
 
 .footer__navigation a {
@@ -128,16 +152,15 @@
 }
 
 .footer__external-icon {
-  margin-left: 0.1rem;
-
   font-size: 0.95rem;
-
-  transition: transform var(--transition-fast);
 }
 
-.footer__social a:hover .footer__external-icon,
-.footer__social a:focus-visible .footer__external-icon {
-  transform: translate(0.15rem, -0.15rem);
+/* =========================
+   Ornament divider
+   ========================= */
+
+.footer__ornament-divider {
+  display: none;
 }
 
 /* =========================
@@ -172,7 +195,7 @@
     max-width: 42rem;
   }
 
-  .footer__logo {
+  .footer__logo--mobile {
     max-width: 25rem;
   }
 
@@ -193,15 +216,193 @@
    ========================= */
 
 @media (min-width: 64rem) {
-  .footer__content {
-    max-width: 52rem;
+  .footer {
+    width: min(calc(100% - (var(--page-padding) * 2)), var(--container-max-width));
+
+    margin-inline: auto;
+    padding: 0;
+
+    background-color: var(--color-background-dark);
+    color: var(--color-text-light);
   }
 
-  .footer__logo {
-    max-width: 27rem;
+  .footer__content {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+
+    padding: clamp(2rem, 2.8vw, 2.8rem) clamp(2.5rem, 4vw, 4.5rem) 1rem;
   }
+
+  /* =========================
+     Main row
+     ========================= */
+
+  .footer__main {
+    display: grid;
+    grid-template-columns:
+      minmax(20rem, 1.15fr)
+      1px
+      minmax(0, 2fr)
+      auto;
+
+    align-items: center;
+    gap: clamp(1.75rem, 2.7vw, 3.5rem);
+
+    width: 100%;
+    min-height: 7rem;
+  }
+
+  /* =========================
+     Brand desktop
+     ========================= */
+
+  .footer__brand-link {
+    display: flex;
+    align-items: center;
+
+    margin: 0;
+  }
+
+  .footer__logo--mobile {
+    display: none;
+  }
+
+  .footer__logo--desktop {
+    display: block;
+
+    width: clamp(19rem, 21vw, 23rem);
+    max-width: 100%;
+    height: auto;
+    margin: 0;
+
+    object-fit: contain;
+    object-position: left center;
+  }
+
+  /* =========================
+     Vertical divider
+     ========================= */
+
+  .footer__vertical-divider {
+    display: block;
+
+    width: 1px;
+    height: clamp(5rem, 5.5vw, 6rem);
+
+    background-color: rgba(247, 244, 238, 0.45);
+  }
+
+  /* =========================
+     Navigation
+     ========================= */
 
   .footer__navigation {
-    gap: 2.5rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(1.6rem, 2.1vw, 2.8rem);
+
+    margin: 0;
+  }
+
+  .footer__navigation a {
+    color: var(--color-text-light);
+
+    font-size: clamp(0.78rem, 0.78vw, 0.9rem);
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: 0.055em;
+
+    white-space: nowrap;
+  }
+
+  .footer__navigation a:hover,
+  .footer__navigation a:focus-visible {
+    color: var(--color-accent);
+  }
+
+  /* =========================
+     Instagram
+     ========================= */
+
+  .footer__social {
+    margin: 0;
+  }
+
+  .footer__social a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    color: var(--color-text-light);
+  }
+
+  .footer__instagram-icon {
+    width: clamp(1.35rem, 1.35vw, 1.55rem);
+    height: clamp(1.35rem, 1.35vw, 1.55rem);
+  }
+
+  .footer__instagram-text,
+  .footer__external-icon {
+    display: none;
+  }
+
+  /* =========================
+     Horizontal ornament
+     ========================= */
+
+  .footer__ornament-divider {
+    display: grid;
+    grid-template-columns:
+      minmax(0, 1fr)
+      auto
+      minmax(0, 1fr);
+
+    align-items: center;
+    gap: clamp(1.25rem, 2vw, 2rem);
+
+    width: 100%;
+    margin-top: clamp(1.5rem, 2vw, 2rem);
+  }
+
+  .footer__ornament-line {
+    display: block;
+
+    width: 100%;
+    height: 1px;
+
+    background-color: rgba(247, 244, 238, 0.28);
+  }
+
+  .footer__ornament {
+    display: block;
+
+    width: clamp(4.25rem, 4.8vw, 5.5rem);
+    height: auto;
+
+    object-fit: contain;
+
+    opacity: 0.85;
+  }
+
+  /* =========================
+     Copyright
+     ========================= */
+
+  .footer__copyright {
+    margin: 0.75rem 0 0;
+    padding: 0;
+
+    border: 0;
+
+    color: rgba(247, 244, 238, 0.48);
+
+    font-size: 0.62rem;
+    letter-spacing: 0.02em;
+
+    text-align: center;
   }
 }
