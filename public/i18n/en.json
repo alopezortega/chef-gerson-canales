@@ -102,22 +102,102 @@
   },
   "gallery": {
     "label": "Gallery",
-    "title": "Dining moments and experiences",
-    "description": "A selection of dishes, private events and culinary experiences.",
+    "title": "Moments to savour",
+    "description": "Every experience is unique. Thoughtful ingredients, technique, sensitivity and hospitality come together to create memories that last beyond the table.",
     "empty": "There are no images available yet.",
+    "stories": {
+      "label": "Around the table",
+      "title": "Cuisine that tells stories",
+      "description": "From intimate dinners to special celebrations, every detail is designed to surprise, connect and turn the table into a memorable experience."
+    },
+    "details": {
+      "label": "The finishing touch",
+      "title": "Details that make the difference",
+      "description": "Careful presentation, seasonal ingredients and a refined aesthetic that celebrates the beauty of simplicity."
+    },
+    "craft": {
+      "label": "Behind every dish",
+      "title": "The craft in motion",
+      "description": "Fire, technique, ingredients and precision come together in the kitchen before each plate reaches the table."
+    },
     "items": {
-      "privateDinner": {
-        "title": "Private dinner",
-        "alt": "Table prepared for a private dinner"
+      "searedFish": {
+        "title": "Seared fish",
+        "alt": "Seared fish dish with seasonal garnish in a warm candlelit setting"
       },
-      "privateEvent": {
-        "title": "Private event",
-        "alt": "Dining service prepared for a private event"
+      "ravioliPlate": {
+        "title": "Ravioli",
+        "alt": "Ravioli served with a creamy sauce and fresh herbs"
       },
-      "cookingWorkshop": {
-        "title": "Cooking workshop",
-        "alt": "Participants enjoying a cooking workshop"
+      "candlelitTable": {
+        "title": "Candlelit table",
+        "alt": "Elegant table prepared for an intimate candlelit dinner"
+      },
+      "chefPlating": {
+        "title": "Plating",
+        "alt": "Chef carefully finishing the presentation of a dish"
+      },
+      "candlelitDinner": {
+        "title": "Private dining",
+        "alt": "Warm private dining table prepared with candles and floral details"
+      },
+      "meringueDessert": {
+        "title": "Meringue dessert",
+        "alt": "Toasted meringue dessert presented on an elegant ceramic plate"
+      },
+      "chocolateCaramelDessert": {
+        "title": "Chocolate dessert",
+        "alt": "Chocolate dessert with golden caramel presented on an elegant plate"
+      },
+      "chocolateSphereDessert": {
+        "title": "Chocolate sphere",
+        "alt": "Chocolate sphere dessert with cocoa crumble and delicate gold detail"
+      },
+      "chefFlambe": {
+        "title": "Cooking with fire",
+        "alt": "Gerson Canales cooking over an open flame in a professional kitchen"
+      },
+      "gourmetSirloinPlate": {
+        "title": "Gourmet sirloin",
+        "alt": "Gourmet sirloin dish plated with purée, sauce and microgreens"
+      },
+      "lambRack": {
+        "title": "Lamb",
+        "alt": "Roasted lamb rack plated with vegetables, herbs and sauce"
+      },
+      "salmonCanapes": {
+        "title": "Salmon canapés",
+        "alt": "Salmon canapés finished with roe and fresh microgreens"
+      },
+      "citrusTart": {
+        "title": "Citrus tart",
+        "alt": "Citrus tart finished with cream, orange segments, edible flowers and a delicate citrus garnish"
+      },
+      "pastryPiping": {
+        "title": "Pastry in progress",
+        "alt": "Hands carefully piping cream onto an individual pastry in warm kitchen light"
+      },
+      "elegantDinnerTable": {
+        "title": "Celebration table",
+        "alt": "Elegant dining table prepared with flowers, candles and a plated dish for a special celebration"
+      },
+      "beetrootSalad": {
+        "title": "Seasonal vegetables",
+        "alt": "Refined beetroot and seasonal vegetable dish with fresh leaves and creamy elements"
+      },
+      "chefFinishingDish": {
+        "title": "Final touch",
+        "alt": "Gerson Canales carefully finishing a plated dish in a professional kitchen"
+      },
+      "petitFours": {
+        "title": "Petit fours",
+        "alt": "Selection of handcrafted petit fours and small desserts presented on an elegant ceramic plate"
       }
+    },
+    "finalChapter": {
+      "label": "The final detail",
+      "title": "A finish to remember",
+      "description": "Pastry, seasonal ingredients and thoughtful finishing touches complete the experience with the same care given to every savoury dish."
     }
   },
   "about": {
