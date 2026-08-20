@@ -1,9 +1,10 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { provideRouter } from "@angular/router";
+import { provideTranslateService } from "@ngx-translate/core";
 
-import { GalleryComponent } from './gallery';
-import { provideTranslateService } from '@ngx-translate/core';
+import { GalleryComponent } from "./gallery";
 
-describe('Gallery', () => {
+describe("Gallery", () => {
   let component: GalleryComponent;
   let fixture: ComponentFixture<GalleryComponent>;
 
@@ -11,28 +12,30 @@ describe('Gallery', () => {
     await TestBed.configureTestingModule({
       imports: [GalleryComponent],
       providers: [
+        provideRouter([]),
         provideTranslateService({
-          lang: 'es',
-          fallbackLang: 'es',
+          lang: "es",
+          fallbackLang: "es",
         }),
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(GalleryComponent);
     component = fixture.componentInstance;
+
+    fixture.detectChanges();
     await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render all gallery items', async () => {
-    fixture.detectChanges();
-    await fixture.whenStable();
+  it("should render all gallery images", () => {
+    const galleryImages = fixture.nativeElement.querySelectorAll(
+      ".gallery .gallery__image",
+    );
 
-    const galleryItems = fixture.nativeElement.querySelectorAll('.gallery__item');
-
-    expect(galleryItems.length).toBe(3);
+    expect(galleryImages.length).toBe(18);
   });
 });
