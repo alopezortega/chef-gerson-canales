@@ -123,23 +123,70 @@
   "about": {
     "hero": {
       "label": "About the chef",
-      "title": "Cuisine designed to bring people together, share and enjoy",
-      "description": "A professional and approachable dining proposal tailored to every celebration, private gathering or corporate event.",
-      "imageAlt": "Chef Gerson Canales preparing a dining experience"
+      "title": "Gerson Canales",
+      "description": "I cook to create connections and moments that stay with you.",
+      "imageAlt": "Portrait of chef Gerson Canales in a professional kitchen"
     },
-    "introduction": {
-      "label": "Meet Gerson",
-      "title": "Every event begins by listening to the client's idea",
-      "paragraphs": [
+    "origins": {
+      "label": "My origins",
+      "title": "From Honduras to Spain",
+      "description": "My journey in the kitchen began in Honduras, where I discovered the value of ingredients, hospitality and consistent hard work. In Spain, I continued learning, expanded my experience and confirmed that cooking is also a way of caring for others.",
+      "imageAlt": "Gerson Canales during a personal moment in his journey"
+    },
+    "journey": {
+      "label": "My journey",
+      "title": "Places that taught me to see the world differently",
+      "description": "Travelling, working and learning across different cultures has shaped the way I understand cooking.",
+      "items": [
         {
-          "id": "personalized-experience",
-          "text": "Gerson sees cooking as a way to bring people together and create special moments around a table."
+          "id": "sicily",
+          "title": "Sicily",
+          "description": "Tradition, ingredients and the Mediterranean.",
+          "image": "/images/about/gerson-sicily-coast.png",
+          "alt": "Gerson Canales during a trip through Sicily"
         },
         {
-          "id": "event-adaptation",
-          "text": "Each proposal considers the type of event, the venue, the number of guests and the individual needs of every client."
+          "id": "iceland",
+          "title": "Iceland",
+          "description": "Nature, experience and new perspectives.",
+          "image": "/images/about/gerson-iceland-harbor.png",
+          "alt": "Gerson Canales at a harbour in Iceland"
+        },
+        {
+          "id": "mozambique",
+          "title": "Mozambique",
+          "description": "People, ingredients and cooperation.",
+          "image": "/images/about/gerson-mozambique-community.png",
+          "alt": "Gerson Canales sharing a moment with children in Mozambique"
         }
       ]
+    },
+    "story": {
+      "ariaLabel": "Gerson Canales' professional journey",
+      "craft": {
+        "label": "My craft",
+        "title": "Cooking means understanding the ingredients and every detail",
+        "description": "Technique, order and passion in service of flavour. I work with real, seasonal ingredients, treated with respect and brought to their best expression in every dish.",
+        "imageAlt": "Gerson Canales finishing several dishes during a service"
+      },
+      "pastry": {
+        "label": "Pastry",
+        "title": "Sweet creations are also part of my story",
+        "description": "Pastry is where balance begins. Textures, memories and small pleasures that complete the experience.",
+        "imageAlt": "Dessert created as part of Gerson Canales' culinary proposal"
+      },
+      "teaching": {
+        "label": "Teaching and sharing",
+        "title": "To teach is to multiply",
+        "description": "I enjoy teaching, sharing knowledge and helping other cooks grow. Because when someone learns, we all move forward.",
+        "imageAlt": "Gerson Canales working alongside another cook during a service"
+      },
+      "table": {
+        "label": "Around the table",
+        "title": "More than a dinner, an experience",
+        "description": "I create personalized dining experiences for celebrations, gatherings and special moments that leave a lasting impression.",
+        "imageAlt": "Table prepared for a private dining experience"
+      }
     },
     "philosophy": {
       "label": "Work philosophy",

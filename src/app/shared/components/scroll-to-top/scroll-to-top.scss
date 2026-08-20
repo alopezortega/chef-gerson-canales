@@ -52,8 +52,6 @@
 
 @media (min-width: 48rem) {
   .scroll-top {
-    left: auto;
-    right: 2rem;
-    bottom: 2rem;
+    display: none;
   }
 }
