@@ -1,5 +1,16 @@
 <main class="about-page">
   <section class="about-hero" aria-labelledby="about-hero-title">
+    <figure class="about-hero__media">
+      <img
+        class="about-hero__image"
+        src="/images/about/gerson-canales-about-hero.png"
+        [alt]="'about.hero.imageAlt' | translate"
+        loading="eager"
+      />
+    </figure>
+
+    <div class="about-hero__overlay" aria-hidden="true"></div>
+
     <div class="about-hero__content">
       <p class="about-hero__label">
         {{ 'about.hero.label' | translate }}
@@ -12,123 +23,184 @@
       <p class="about-hero__description">
         {{ 'about.hero.description' | translate }}
       </p>
-    </div>
 
-    <figure class="about-hero__media">
-      <img
-        src="/images/about/chef-gerson-portrait.png"
-        [alt]="'about.hero.imageAlt' | translate"
-        loading="lazy"
-      />
-    </figure>
+      <span class="about-hero__accent" aria-hidden="true"></span>
+    </div>
   </section>
 
-  <section class="about-introduction" aria-labelledby="about-introduction-title">
-    <header class="about-introduction__header">
-      <p class="about-introduction__label">
-        {{ 'about.introduction.label' | translate }}
+  <section class="about-origins" aria-labelledby="about-origins-title">
+    <div class="about-origins__layout">
+      <figure class="about-origins__media">
+        <img
+          class="about-origins__image"
+          src="/images/about/gerson-origins-personal.png"
+          [alt]="'about.origins.imageAlt' | translate"
+          loading="lazy"
+        />
+      </figure>
+
+      <div class="about-origins__content">
+        <p class="about-origins__label">
+          {{ 'about.origins.label' | translate }}
+        </p>
+
+        <h2 id="about-origins-title" class="about-origins__title">
+          {{ 'about.origins.title' | translate }}
+        </h2>
+
+        <p class="about-origins__description">
+          {{ 'about.origins.description' | translate }}
+        </p>
+
+        <span class="about-origins__accent" aria-hidden="true"></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-journey" aria-labelledby="about-journey-title">
+    <div class="about-journey__intro">
+      <p class="about-journey__label">
+        {{ 'about.journey.label' | translate }}
       </p>
 
-      <h2 id="about-introduction-title" class="about-introduction__title">
-        {{ 'about.introduction.title' | translate }}
+      <h2 id="about-journey-title" class="about-journey__title">
+        {{ 'about.journey.title' | translate }}
       </h2>
-    </header>
 
-    @let introductionParagraphs = 'about.introduction.paragraphs' | translate;
+      <p class="about-journey__description">
+        {{ 'about.journey.description' | translate }}
+      </p>
+    </div>
 
-    @if (introductionParagraphs && introductionParagraphs !== 'about.introduction.paragraphs') {
-      <div class="about-introduction__content">
-        @for (paragraph of introductionParagraphs; track paragraph.id) {
-          <p>{{ paragraph.text }}</p>
+    @let aboutJourneyItems = 'about.journey.items' | translate;
+
+    @if (aboutJourneyItems && aboutJourneyItems !== 'about.journey.items') {
+      <div class="about-journey__grid">
+        @for (journeyItem of aboutJourneyItems; track journeyItem.id) {
+          <article class="about-journey__card">
+            <figure class="about-journey__card-media">
+              <img
+                class="about-journey__card-image"
+                [src]="journeyItem.image"
+                [alt]="journeyItem.alt"
+                loading="lazy"
+              />
+            </figure>
+
+            <h3 class="about-journey__card-title">
+              {{ journeyItem.title }}
+            </h3>
+
+            <p class="about-journey__card-description">
+              {{ journeyItem.description }}
+            </p>
+          </article>
         }
       </div>
     }
   </section>
 
-  <section class="about-philosophy" aria-labelledby="about-philosophy-title">
-    <p class="about-philosophy__label">
-      {{ 'about.philosophy.label' | translate }}
-    </p>
-
-    <h2 id="about-philosophy-title" class="about-philosophy__title">
-      {{ 'about.philosophy.title' | translate }}
-    </h2>
-
-    <p class="about-philosophy__description">
-      {{ 'about.philosophy.description' | translate }}
-    </p>
-  </section>
-
-  @defer (on viewport) {
-    <section class="about-values" aria-labelledby="about-values-title">
-      <header class="about-values__header">
-        <p class="about-values__label">
-          {{ 'about.values.label' | translate }}
+  <section class="about-story" [attr.aria-label]="'about.story.ariaLabel' | translate">
+    <article class="about-story__row">
+      <div class="about-story__content">
+        <p class="about-story__label">
+          {{ 'about.story.craft.label' | translate }}
         </p>
 
-        <h2 id="about-values-title" class="about-values__title">
-          {{ 'about.values.title' | translate }}
+        <h2 class="about-story__title">
+          {{ 'about.story.craft.title' | translate }}
         </h2>
-      </header>
 
-      @let aboutChefValues = 'about.values.items' | translate;
+        <p class="about-story__description">
+          {{ 'about.story.craft.description' | translate }}
+        </p>
+      </div>
 
-      @if (aboutChefValues && aboutChefValues !== 'about.values.items') {
-        <div class="about-values__grid">
-          @for (aboutChefValue of aboutChefValues; track aboutChefValue.id) {
-            <article class="about-values__card">
-              <h3>{{ aboutChefValue.title }}</h3>
-              <p>{{ aboutChefValue.description }}</p>
-            </article>
-          } @empty {
-            <p class="about-values__empty">
-              {{ 'about.values.empty' | translate }}
-            </p>
-          }
-        </div>
-      }
-    </section>
-  } @placeholder {
-    <div class="about-values-placeholder" aria-hidden="true"></div>
-  }
+      <figure class="about-story__media">
+        <img
+          class="about-story__image"
+          src="/images/about/gerson-kitchen-plating.png"
+          [alt]="'about.story.craft.imageAlt' | translate"
+          loading="lazy"
+        />
+      </figure>
+    </article>
 
-  <section class="about-services" aria-labelledby="about-services-title">
-    <div class="about-services__content">
-      <p class="about-services__label">
-        {{ 'about.services.label' | translate }}
-      </p>
+    <article class="about-story__row">
+      <figure class="about-story__media">
+        <img
+          class="about-story__image"
+          src="/images/about/gerson-dessert-story.png"
+          [alt]="'about.story.pastry.imageAlt' | translate"
+          loading="lazy"
+        />
+      </figure>
 
-      <h2 id="about-services-title" class="about-services__title">
-        {{ 'about.services.title' | translate }}
-      </h2>
+      <div class="about-story__content">
+        <p class="about-story__label">
+          {{ 'about.story.pastry.label' | translate }}
+        </p>
 
-      <p class="about-services__description">
-        {{ 'about.services.description' | translate }}
-      </p>
+        <h2 class="about-story__title">
+          {{ 'about.story.pastry.title' | translate }}
+        </h2>
 
-      <a class="about-services__link" routerLink="/servicios">
-        {{ 'about.services.action' | translate }}
-      </a>
-    </div>
+        <p class="about-story__description">
+          {{ 'about.story.pastry.description' | translate }}
+        </p>
+      </div>
+    </article>
+
+    <article class="about-story__row">
+      <div class="about-story__content">
+        <p class="about-story__label">
+          {{ 'about.story.teaching.label' | translate }}
+        </p>
+
+        <h2 class="about-story__title">
+          {{ 'about.story.teaching.title' | translate }}
+        </h2>
+
+        <p class="about-story__description">
+          {{ 'about.story.teaching.description' | translate }}
+        </p>
+      </div>
+
+      <figure class="about-story__media">
+        <img
+          class="about-story__image"
+          src="/images/about/gerson-risotto-plating.png"
+          [alt]="'about.story.teaching.imageAlt' | translate"
+          loading="lazy"
+        />
+      </figure>
+    </article>
+
+    <article class="about-story__row">
+      <figure class="about-story__media">
+        <img
+          class="about-story__image"
+          src="/images/about/gerson-dining-experience.png"
+          [alt]="'about.story.table.imageAlt' | translate"
+          loading="lazy"
+        />
+      </figure>
+
+      <div class="about-story__content">
+        <p class="about-story__label">
+          {{ 'about.story.table.label' | translate }}
+        </p>
+
+        <h2 class="about-story__title">
+          {{ 'about.story.table.title' | translate }}
+        </h2>
+
+        <p class="about-story__description">
+          {{ 'about.story.table.description' | translate }}
+        </p>
+      </div>
+    </article>
   </section>
 
-  <section class="about-quote" aria-labelledby="about-quote-title">
-    <div class="about-quote__content">
-      <p class="about-quote__label">
-        {{ 'about.quoteCta.label' | translate }}
-      </p>
-
-      <h2 id="about-quote-title" class="about-quote__title">
-        {{ 'about.quoteCta.title' | translate }}
-      </h2>
-
-      <p class="about-quote__description">
-        {{ 'about.quoteCta.description' | translate }}
-      </p>
-
-      <a class="about-quote__link" routerLink="/solicitar-presupuesto">
-        {{ 'about.quoteCta.action' | translate }}
-      </a>
-    </div>
-  </section>
+  <app-final-cta />
 </main>

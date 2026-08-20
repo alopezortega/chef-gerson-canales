@@ -119,23 +119,70 @@
   "about": {
     "hero": {
       "label": "Sobre el chef",
-      "title": "Cocina pensada para reunir, compartir y disfrutar",
-      "description": "Una propuesta gastronómica profesional y cercana, adaptada a cada celebración, encuentro privado o evento de empresa.",
-      "imageAlt": "Chef Gerson Canales preparando una propuesta gastronómica"
+      "title": "Gerson Canales",
+      "description": "Cocino para crear conexiones y momentos que se recuerdan para siempre.",
+      "imageAlt": "Retrato del chef Gerson Canales en una cocina profesional"
     },
-    "introduction": {
-      "label": "Conoce a Gerson",
-      "title": "Cada evento comienza escuchando la idea del cliente",
-      "paragraphs": [
+    "origins": {
+      "label": "Mis orígenes",
+      "title": "De Honduras a España",
+      "description": "Mi historia en la cocina comenzó en Honduras, donde descubrí el valor del producto, la hospitalidad y el trabajo constante. En España seguí formándome, amplié mi experiencia y confirmé que cocinar también es una forma de cuidar a los demás.",
+      "imageAlt": "Gerson Canales en un momento personal de su trayectoria"
+    },
+    "journey": {
+      "label": "Mi viaje",
+      "title": "Lugares que me enseñaron a mirar el mundo",
+      "description": "Viajar, trabajar y aprender entre culturas diferentes ha ido construyendo mi manera de entender la cocina.",
+      "items": [
         {
-          "id": "personalized-experience",
-          "text": "Gerson entiende la cocina como una forma de reunir a las personas y crear momentos especiales alrededor de una mesa."
+          "id": "sicily",
+          "title": "Sicilia",
+          "description": "Tradición, producto y Mediterráneo.",
+          "image": "/images/about/gerson-sicily-coast.png",
+          "alt": "Gerson Canales durante un viaje por Sicilia"
         },
         {
-          "id": "event-adaptation",
-          "text": "Cada propuesta se plantea teniendo en cuenta el tipo de evento, el espacio, el número de invitados y las necesidades particulares de cada cliente."
+          "id": "iceland",
+          "title": "Islandia",
+          "description": "Naturaleza, experiencia y nuevas perspectivas.",
+          "image": "/images/about/gerson-iceland-harbor.png",
+          "alt": "Gerson Canales en un puerto de Islandia"
+        },
+        {
+          "id": "mozambique",
+          "title": "Mozambique",
+          "description": "Personas, producto y cooperación.",
+          "image": "/images/about/gerson-mozambique-community.png",
+          "alt": "Gerson Canales compartiendo un momento con niños en Mozambique"
         }
       ]
+    },
+    "story": {
+      "ariaLabel": "Trayectoria profesional de Gerson Canales",
+      "craft": {
+        "label": "Mi oficio",
+        "title": "Cocinar es entender el producto y el detalle",
+        "description": "Técnica, orden y pasión al servicio del sabor. Trabajo con producto real, de temporada, tratado con respeto y llevado a su mejor versión en cada plato.",
+        "imageAlt": "Gerson Canales terminando varios platos durante un servicio"
+      },
+      "pastry": {
+        "label": "Repostería",
+        "title": "El dulce también cuenta mi historia",
+        "description": "De la pastelería nace el equilibrio. Texturas, recuerdos y pequeños placeres que completan la experiencia.",
+        "imageAlt": "Postre elaborado como parte de la propuesta gastronómica de Gerson Canales"
+      },
+      "teaching": {
+        "label": "Enseñar y compartir",
+        "title": "Formar es multiplicar",
+        "description": "Disfruto enseñar, compartir conocimiento y acompañar a otros cocineros a crecer. Porque cuando alguien aprende, todos avanzamos.",
+        "imageAlt": "Gerson Canales trabajando junto a otro cocinero durante un servicio"
+      },
+      "table": {
+        "label": "Alrededor de una mesa",
+        "title": "Más que una cena, una experiencia",
+        "description": "Creo experiencias gastronómicas personalizadas para celebraciones, encuentros y momentos especiales que dejan huella.",
+        "imageAlt": "Mesa preparada para una experiencia gastronómica privada"
+      }
     },
     "philosophy": {
       "label": "Filosofía de trabajo",
