@@ -174,6 +174,14 @@ Contains reusable presentation-focused elements such as:
 - Directives
 - Shared models
 
+Current reusable public component:
+
+```text
+shared/components/final-cta/
+```
+
+`FinalCta` is shared by Home, About and Gallery so the closing conversion block is implemented once and reused across public pages.
+
 Code is moved to `shared` only when a real reuse case exists.
 
 ---
@@ -524,6 +532,8 @@ Example:
 
 ## Gallery Architecture
 
+The Gallery route is now visually complete and keeps the existing data boundary.
+
 The gallery follows this data flow:
 
 ```text
@@ -555,6 +565,18 @@ gallery.html
 The page does not import the mock directly.
 
 This keeps the routed component independent from the concrete data source.
+
+Current presentation:
+
+```text
+18 gallery images
+editorial mobile-first composition
+shared responsive container on desktop
+panoramic image blocks
+shared FinalCta before Footer
+```
+
+The Gallery intentionally does not include filters, categories, lightbox behaviour or Admin management in the current MVP.
 
 ### Gallery model
 
@@ -1453,16 +1475,7 @@ Rules:
 
 Responsive presentation is controlled through CSS.
 
-The gallery layout uses CSS Grid, media queries and consistent image proportions.
-
-Images use:
-
-```scss
-aspect-ratio: 4 / 3;
-object-fit: cover;
-```
-
-This keeps image cards visually consistent without distorting the source images.
+The Gallery layout uses CSS Grid, media queries, responsive max-width containers and `object-fit` to preserve the editorial composition across mobile and desktop.
 
 ---
 
@@ -1514,8 +1527,8 @@ The real client is replaced in `TestBed`:
 Current validation status:
 
 ```text
-22 test files passing
-132 tests passing
+23 test files passing
+135 tests passing
 3 tests skipped
 ```
 
@@ -2074,64 +2087,178 @@ responsive max-width containers
 
 The desktop Home has been recomposed specifically for wider screens rather than simply scaling the mobile layout.
 
-## Latest Quality Baseline — 2026-08-10
+## Latest Quality Baseline — 2026-08-20
 
 Current validation status:
 
 ```text
 Test files
-→ 22 passed
+→ 23 passed
 
 Tests
-→ 132 passed
+→ 135 passed
 → 3 skipped
 
 Lint
 → all files pass
-
-Production build
-→ completed successfully
-→ 5 public routes prerendered
 ```
 
-The Angular component-style budget was adjusted to accommodate the completed responsive visual layer.
+The `FinalCta` standalone component has focused component coverage.
 
-Current production validation is green.
+The known Quote Request notification-failure test still writes its expected diagnostic error to stderr while the test itself passes.
 
+---
 
-## Current Visual Design Status — 2026-08-10
+## About Responsive Architecture
 
-Completed on the current visual-design branch:
-
-```text
-shared visual tokens
-responsive Header
-responsive Navbar
-mobile navigation animation
-responsive Home
-desktop Home composition
-responsive Footer
-global ScrollToTop
-brand and decorative assets
-Spanish and English public copy adjustments
-```
-
-The Home visual architecture is considered complete unless a functional or responsive defect is discovered.
-
-The next public page scheduled for visual redesign is:
-
-```text
-/sobre-el-chef
-→ About
-```
-
-The About page remains a route-level editorial component and should reuse the established public design system rather than introduce a separate visual language.
-
-The existing architecture remains:
+The About route remains a presentation-focused standalone page:
 
 ```text
 AboutComponent
 → translated editorial content
 → responsive SCSS
-→ no service or model unless dynamic behaviour creates a real requirement
+→ shared FinalCta
 ```
+
+No About-specific service, model or mock is required because the page contains no dynamic business state.
+
+Current About composition:
+
+```text
+Hero
+Origins
+Journey
+Editorial story
+Final CTA
+```
+
+The editorial story contains four alternating image/text rows:
+
+```text
+Craft
+Pastry
+Teaching
+Around a table
+```
+
+All visible copy, accessible section labels and image alternative text are stored in:
+
+```text
+public/i18n/es.json
+public/i18n/en.json
+```
+
+The journey collection continues to use Angular modern template control flow:
+
+```text
+@let
+@if
+@for
+track
+```
+
+The page reuses:
+
+```text
+shared/components/final-cta/
+```
+
+rather than maintaining a duplicate closing CTA in Home and About.
+
+### Responsive layout
+
+The approved mobile composition remains the baseline.
+
+Larger viewports progressively recompose the same semantic markup through component SCSS:
+
+```text
+mobile base styles
+→ tablet breakpoint
+→ desktop breakpoint
+```
+
+Desktop About uses:
+
+```text
+large image-led Hero
+two-column Origins composition
+three-column Journey grid
+50 / 50 alternating editorial rows
+desktop-specific image cropping and sizing
+```
+
+The portrait-oriented teaching image receives a desktop-only height adjustment while preserving the shared 50 / 50 editorial axis.
+
+No separate desktop Angular template is maintained.
+
+### Final CTA reuse
+
+`FinalCta` is a standalone shared component.
+
+It owns the reusable closing CTA presentation and route link used by:
+
+```text
+Home
+About
+Gallery
+```
+
+The component imports:
+
+```text
+RouterLink
+TranslatePipe
+```
+
+and routes to:
+
+```text
+/solicitar-presupuesto
+```
+
+This extraction is based on an existing reuse case rather than speculative abstraction.
+
+---
+
+## Current Visual Design Status — 2026-08-20
+
+Completed public visual work:
+
+```text
+shared design tokens
+responsive Header and Navbar
+responsive Home
+responsive Footer
+global ScrollToTop
+responsive About
+responsive Gallery
+About editorial image system
+Gallery editorial image system
+shared FinalCta
+Spanish and English public content
+```
+
+Home and About now share the established public design language:
+
+```text
+cream
+charcoal
+olive
+editorial serif typography
+clean sans-serif body typography
+warm gastronomic photography
+botanical details
+```
+
+Gallery visual design is complete for the current MVP.
+
+The existing Gallery architecture remains valid:
+
+```text
+gallery.mock.ts
+→ GalleryService
+→ GalleryComponent
+→ gallery.html
+```
+
+The current implementation keeps presentation separate from the gallery data source and reuses the shared `FinalCta` before the Footer.
