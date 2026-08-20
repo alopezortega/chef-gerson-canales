@@ -98,22 +98,102 @@
   },
   "gallery": {
     "label": "Galería",
-    "title": "Momentos y experiencias gastronómicas",
-    "description": "Una selección de platos, eventos privados y experiencias culinarias.",
+    "title": "Momentos que se saborean",
+    "description": "Cada experiencia es única. Producto, técnica, sensibilidad y hospitalidad se unen para crear recuerdos que perduran más allá de la mesa.",
     "empty": "Todavía no hay imágenes disponibles.",
+    "stories": {
+      "label": "Alrededor de la mesa",
+      "title": "Cocina que cuenta historias",
+      "description": "Desde cenas íntimas hasta celebraciones especiales, cada detalle está pensado para sorprender, conectar y convertir la mesa en un recuerdo."
+    },
+    "details": {
+      "label": "El toque final",
+      "title": "Detalles que hacen la diferencia",
+      "description": "Presentaciones cuidadas, ingredientes de temporada y una estética que celebra la belleza de lo simple."
+    },
+    "craft": {
+      "label": "Detrás de cada plato",
+      "title": "El oficio en movimiento",
+      "description": "Fuego, técnica, producto y precisión se encuentran en la cocina antes de que cada plato llegue a la mesa."
+    },
     "items": {
-      "privateDinner": {
+      "searedFish": {
+        "title": "Pescado marcado",
+        "alt": "Plato de pescado marcado con guarnición de temporada en un ambiente cálido a la luz de las velas"
+      },
+      "ravioliPlate": {
+        "title": "Ravioli",
+        "alt": "Ravioli servidos con salsa cremosa y hierbas frescas"
+      },
+      "candlelitTable": {
+        "title": "Mesa a la luz de las velas",
+        "alt": "Mesa elegante preparada para una cena íntima a la luz de las velas"
+      },
+      "chefPlating": {
+        "title": "Emplatado",
+        "alt": "Chef terminando cuidadosamente la presentación de un plato"
+      },
+      "candlelitDinner": {
         "title": "Cena privada",
-        "alt": "Mesa preparada para una cena privada"
+        "alt": "Mesa de cena privada preparada con velas y detalles florales"
       },
-      "privateEvent": {
-        "title": "Evento privado",
-        "alt": "Servicio gastronómico preparado para un evento privado"
+      "meringueDessert": {
+        "title": "Postre de merengue",
+        "alt": "Postre de merengue tostado presentado sobre un plato de cerámica"
       },
-      "cookingWorkshop": {
-        "title": "Taller de cocina",
-        "alt": "Participantes disfrutando de un taller de cocina"
+      "chocolateCaramelDessert": {
+        "title": "Postre de chocolate",
+        "alt": "Postre de chocolate con caramelo dorado presentado sobre un plato elegante"
+      },
+      "chocolateSphereDessert": {
+        "title": "Esfera de chocolate",
+        "alt": "Postre de esfera de chocolate con crumble de cacao y un delicado detalle dorado"
+      },
+      "chefFlambe": {
+        "title": "Cocina al fuego",
+        "alt": "Gerson Canales cocinando sobre una llama abierta en una cocina profesional"
+      },
+      "gourmetSirloinPlate": {
+        "title": "Solomillo gourmet",
+        "alt": "Plato gourmet de solomillo presentado con puré, salsa y microbrotes"
+      },
+      "lambRack": {
+        "title": "Cordero",
+        "alt": "Costillar de cordero asado presentado con verduras, hierbas y salsa"
+      },
+      "salmonCanapes": {
+        "title": "Canapés de salmón",
+        "alt": "Canapés de salmón terminados con huevas y brotes frescos"
+      },
+      "citrusTart": {
+        "title": "Tarta cítrica",
+        "alt": "Tarta cítrica terminada con crema, gajos de naranja, flores comestibles y un delicado detalle de cítricos"
+      },
+      "pastryPiping": {
+        "title": "Repostería en proceso",
+        "alt": "Manos terminando cuidadosamente una pieza de repostería con manga pastelera bajo una luz cálida"
+      },
+      "elegantDinnerTable": {
+        "title": "Mesa de celebración",
+        "alt": "Mesa elegante preparada con flores, velas y un plato servido para una celebración especial"
+      },
+      "beetrootSalad": {
+        "title": "Verduras de temporada",
+        "alt": "Plato refinado de remolacha y verduras de temporada con hojas frescas y elementos cremosos"
+      },
+      "chefFinishingDish": {
+        "title": "El toque final",
+        "alt": "Gerson Canales terminando cuidadosamente un plato en una cocina profesional"
+      },
+      "petitFours": {
+        "title": "Petit fours",
+        "alt": "Selección de petit fours y pequeños postres artesanales presentados sobre un plato de cerámica"
       }
+    },
+    "finalChapter": {
+      "label": "El último detalle",
+      "title": "Un final para recordar",
+      "description": "Repostería, producto de temporada y pequeños gestos cuidados completan la experiencia con la misma atención que cada plato salado."
     }
   },
   "about": {

@@ -1,34 +1,307 @@
 <section class="gallery" aria-labelledby="gallery-title">
-  <header class="gallery__header">
-    <p class="gallery__label">
-      {{ 'gallery.label' | translate }}
-    </p>
+  <header class="gallery__hero">
+    <div class="gallery__hero-content">
+      <p class="gallery__label">
+        {{ 'gallery.label' | translate }}
+      </p>
 
-    <h1 id="gallery-title">
-      {{ 'gallery.title' | translate }}
-    </h1>
+      <img
+        class="gallery__hero-divider"
+        src="/images/gallery/gallery-olive-divider.png"
+        alt=""
+        aria-hidden="true"
+      />
 
-    <p class="gallery__description">
-      {{ 'gallery.description' | translate }}
-    </p>
+      <h1 id="gallery-title" class="gallery__title">
+        {{ 'gallery.title' | translate }}
+      </h1>
+
+      <p class="gallery__description">
+        {{ 'gallery.description' | translate }}
+      </p>
+    </div>
+
+    <img
+      class="gallery__hero-branch"
+      src="/images/gallery/gallery-olive-branch.png"
+      alt=""
+      aria-hidden="true"
+    />
   </header>
 
   @if (galleryItems().length > 0) {
-    <div class="gallery__grid">
-      @for (galleryItem of galleryItems(); track galleryItem.id) {
-        <article class="gallery__item">
+    @let items = galleryItems();
+
+    <div class="gallery__story">
+      @if (items[0]; as featuredImage) {
+        <figure class="gallery__featured">
           <img
-            class="gallery__image"
-            [src]="galleryItem.imageUrl"
-            [alt]="galleryItem.altKey | translate"
+            class="gallery__image gallery__image--featured"
+            [src]="featuredImage.imageUrl"
+            [alt]="featuredImage.altKey | translate"
+          />
+        </figure>
+      }
+
+      <section
+        class="gallery__editorial gallery__editorial--stories"
+        aria-labelledby="gallery-stories-title"
+      >
+        <div class="gallery__editorial-copy">
+          <p class="gallery__editorial-label">
+            {{ 'gallery.stories.label' | translate }}
+          </p>
+
+          <h2 id="gallery-stories-title" class="gallery__editorial-title">
+            {{ 'gallery.stories.title' | translate }}
+          </h2>
+
+          <span class="gallery__editorial-ornament" aria-hidden="true"> ⌁ </span>
+
+          <p class="gallery__editorial-description">
+            {{ 'gallery.stories.description' | translate }}
+          </p>
+        </div>
+
+        <div class="gallery__stories-images">
+          @if (items[1]; as ravioliImage) {
+            <figure class="gallery__media gallery__media--stories-main">
+              <img
+                class="gallery__image"
+                [src]="ravioliImage.imageUrl"
+                [alt]="ravioliImage.altKey | translate"
+                loading="lazy"
+              />
+            </figure>
+          }
+
+          <div class="gallery__stories-secondary">
+            @if (items[2]; as tableImage) {
+              <figure class="gallery__media">
+                <img
+                  class="gallery__image"
+                  [src]="tableImage.imageUrl"
+                  [alt]="tableImage.altKey | translate"
+                  loading="lazy"
+                />
+              </figure>
+            }
+
+            @if (items[3]; as platingImage) {
+              <figure class="gallery__media">
+                <img
+                  class="gallery__image"
+                  [src]="platingImage.imageUrl"
+                  [alt]="platingImage.altKey | translate"
+                  loading="lazy"
+                />
+              </figure>
+            }
+          </div>
+        </div>
+      </section>
+
+      @if (items[4]; as dinnerImage) {
+        <figure class="gallery__panorama">
+          <img
+            class="gallery__image gallery__image--panorama"
+            [src]="dinnerImage.imageUrl"
+            [alt]="dinnerImage.altKey | translate"
             loading="lazy"
           />
-
-          <h2 class="gallery__item-title">
-            {{ galleryItem.titleKey | translate }}
-          </h2>
-        </article>
+        </figure>
       }
+
+      <section
+        class="gallery__editorial gallery__editorial--details"
+        aria-labelledby="gallery-details-title"
+      >
+        <div class="gallery__details-images">
+          <div class="gallery__details-secondary">
+            @if (items[5]; as meringueImage) {
+              <figure class="gallery__media">
+                <img
+                  class="gallery__image"
+                  [src]="meringueImage.imageUrl"
+                  [alt]="meringueImage.altKey | translate"
+                  loading="lazy"
+                />
+              </figure>
+            }
+
+            @if (items[6]; as chocolateImage) {
+              <figure class="gallery__media">
+                <img
+                  class="gallery__image"
+                  [src]="chocolateImage.imageUrl"
+                  [alt]="chocolateImage.altKey | translate"
+                  loading="lazy"
+                />
+              </figure>
+            }
+          </div>
+
+          <div class="gallery__editorial-copy">
+            <p class="gallery__editorial-label">
+              {{ 'gallery.details.label' | translate }}
+            </p>
+
+            <h2 id="gallery-details-title" class="gallery__editorial-title">
+              {{ 'gallery.details.title' | translate }}
+            </h2>
+
+            <span class="gallery__editorial-ornament" aria-hidden="true"> ⌁ </span>
+
+            <p class="gallery__editorial-description">
+              {{ 'gallery.details.description' | translate }}
+            </p>
+          </div>
+
+          @if (items[7]; as sphereImage) {
+            <figure class="gallery__media gallery__media--details-main">
+              <img
+                class="gallery__image"
+                [src]="sphereImage.imageUrl"
+                [alt]="sphereImage.altKey | translate"
+                loading="lazy"
+              />
+            </figure>
+          }
+        </div>
+      </section>
+
+      <section
+        class="gallery__editorial gallery__editorial--craft"
+        aria-labelledby="gallery-craft-title"
+      >
+        @if (items[8]; as chefImage) {
+          <figure class="gallery__craft-featured">
+            <img
+              class="gallery__image"
+              [src]="chefImage.imageUrl"
+              [alt]="chefImage.altKey | translate"
+              loading="lazy"
+            />
+          </figure>
+        }
+
+        <div class="gallery__editorial-copy gallery__editorial-copy--centered">
+          <p class="gallery__editorial-label">
+            {{ 'gallery.craft.label' | translate }}
+          </p>
+
+          <h2 id="gallery-craft-title" class="gallery__editorial-title">
+            {{ 'gallery.craft.title' | translate }}
+          </h2>
+
+          <span class="gallery__editorial-ornament" aria-hidden="true"> ⌁ </span>
+
+          <p class="gallery__editorial-description">
+            {{ 'gallery.craft.description' | translate }}
+          </p>
+        </div>
+
+        <div class="gallery__craft-grid">
+          @for (galleryItem of items.slice(9, 12); track galleryItem.id) {
+            <figure class="gallery__media">
+              <img
+                class="gallery__image"
+                [src]="galleryItem.imageUrl"
+                [alt]="galleryItem.altKey | translate"
+                loading="lazy"
+              />
+            </figure>
+          }
+        </div>
+      </section>
+
+      <section class="gallery__final-chapter" aria-labelledby="gallery-final-title">
+        <div class="gallery__pastry-grid">
+          @if (items[12]; as citrusTartImage) {
+            <figure class="gallery__media gallery__media--pastry-main">
+              <img
+                class="gallery__image"
+                [src]="citrusTartImage.imageUrl"
+                [alt]="citrusTartImage.altKey | translate"
+                loading="lazy"
+              />
+            </figure>
+          }
+
+          @if (items[13]; as pastryImage) {
+            <figure class="gallery__media gallery__media--pastry-process">
+              <img
+                class="gallery__image"
+                [src]="pastryImage.imageUrl"
+                [alt]="pastryImage.altKey | translate"
+                loading="lazy"
+              />
+            </figure>
+          }
+        </div>
+
+        @if (items[14]; as elegantTableImage) {
+          <figure class="gallery__final-panorama">
+            <img
+              class="gallery__image"
+              [src]="elegantTableImage.imageUrl"
+              [alt]="elegantTableImage.altKey | translate"
+              loading="lazy"
+            />
+          </figure>
+        }
+
+        <div class="gallery__editorial-copy gallery__editorial-copy--final">
+          <p class="gallery__editorial-label">
+            {{ 'gallery.finalChapter.label' | translate }}
+          </p>
+
+          <h2 id="gallery-final-title" class="gallery__editorial-title">
+            {{ 'gallery.finalChapter.title' | translate }}
+          </h2>
+
+          <span class="gallery__editorial-ornament" aria-hidden="true"> ⌁ </span>
+
+          <p class="gallery__editorial-description">
+            {{ 'gallery.finalChapter.description' | translate }}
+          </p>
+        </div>
+
+        <div class="gallery__final-grid">
+          @if (items[15]; as beetrootImage) {
+            <figure class="gallery__media">
+              <img
+                class="gallery__image"
+                [src]="beetrootImage.imageUrl"
+                [alt]="beetrootImage.altKey | translate"
+                loading="lazy"
+              />
+            </figure>
+          }
+
+          @if (items[16]; as finishingImage) {
+            <figure class="gallery__media gallery__media--chef-final">
+              <img
+                class="gallery__image"
+                [src]="finishingImage.imageUrl"
+                [alt]="finishingImage.altKey | translate"
+                loading="lazy"
+              />
+            </figure>
+          }
+
+          @if (items[17]; as petitFoursImage) {
+            <figure class="gallery__media gallery__media--petit-fours">
+              <img
+                class="gallery__image"
+                [src]="petitFoursImage.imageUrl"
+                [alt]="petitFoursImage.altKey | translate"
+                loading="lazy"
+              />
+            </figure>
+          }
+        </div>
+      </section>
     </div>
   } @else {
     <p class="gallery__empty">
@@ -36,3 +309,5 @@
     </p>
   }
 </section>
+
+<app-final-cta />
