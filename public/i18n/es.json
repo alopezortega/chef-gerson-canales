@@ -188,6 +188,14 @@
       "petitFours": {
         "title": "Petit fours",
         "alt": "Selección de petit fours y pequeños postres artesanales presentados sobre un plato de cerámica"
+      },
+      "beetrootSaladCandlelight": {
+        "title": "Ensalada de remolacha",
+        "alt": "Ensalada refinada de remolacha con queso cremoso, pistachos, flores comestibles y microbrotes en un ambiente cálido a la luz de las velas"
+      },
+      "glazedDuckPlate": {
+        "title": "Pato glaseado",
+        "alt": "Pechuga de pato glaseada y laminada servida con puré, verduras asadas, salsa y microbrotes en un ambiente cálido a la luz de las velas"
       }
     },
     "finalChapter": {
@@ -391,7 +399,8 @@
       "name": {
         "label": "Nombre",
         "placeholder": "Tu nombre completo",
-        "required": "El nombre es obligatorio."
+        "required": "El nombre es obligatorio.",
+        "invalid": "Introduce un nombre válido sin números."
       },
       "email": {
         "label": "Correo electrónico",
@@ -401,7 +410,8 @@
       },
       "phone": {
         "label": "Teléfono",
-        "placeholder": "Tu número de teléfono"
+        "placeholder": "Tu número de teléfono",
+        "invalid": "Introduce un número de teléfono válido."
       },
       "eventType": {
         "label": "Tipo de evento",
@@ -416,7 +426,8 @@
         }
       },
       "eventDate": {
-        "label": "Fecha del evento"
+        "label": "Fecha del evento",
+        "future": "Selecciona una fecha posterior a hoy."
       },
       "guestCount": {
         "label": "Número de comensales",
@@ -439,8 +450,10 @@
       },
       "attachment": {
         "label": "Adjuntar archivo",
-        "help": "Puedes adjuntar un documento o una imagen en formato PDF, JPG o PNG.",
-        "selected": "Archivo seleccionado"
+        "help": "Puedes adjuntar un archivo PDF, JPG o PNG de hasta 10 MB.",
+        "selected": "Archivo seleccionado",
+        "invalidType": "Selecciona un archivo válido en formato PDF, JPG o PNG.",
+        "maxSize": "El archivo no puede superar los 10 MB."
       },
       "privacy": {
         "label": "Acepto el tratamiento de mis datos para gestionar esta solicitud de presupuesto.",
@@ -450,6 +463,13 @@
       "requiredFields": "Los campos marcados con * son obligatorios.",
       "success": "Tu solicitud se ha enviado correctamente.",
       "error": "No se ha podido enviar la solicitud. Inténtalo de nuevo."
+    },
+    "leaveDialog": {
+      "eyebrow": "Cambios sin guardar",
+      "title": "¿Seguro que quieres salir?",
+      "description": "Los datos que has introducido en el formulario se perderán si abandonas esta página.",
+      "stay": "Seguir en el formulario",
+      "leave": "Salir sin guardar"
     }
   },
   "admin": {
