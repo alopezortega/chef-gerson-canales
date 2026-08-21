@@ -26,10 +26,6 @@
   background-color: var(--color-background-primary);
 }
 
-/* =========================
-   Brand
-   ========================= */
-
 .header__brand {
   display: inline-flex;
   align-items: center;
@@ -49,10 +45,6 @@
   object-position: left center;
 }
 
-/* =========================
-   Tablet
-   ========================= */
-
 @media (min-width: 48rem) {
   .header {
     gap: 1.5rem;
@@ -64,10 +56,6 @@
     width: 15rem;
   }
 }
-
-/* =========================
-   Desktop
-   ========================= */
 
 @media (min-width: 64rem) {
   .header {
@@ -83,10 +71,6 @@
     max-width: none;
   }
 }
-
-/* =========================
-   Wide desktop
-   ========================= */
 
 @media (min-width: 90rem) {
   .header__brand img {

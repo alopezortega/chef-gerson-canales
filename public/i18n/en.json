@@ -192,6 +192,14 @@
       "petitFours": {
         "title": "Petit fours",
         "alt": "Selection of handcrafted petit fours and small desserts presented on an elegant ceramic plate"
+      },
+      "beetrootSaladCandlelight": {
+        "title": "Beetroot salad",
+        "alt": "Refined beetroot salad with creamy cheese, pistachios, edible flowers and microgreens in a warm candlelit setting"
+      },
+      "glazedDuckPlate": {
+        "title": "Glazed duck",
+        "alt": "Glazed sliced duck breast served with purée, roasted vegetables, sauce and microgreens in a warm candlelit setting"
       }
     },
     "finalChapter": {
@@ -395,7 +403,8 @@
       "name": {
         "label": "Name",
         "placeholder": "Your full name",
-        "required": "Name is required."
+        "required": "Name is required.",
+        "invalid": "Enter a valid name without numbers."
       },
       "email": {
         "label": "Email address",
@@ -405,7 +414,8 @@
       },
       "phone": {
         "label": "Phone number",
-        "placeholder": "Your phone number"
+        "placeholder": "Your phone number",
+        "invalid": "Enter a valid phone number."
       },
       "eventType": {
         "label": "Type of event",
@@ -420,7 +430,8 @@
         }
       },
       "eventDate": {
-        "label": "Event date"
+        "label": "Event date",
+        "future": "Select a date after today."
       },
       "guestCount": {
         "label": "Number of guests",
@@ -443,8 +454,10 @@
       },
       "attachment": {
         "label": "Attach a file",
-        "help": "You can attach a document or image in PDF, JPG or PNG format.",
-        "selected": "Selected file"
+        "help": "You can attach a PDF, JPG or PNG file up to 10 MB.",
+        "selected": "Selected file",
+        "invalidType": "Select a valid PDF, JPG or PNG file.",
+        "maxSize": "The file must not be larger than 10 MB."
       },
       "privacy": {
         "label": "I agree to the processing of my data to manage this quote request.",
@@ -454,6 +467,13 @@
       "requiredFields": "Fields marked with * are required.",
       "success": "Your request has been sent successfully.",
       "error": "Your request could not be sent. Please try again."
+    },
+    "leaveDialog": {
+      "eyebrow": "Unsaved changes",
+      "title": "Are you sure you want to leave?",
+      "description": "The information you entered in the form will be lost if you leave this page.",
+      "stay": "Keep editing",
+      "leave": "Leave without saving"
     }
   },
   "admin": {

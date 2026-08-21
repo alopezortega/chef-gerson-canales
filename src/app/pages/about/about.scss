@@ -46,10 +46,6 @@
   line-height: 1.7;
 }
 
-/* =========================
-   HERO
-   ========================= */
-
 .about-hero {
   position: relative;
   isolation: isolate;
@@ -136,10 +132,6 @@
   margin-top: 1rem;
 }
 
-/* =========================
-   ORIGINS
-   ========================= */
-
 .about-origins {
   padding-top: 0.3rem;
   border-top: 1px solid rgb(23 21 17 / 0.08);
@@ -191,10 +183,6 @@
 .about-origins__accent {
   margin-top: 0.1rem;
 }
-
-/* =========================
-   JOURNEY
-   ========================= */
 
 .about-journey {
   display: grid;
@@ -277,10 +265,6 @@
   line-height: 1.4;
 }
 
-/* =========================
-   EDITORIAL STORY
-   ========================= */
-
 .about-story {
   border-top: 1px solid rgb(23 21 17 / 0.08);
   border-bottom: 1px solid rgb(23 21 17 / 0.08);
@@ -356,10 +340,6 @@
   object-fit: cover;
   object-position: center;
 }
-
-/* =========================
-   TABLET
-   ========================= */
 
 @media (min-width: 48rem) {
   .about-page {
@@ -490,10 +470,6 @@
     min-height: 20rem;
   }
 }
-
-/* =========================
-   DESKTOP
-   ========================= */
 
 @media (min-width: 70rem) {
   .about-page {

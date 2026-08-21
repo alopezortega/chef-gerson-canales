@@ -24,10 +24,6 @@ button {
   cursor: pointer;
 }
 
-/* =========================
-   Language
-   ========================= */
-
 .language {
   position: relative;
 }
@@ -106,10 +102,6 @@ button {
   font-weight: 700;
 }
 
-/* =========================
-   Hamburger
-   ========================= */
-
 .menu-toggle {
   display: flex;
   flex-direction: column;
@@ -148,10 +140,6 @@ button {
 .menu-toggle[aria-expanded='true'] .menu-toggle__line:last-child {
   transform: translateY(-0.4rem) rotate(-45deg);
 }
-
-/* =========================
-   Mobile navigation
-   ========================= */
 
 .mobile-navigation {
   position: absolute;
@@ -276,10 +264,6 @@ button {
   height: 1.15rem;
 }
 
-/* =========================
-   Desktop navigation
-   ========================= */
-
 .desktop-navigation {
   display: none;
 }
@@ -289,10 +273,6 @@ a:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 3px;
 }
-
-/* =========================
-   Tablet
-   ========================= */
 
 @media (min-width: 48rem) {
   :host {
@@ -425,10 +405,6 @@ a:focus-visible {
   }
 }
 
-/* =========================
-   Desktop
-   ========================= */
-
 @media (min-width: 64rem) {
   :host {
     gap: 1rem;
@@ -473,10 +449,6 @@ a:focus-visible {
   }
 }
 
-/* =========================
-   Wide desktop
-   ========================= */
-
 @media (min-width: 90rem) {
   .desktop-navigation {
     gap: clamp(1.8rem, 2vw, 2.6rem);
@@ -496,10 +468,6 @@ a:focus-visible {
     height: 1.4rem;
   }
 }
-
-/* =========================
-   Reduced motion
-   ========================= */
 
 @media (prefers-reduced-motion: reduce) {
   .mobile-navigation,
