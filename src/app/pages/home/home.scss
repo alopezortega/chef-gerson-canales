@@ -17,10 +17,6 @@
   border: 0;
 }
 
-/* =========================
-   Hero
-   ========================= */
-
 .home-hero {
   position: relative;
 
@@ -141,10 +137,6 @@
   transform: translateY(-1px);
 }
 
-/* =========================
-   Cooking with purpose
-   ========================= */
-
 .home-intro {
   position: relative;
 
@@ -208,10 +200,6 @@
   line-height: 1.55;
 }
 
-/* =========================
-   Featured services
-   ========================= */
-
 .home-services {
   padding-inline: var(--page-padding);
 
@@ -272,10 +260,6 @@
 
   object-fit: cover;
 }
-
-/* =========================
-   About preview
-   ========================= */
 
 .home-about-preview {
   display: grid;
@@ -372,11 +356,6 @@
   text-decoration: none;
   text-transform: uppercase;
 }
-
-/* =========================
-   Tablet
-   ========================= */
-
 @media (min-width: 48rem) {
   .home-hero,
   .home-intro__content,
@@ -401,15 +380,7 @@
   }
 }
 
-/* =========================
-   Desktop
-   ========================= */
-
 @media (min-width: 64rem) {
-  /* =========================
-     Hero
-     ========================= */
-
   .home-hero {
     display: grid;
     grid-template-columns:
@@ -475,10 +446,6 @@
     font-size: 0.72rem;
     letter-spacing: 0.075em;
   }
-
-  /* =========================
-     Cooking with purpose
-     ========================= */
 
   .home-intro {
     padding: clamp(3.25rem, 4.2vw, 4.75rem) var(--page-padding);
@@ -557,10 +524,6 @@
     line-height: 1.75;
   }
 
-  /* =========================
-     Services
-     ========================= */
-
   .home-services {
     padding: clamp(3.5rem, 5vw, 5.5rem) var(--page-padding);
   }
@@ -614,10 +577,6 @@
     font-size: clamp(0.86rem, 0.8vw, 0.98rem);
   }
 
-  /* =========================
-     About
-     ========================= */
-
   .home-about-preview {
     grid-template-columns: repeat(2, minmax(0, 1fr));
 
@@ -641,10 +600,6 @@
     font-size: clamp(0.95rem, 1vw, 1.05rem);
   }
 }
-
-/* =========================
-   Reduced motion
-   ========================= */
 
 @media (prefers-reduced-motion: reduce) {
   .home-hero__action {

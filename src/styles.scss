@@ -79,10 +79,6 @@ a {
     opacity var(--transition-fast);
 }
 
-/* =========================
-   Global layout containers
-   ========================= */
-
 .page-container {
   width: min(calc(100% - (var(--page-padding) * 2)), var(--container-max-width));
 

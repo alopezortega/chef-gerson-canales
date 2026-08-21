@@ -2,10 +2,6 @@
   display: block;
 }
 
-/* =========================
-   Mobile
-   ========================= */
-
 .footer {
   padding: 1.75rem 1rem 1.25rem;
 
@@ -23,10 +19,6 @@
   display: flex;
   flex-direction: column;
 }
-
-/* =========================
-   Brand
-   ========================= */
 
 .footer__brand-link {
   display: block;
@@ -52,17 +44,9 @@
   display: none;
 }
 
-/* =========================
-   Desktop-only divider
-   ========================= */
-
 .footer__vertical-divider {
   display: none;
 }
-
-/* =========================
-   Navigation
-   ========================= */
 
 .footer__navigation {
   display: flex;
@@ -119,10 +103,6 @@
   transform: scaleX(1);
 }
 
-/* =========================
-   Instagram
-   ========================= */
-
 .footer__social {
   margin-bottom: 1.75rem;
 }
@@ -155,17 +135,9 @@
   font-size: 0.95rem;
 }
 
-/* =========================
-   Ornament divider
-   ========================= */
-
 .footer__ornament-divider {
   display: none;
 }
-
-/* =========================
-   Copyright
-   ========================= */
 
 .footer__copyright {
   margin: 0;
@@ -181,10 +153,6 @@
 
   text-align: center;
 }
-
-/* =========================
-   Tablet
-   ========================= */
 
 @media (min-width: 48rem) {
   .footer {
@@ -211,10 +179,6 @@
   }
 }
 
-/* =========================
-   Desktop
-   ========================= */
-
 @media (min-width: 64rem) {
   .footer {
     width: min(calc(100% - (var(--page-padding) * 2)), var(--container-max-width));
@@ -234,10 +198,6 @@
     padding: clamp(2rem, 2.8vw, 2.8rem) clamp(2.5rem, 4vw, 4.5rem) 1rem;
   }
 
-  /* =========================
-     Main row
-     ========================= */
-
   .footer__main {
     display: grid;
     grid-template-columns:
@@ -252,10 +212,6 @@
     width: 100%;
     min-height: 7rem;
   }
-
-  /* =========================
-     Brand desktop
-     ========================= */
 
   .footer__brand-link {
     display: flex;
@@ -280,10 +236,6 @@
     object-position: left center;
   }
 
-  /* =========================
-     Vertical divider
-     ========================= */
-
   .footer__vertical-divider {
     display: block;
 
@@ -292,10 +244,6 @@
 
     background-color: rgba(247, 244, 238, 0.45);
   }
-
-  /* =========================
-     Navigation
-     ========================= */
 
   .footer__navigation {
     display: flex;
@@ -324,10 +272,6 @@
     color: var(--color-accent);
   }
 
-  /* =========================
-     Instagram
-     ========================= */
-
   .footer__social {
     margin: 0;
   }
@@ -349,10 +293,6 @@
   .footer__external-icon {
     display: none;
   }
-
-  /* =========================
-     Horizontal ornament
-     ========================= */
 
   .footer__ornament-divider {
     display: grid;
@@ -387,10 +327,6 @@
 
     opacity: 0.85;
   }
-
-  /* =========================
-     Copyright
-     ========================= */
 
   .footer__copyright {
     margin: 0.75rem 0 0;
