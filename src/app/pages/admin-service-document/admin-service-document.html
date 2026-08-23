@@ -1,106 +1,210 @@
-<section class="admin-service-document">
-  <header>
-    <p>{{ 'admin.serviceDocument.eyebrow' | translate }}</p>
-    <h1>{{ 'admin.serviceDocument.title' | translate }}</h1>
-    <p>{{ 'admin.serviceDocument.description' | translate }}</p>
+<section class="admin-service-document" aria-labelledby="admin-service-document-title">
+  <header class="admin-service-document__header">
+    <p class="admin-service-document__eyebrow">
+      {{ 'admin.serviceDocument.eyebrow' | translate }}
+    </p>
+
+    <h1 id="admin-service-document-title">
+      {{ 'admin.serviceDocument.title' | translate }}
+    </h1>
+
+    <p class="admin-service-document__description">
+      {{ 'admin.serviceDocument.description' | translate }}
+    </p>
   </header>
 
   @if (isLoading()) {
-    <p>{{ 'admin.serviceDocument.loading' | translate }}</p>
+    <div class="admin-service-document__state">
+      <p>{{ 'admin.serviceDocument.loading' | translate }}</p>
+    </div>
   } @else {
-    @if (currentDocument(); as document) {
-      <section aria-labelledby="current-service-document-title">
-        <h2 id="current-service-document-title">
-          {{ 'admin.serviceDocument.current.title' | translate }}
-        </h2>
-
-        <p>
-          {{ 'admin.serviceDocument.current.fileName' | translate }}:
-          <strong>{{ document.originalName }}</strong>
-        </p>
-
-        <p>
-          {{ 'admin.serviceDocument.current.updatedAt' | translate }}:
-          {{ document.updatedAt | date: 'medium' }}
-        </p>
-
-        <button type="button" [disabled]="isDeleting()" (click)="deleteDocument()">
-          @if (isDeleting()) {
-            {{ 'admin.serviceDocument.actions.deleting' | translate }}
-          } @else {
-            {{ 'admin.serviceDocument.actions.delete' | translate }}
-          }
-        </button>
-      </section>
-    } @else {
-      <p>{{ 'admin.serviceDocument.empty' | translate }}</p>
-    }
-
-    <section aria-labelledby="upload-service-document-title">
-      <h2 id="upload-service-document-title">
-        @if (currentDocument()) {
-          {{ 'admin.serviceDocument.upload.replaceTitle' | translate }}
-        } @else {
-          {{ 'admin.serviceDocument.upload.title' | translate }}
-        }
-      </h2>
-
-      <label for="serviceDocument">
-        {{ 'admin.serviceDocument.upload.label' | translate }}
-      </label>
-
-      <input
-        id="serviceDocument"
-        #serviceDocumentInput
-        type="file"
-        accept="application/pdf,.pdf"
-        (change)="onFileSelected($event)"
-      />
-
-      @if (selectedFile(); as file) {
-        <p>
-          {{ 'admin.serviceDocument.upload.selectedFile' | translate }}:
-          <strong>{{ file.name }}</strong>
-        </p>
-      }
-
-      @if (invalidFile()) {
-        <p role="alert">
-          {{ 'admin.serviceDocument.feedback.invalidFile' | translate }}
-        </p>
-      }
-
-      <button
-        type="button"
-        [disabled]="!selectedFile() || isUploading()"
-        (click)="uploadDocument()"
+    <div class="admin-service-document__layout">
+      <section
+        class="admin-service-document__card"
+        aria-labelledby="current-service-document-title"
       >
-        @if (isUploading()) {
-          {{ 'admin.serviceDocument.actions.uploading' | translate }}
-        } @else if (currentDocument()) {
-          {{ 'admin.serviceDocument.actions.replace' | translate }}
+        <div class="admin-service-document__card-header">
+          <div>
+            <p class="admin-service-document__card-label">PDF</p>
+
+            <h2 id="current-service-document-title">
+              {{ 'admin.serviceDocument.current.title' | translate }}
+            </h2>
+          </div>
+
+          <span class="admin-service-document__document-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M6 2.5h8l4 4v15H6z" />
+              <path d="M14 2.5v5h4M9 12h6M9 16h6" />
+            </svg>
+          </span>
+        </div>
+
+        @if (currentDocument(); as document) {
+          <div class="admin-service-document__current">
+            <div class="admin-service-document__file">
+              <span class="admin-service-document__file-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M6 2.5h8l4 4v15H6z" />
+                  <path d="M14 2.5v5h4M9 12h6M9 16h6" />
+                </svg>
+              </span>
+
+              <div class="admin-service-document__file-copy">
+                <span>
+                  {{ 'admin.serviceDocument.current.fileName' | translate }}
+                </span>
+
+                <strong>{{ document.originalName }}</strong>
+              </div>
+            </div>
+
+            <div class="admin-service-document__updated">
+              <span>
+                {{ 'admin.serviceDocument.current.updatedAt' | translate }}
+              </span>
+
+              <strong>
+                {{ document.updatedAt | date: 'dd/MM/yyyy · HH:mm' }}
+              </strong>
+            </div>
+
+            <button
+              class="admin-service-document__delete-button"
+              type="button"
+              [disabled]="isDeleting()"
+              (click)="deleteDocument()"
+            >
+              @if (isDeleting()) {
+                {{ 'admin.serviceDocument.actions.deleting' | translate }}
+              } @else {
+                {{ 'admin.serviceDocument.actions.delete' | translate }}
+              }
+            </button>
+          </div>
         } @else {
-          {{ 'admin.serviceDocument.actions.upload' | translate }}
+          <div class="admin-service-document__empty">
+            <span class="admin-service-document__empty-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M6 2.5h8l4 4v15H6z" />
+                <path d="M14 2.5v5h4M9 12h6M9 16h6" />
+              </svg>
+            </span>
+
+            <p>{{ 'admin.serviceDocument.empty' | translate }}</p>
+          </div>
         }
-      </button>
-    </section>
+      </section>
 
-    @if (uploadSuccess()) {
-      <p role="status">
-        {{ 'admin.serviceDocument.feedback.uploadSuccess' | translate }}
-      </p>
-    }
+      <section class="admin-service-document__card" aria-labelledby="upload-service-document-title">
+        <div class="admin-service-document__card-header">
+          <div>
+            <p class="admin-service-document__card-label">PDF</p>
 
-    @if (deleteSuccess()) {
-      <p role="status">
-        {{ 'admin.serviceDocument.feedback.deleteSuccess' | translate }}
-      </p>
-    }
+            <h2 id="upload-service-document-title">
+              @if (currentDocument()) {
+                {{ 'admin.serviceDocument.upload.replaceTitle' | translate }}
+              } @else {
+                {{ 'admin.serviceDocument.upload.title' | translate }}
+              }
+            </h2>
+          </div>
 
-    @if (hasError()) {
-      <p role="alert">
-        {{ 'admin.serviceDocument.feedback.error' | translate }}
-      </p>
-    }
+          <span class="admin-service-document__document-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 16V5M8 9l4-4 4 4" />
+              <path d="M5 14v5h14v-5" />
+            </svg>
+          </span>
+        </div>
+
+        <div class="admin-service-document__upload">
+          <label class="admin-service-document__file-label" for="serviceDocument">
+            <span class="admin-service-document__upload-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 16V5M8 9l4-4 4 4" />
+                <path d="M5 14v5h14v-5" />
+              </svg>
+            </span>
+
+            <span>
+              {{ 'admin.serviceDocument.upload.label' | translate }}
+            </span>
+          </label>
+
+          <input
+            id="serviceDocument"
+            #serviceDocumentInput
+            class="admin-service-document__file-input"
+            type="file"
+            accept="application/pdf,.pdf"
+            (change)="onFileSelected($event)"
+          />
+
+          @if (selectedFile(); as file) {
+            <div class="admin-service-document__selected-file">
+              <span>
+                {{ 'admin.serviceDocument.upload.selectedFile' | translate }}
+              </span>
+
+              <strong>{{ file.name }}</strong>
+            </div>
+          }
+
+          @if (invalidFile()) {
+            <p
+              class="admin-service-document__feedback admin-service-document__feedback--error"
+              role="alert"
+            >
+              {{ 'admin.serviceDocument.feedback.invalidFile' | translate }}
+            </p>
+          }
+
+          <button
+            class="admin-service-document__upload-button"
+            type="button"
+            [disabled]="!selectedFile() || isUploading()"
+            (click)="uploadDocument()"
+          >
+            @if (isUploading()) {
+              {{ 'admin.serviceDocument.actions.uploading' | translate }}
+            } @else if (currentDocument()) {
+              {{ 'admin.serviceDocument.actions.replace' | translate }}
+            } @else {
+              {{ 'admin.serviceDocument.actions.upload' | translate }}
+            }
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <div class="admin-service-document__feedback-area">
+      @if (uploadSuccess()) {
+        <p
+          class="admin-service-document__feedback admin-service-document__feedback--success"
+          role="status"
+        >
+          {{ 'admin.serviceDocument.feedback.uploadSuccess' | translate }}
+        </p>
+      }
+
+      @if (deleteSuccess()) {
+        <p
+          class="admin-service-document__feedback admin-service-document__feedback--success"
+          role="status"
+        >
+          {{ 'admin.serviceDocument.feedback.deleteSuccess' | translate }}
+        </p>
+      }
+
+      @if (hasError()) {
+        <p
+          class="admin-service-document__feedback admin-service-document__feedback--error"
+          role="alert"
+        >
+          {{ 'admin.serviceDocument.feedback.error' | translate }}
+        </p>
+      }
+    </div>
   }
 </section>

@@ -1,53 +1,109 @@
 <section class="admin-dashboard" aria-labelledby="admin-dashboard-title">
   <header class="admin-dashboard__header">
-    <p>{{ 'admin.dashboard.eyebrow' | translate }}</p>
+    <div>
+      <p class="admin-dashboard__eyebrow">
+        {{ 'admin.dashboard.eyebrow' | translate }}
+      </p>
 
-    <h1 id="admin-dashboard-title">
-      {{ 'admin.dashboard.title' | translate }}
-    </h1>
-  </header>
+      <h1 id="admin-dashboard-title">
+        {{ 'admin.dashboard.title' | translate }}
+      </h1>
+    </div>
 
-  <nav
-    class="admin-dashboard__actions"
-    [attr.aria-label]="'admin.dashboard.actionsAriaLabel' | translate"
-  >
-    <a routerLink="/admin/service-document">
+    <a class="admin-dashboard__document-link" routerLink="/admin/service-document">
       {{ 'admin.dashboard.manageServiceDocument' | translate }}
     </a>
-  </nav>
+  </header>
 
   @if (isLoading()) {
-    <p>{{ 'admin.dashboard.loading' | translate }}</p>
+    <div class="admin-dashboard__state">
+      <p>{{ 'admin.dashboard.loading' | translate }}</p>
+    </div>
   } @else if (hasError()) {
-    <p role="alert">{{ 'admin.dashboard.error' | translate }}</p>
+    <div class="admin-dashboard__state admin-dashboard__state--error">
+      <p role="alert">{{ 'admin.dashboard.error' | translate }}</p>
+    </div>
   } @else if (requests().length === 0) {
-    <p>{{ 'admin.dashboard.empty' | translate }}</p>
+    <div class="admin-dashboard__state">
+      <p>{{ 'admin.dashboard.empty' | translate }}</p>
+    </div>
   } @else {
-    <p>
-      {{ 'admin.dashboard.total' | translate: { count: requests().length } }}
-    </p>
+    <div class="admin-dashboard__summary" aria-label="Request summary">
+      <article class="admin-dashboard__summary-card">
+        <span class="admin-dashboard__summary-label">
+          {{ 'admin.dashboard.total' | translate: { count: requests().length } }}
+        </span>
 
-    <div class="admin-dashboard__table-wrapper">
-      <table class="admin-dashboard__table">
-        <thead>
-          <tr>
-            <th scope="col">{{ 'admin.dashboard.table.name' | translate }}</th>
-            <th scope="col">{{ 'admin.dashboard.table.email' | translate }}</th>
-            <th scope="col">{{ 'admin.dashboard.table.eventType' | translate }}</th>
-            <th scope="col">{{ 'admin.dashboard.table.eventDate' | translate }}</th>
-            <th scope="col">{{ 'admin.dashboard.table.guests' | translate }}</th>
-            <th scope="col">{{ 'admin.dashboard.table.createdAt' | translate }}</th>
-            <th scope="col">{{ 'admin.dashboard.table.status' | translate }}</th>
-            <th scope="col">{{ 'admin.dashboard.table.actions' | translate }}</th>
-          </tr>
-        </thead>
+        <strong>{{ requests().length }}</strong>
+      </article>
 
-        <tbody>
-          @for (request of requests(); track request.id) {
-            <tr>
-              <td>{{ request.name }}</td>
-              <td>{{ request.email }}</td>
-              <td>
+      <article class="admin-dashboard__summary-card admin-dashboard__summary-card--pending">
+        <span class="admin-dashboard__summary-label">
+          {{ 'admin.status.pending' | translate }}
+        </span>
+
+        <strong>
+          @let pendingRequests = requests().filter((request) => request.status === 'pending');
+          {{ pendingRequests.length }}
+        </strong>
+      </article>
+
+      <article class="admin-dashboard__summary-card admin-dashboard__summary-card--contacted">
+        <span class="admin-dashboard__summary-label">
+          {{ 'admin.status.contacted' | translate }}
+        </span>
+
+        <strong>
+          @let contactedRequests = requests().filter((request) => request.status === 'contacted');
+          {{ contactedRequests.length }}
+        </strong>
+      </article>
+
+      <article class="admin-dashboard__summary-card admin-dashboard__summary-card--closed">
+        <span class="admin-dashboard__summary-label">
+          {{ 'admin.status.closed' | translate }}
+        </span>
+
+        <strong>
+          @let closedRequests = requests().filter((request) => request.status === 'closed');
+          {{ closedRequests.length }}
+        </strong>
+      </article>
+    </div>
+
+    <div class="admin-dashboard__requests">
+      @for (request of requests(); track request.id) {
+        <article class="admin-request-card">
+          <div class="admin-request-card__top">
+            <div>
+              <h2>{{ request.name }}</h2>
+              <p>{{ request.email }}</p>
+            </div>
+
+            <span
+              class="admin-request-card__status"
+              [class.admin-request-card__status--pending]="request.status === 'pending'"
+              [class.admin-request-card__status--contacted]="request.status === 'contacted'"
+              [class.admin-request-card__status--closed]="request.status === 'closed'"
+            >
+              @switch (request.status) {
+                @case ('pending') {
+                  {{ 'admin.status.pending' | translate }}
+                }
+                @case ('contacted') {
+                  {{ 'admin.status.contacted' | translate }}
+                }
+                @case ('closed') {
+                  {{ 'admin.status.closed' | translate }}
+                }
+              }
+            </span>
+          </div>
+
+          <dl class="admin-request-card__details">
+            <div>
+              <dt>{{ 'admin.dashboard.table.eventType' | translate }}</dt>
+              <dd>
                 @switch (request.eventType) {
                   @case ('private-dinner') {
                     {{ 'admin.eventTypes.privateDinner' | translate }}
@@ -65,32 +121,34 @@
                     {{ 'admin.eventTypes.other' | translate }}
                   }
                 }
-              </td>
-              <td>{{ request.eventDate ?? '—' }}</td>
-              <td>{{ request.guestCount }}</td>
-              <td>{{ request.createdAt }}</td>
-              <td>
-                @switch (request.status) {
-                  @case ('pending') {
-                    {{ 'admin.status.pending' | translate }}
-                  }
-                  @case ('contacted') {
-                    {{ 'admin.status.contacted' | translate }}
-                  }
-                  @case ('closed') {
-                    {{ 'admin.status.closed' | translate }}
-                  }
-                }
-              </td>
-              <td>
-                <a [routerLink]="['/admin/quote-requests', request.id]">
-                  {{ 'admin.dashboard.viewDetails' | translate }}
-                </a>
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
+              </dd>
+            </div>
+
+            <div>
+              <dt>{{ 'admin.dashboard.table.eventDate' | translate }}</dt>
+              <dd>{{ request.eventDate ?? '—' }}</dd>
+            </div>
+
+            <div>
+              <dt>{{ 'admin.dashboard.table.guests' | translate }}</dt>
+              <dd>{{ request.guestCount }}</dd>
+            </div>
+
+            <div>
+              <dt>{{ 'admin.dashboard.table.createdAt' | translate }}</dt>
+              <dd>{{ request.createdAt }}</dd>
+            </div>
+          </dl>
+
+          <a
+            class="admin-request-card__details-link"
+            [routerLink]="['/admin/quote-requests', request.id]"
+          >
+            {{ 'admin.dashboard.viewDetails' | translate }}
+            <span aria-hidden="true">→</span>
+          </a>
+        </article>
+      }
     </div>
   }
 </section>

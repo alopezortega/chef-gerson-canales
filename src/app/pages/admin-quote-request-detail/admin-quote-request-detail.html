@@ -1,136 +1,270 @@
-<section aria-labelledby="quote-request-detail-title">
-  <a routerLink="/admin">
+<section class="admin-quote-request-detail" aria-labelledby="quote-request-detail-title">
+  <a class="admin-quote-request-detail__back" routerLink="/admin">
+    <span aria-hidden="true">←</span>
     {{ 'admin.quoteRequestDetail.back' | translate }}
   </a>
 
-  <h1 id="quote-request-detail-title">
-    {{ 'admin.quoteRequestDetail.title' | translate }}
-  </h1>
+  <header class="admin-quote-request-detail__header">
+    <div>
+      <p class="admin-quote-request-detail__eyebrow">
+        {{ 'admin.dashboard.eyebrow' | translate }}
+      </p>
 
-  @if (isLoading()) {
-    <p>{{ 'admin.quoteRequestDetail.loading' | translate }}</p>
-  } @else if (hasError()) {
-    <p role="alert">{{ 'admin.quoteRequestDetail.error' | translate }}</p>
-  } @else if (selectedRequest(); as request) {
-    <dl>
-      <dt>{{ 'admin.quoteRequestDetail.fields.name' | translate }}</dt>
-      <dd>{{ request.name }}</dd>
+      <h1 id="quote-request-detail-title">
+        {{ 'admin.quoteRequestDetail.title' | translate }}
+      </h1>
+    </div>
 
-      <dt>{{ 'admin.quoteRequestDetail.fields.email' | translate }}</dt>
-      <dd>{{ request.email }}</dd>
-
-      <dt>{{ 'admin.quoteRequestDetail.fields.phone' | translate }}</dt>
-      <dd>{{ request.phone ?? '—' }}</dd>
-
-      <dt>{{ 'admin.quoteRequestDetail.fields.eventType' | translate }}</dt>
-      <dd>
-        @switch (request.eventType) {
-          @case ('private-dinner') {
-            {{ 'admin.eventTypes.privateDinner' | translate }}
-          }
-          @case ('family-celebration') {
-            {{ 'admin.eventTypes.familyCelebration' | translate }}
-          }
-          @case ('corporate-event') {
-            {{ 'admin.eventTypes.corporateEvent' | translate }}
-          }
-          @case ('meeting-catering') {
-            {{ 'admin.eventTypes.meetingCatering' | translate }}
-          }
-          @default {
-            {{ 'admin.eventTypes.other' | translate }}
-          }
-        }
-      </dd>
-
-      <dt>{{ 'admin.quoteRequestDetail.fields.eventDate' | translate }}</dt>
-      <dd>{{ request.eventDate ?? '—' }}</dd>
-
-      <dt>{{ 'admin.quoteRequestDetail.fields.guests' | translate }}</dt>
-      <dd>{{ request.guestCount }}</dd>
-
-      <dt>{{ 'admin.quoteRequestDetail.fields.location' | translate }}</dt>
-      <dd>{{ request.location ?? '—' }}</dd>
-
-      <dt>
-        {{ 'admin.quoteRequestDetail.fields.dietaryRequirements' | translate }}
-      </dt>
-      <dd>{{ request.dietaryRequirements ?? '—' }}</dd>
-
-      <dt>
-        {{ 'admin.quoteRequestDetail.fields.additionalInformation' | translate }}
-      </dt>
-      <dd>{{ request.additionalInformation ?? '—' }}</dd>
-
-      <dt>{{ 'admin.quoteRequestDetail.fields.currentStatus' | translate }}</dt>
-      <dd>
+    @if (selectedRequest(); as request) {
+      <span
+        class="admin-quote-request-detail__status"
+        [class.admin-quote-request-detail__status--pending]="request.status === 'pending'"
+        [class.admin-quote-request-detail__status--contacted]="request.status === 'contacted'"
+        [class.admin-quote-request-detail__status--closed]="request.status === 'closed'"
+      >
         @switch (request.status) {
           @case ('pending') {
             {{ 'admin.status.pending' | translate }}
           }
+
           @case ('contacted') {
             {{ 'admin.status.contacted' | translate }}
           }
+
           @case ('closed') {
             {{ 'admin.status.closed' | translate }}
           }
         }
-      </dd>
+      </span>
+    }
+  </header>
 
-      <dt>{{ 'admin.quoteRequestDetail.fields.createdAt' | translate }}</dt>
-      <dd>{{ request.createdAt }}</dd>
-    </dl>
+  @if (isLoading()) {
+    <div class="admin-quote-request-detail__state">
+      <p>{{ 'admin.quoteRequestDetail.loading' | translate }}</p>
+    </div>
+  } @else if (hasError()) {
+    <div class="admin-quote-request-detail__state admin-quote-request-detail__state--error">
+      <p role="alert">
+        {{ 'admin.quoteRequestDetail.error' | translate }}
+      </p>
+    </div>
+  } @else if (selectedRequest(); as request) {
+    <div class="admin-quote-request-detail__layout">
+      <article class="admin-quote-request-detail__card">
+        <dl class="admin-quote-request-detail__fields">
+          <div class="admin-quote-request-detail__field">
+            <dt>
+              {{ 'admin.quoteRequestDetail.fields.name' | translate }}
+            </dt>
+            <dd>{{ request.name }}</dd>
+          </div>
 
-    <section class="admin-quote-request-detail__attachment" aria-labelledby="attachment-title">
-      <h2 id="attachment-title">
-        {{ 'admin.quoteRequestDetail.attachment.title' | translate }}
-      </h2>
+          <div class="admin-quote-request-detail__field">
+            <dt>
+              {{ 'admin.quoteRequestDetail.fields.email' | translate }}
+            </dt>
+            <dd>{{ request.email }}</dd>
+          </div>
 
-      @if (request.attachmentPath) {
-        <p>
-          {{
-            request.attachmentName ??
-              ('admin.quoteRequestDetail.attachment.fallbackName' | translate)
-          }}
-        </p>
+          <div class="admin-quote-request-detail__field">
+            <dt>
+              {{ 'admin.quoteRequestDetail.fields.phone' | translate }}
+            </dt>
+            <dd>{{ request.phone ?? '—' }}</dd>
+          </div>
 
-        <button type="button" (click)="openAttachment()" [disabled]="isOpeningAttachment()">
-          @if (isOpeningAttachment()) {
-            {{ 'admin.quoteRequestDetail.attachment.opening' | translate }}
+          <div class="admin-quote-request-detail__field">
+            <dt>
+              {{ 'admin.quoteRequestDetail.fields.eventType' | translate }}
+            </dt>
+
+            <dd>
+              @switch (request.eventType) {
+                @case ('private-dinner') {
+                  {{ 'admin.eventTypes.privateDinner' | translate }}
+                }
+
+                @case ('family-celebration') {
+                  {{ 'admin.eventTypes.familyCelebration' | translate }}
+                }
+
+                @case ('corporate-event') {
+                  {{ 'admin.eventTypes.corporateEvent' | translate }}
+                }
+
+                @case ('meeting-catering') {
+                  {{ 'admin.eventTypes.meetingCatering' | translate }}
+                }
+
+                @default {
+                  {{ 'admin.eventTypes.other' | translate }}
+                }
+              }
+            </dd>
+          </div>
+
+          <div class="admin-quote-request-detail__field">
+            <dt>
+              {{ 'admin.quoteRequestDetail.fields.eventDate' | translate }}
+            </dt>
+            <dd>{{ request.eventDate ?? '—' }}</dd>
+          </div>
+
+          <div class="admin-quote-request-detail__field">
+            <dt>
+              {{ 'admin.quoteRequestDetail.fields.guests' | translate }}
+            </dt>
+            <dd>{{ request.guestCount }}</dd>
+          </div>
+
+          <div class="admin-quote-request-detail__field">
+            <dt>
+              {{ 'admin.quoteRequestDetail.fields.location' | translate }}
+            </dt>
+            <dd>{{ request.location ?? '—' }}</dd>
+          </div>
+
+          <div class="admin-quote-request-detail__field">
+            <dt>
+              {{ 'admin.quoteRequestDetail.fields.currentStatus' | translate }}
+            </dt>
+
+            <dd>
+              @switch (request.status) {
+                @case ('pending') {
+                  {{ 'admin.status.pending' | translate }}
+                }
+
+                @case ('contacted') {
+                  {{ 'admin.status.contacted' | translate }}
+                }
+
+                @case ('closed') {
+                  {{ 'admin.status.closed' | translate }}
+                }
+              }
+            </dd>
+          </div>
+
+          <div class="admin-quote-request-detail__field admin-quote-request-detail__field--wide">
+            <dt>
+              {{ 'admin.quoteRequestDetail.fields.dietaryRequirements' | translate }}
+            </dt>
+            <dd>{{ request.dietaryRequirements ?? '—' }}</dd>
+          </div>
+
+          <div class="admin-quote-request-detail__field admin-quote-request-detail__field--wide">
+            <dt>
+              {{ 'admin.quoteRequestDetail.fields.additionalInformation' | translate }}
+            </dt>
+            <dd>{{ request.additionalInformation ?? '—' }}</dd>
+          </div>
+
+          <div class="admin-quote-request-detail__field admin-quote-request-detail__field--wide">
+            <dt>
+              {{ 'admin.quoteRequestDetail.fields.createdAt' | translate }}
+            </dt>
+
+            <dd>
+              {{ request.createdAt | date: 'dd/MM/yyyy · HH:mm' }}
+            </dd>
+          </div>
+        </dl>
+      </article>
+
+      <aside class="admin-quote-request-detail__sidebar">
+        <section class="admin-quote-request-detail__panel" aria-labelledby="status-control-title">
+          <h2 id="status-control-title">
+            {{ 'admin.quoteRequestDetail.statusControl.label' | translate }}
+          </h2>
+
+          <div class="admin-quote-request-detail__status-control">
+            <label class="admin-quote-request-detail__select-label" for="request-status">
+              {{ 'admin.quoteRequestDetail.fields.currentStatus' | translate }}
+            </label>
+
+            <select
+              id="request-status"
+              [value]="selectedStatus()"
+              (change)="onStatusChange($event)"
+              [disabled]="isUpdatingStatus()"
+            >
+              <option value="pending">
+                {{ 'admin.status.pending' | translate }}
+              </option>
+
+              <option value="contacted">
+                {{ 'admin.status.contacted' | translate }}
+              </option>
+
+              <option value="closed">
+                {{ 'admin.status.closed' | translate }}
+              </option>
+            </select>
+
+            <button
+              class="admin-quote-request-detail__primary-button"
+              type="button"
+              (click)="updateStatus()"
+              [disabled]="isUpdatingStatus()"
+            >
+              @if (isUpdatingStatus()) {
+                {{ 'admin.quoteRequestDetail.statusControl.updating' | translate }}
+              } @else {
+                {{ 'admin.quoteRequestDetail.statusControl.update' | translate }}
+              }
+            </button>
+          </div>
+        </section>
+
+        <section class="admin-quote-request-detail__panel" aria-labelledby="attachment-title">
+          <h2 id="attachment-title">
+            {{ 'admin.quoteRequestDetail.attachment.title' | translate }}
+          </h2>
+
+          @if (request.attachmentPath) {
+            <div class="admin-quote-request-detail__attachment">
+              <div class="admin-quote-request-detail__attachment-file">
+                <span class="admin-quote-request-detail__attachment-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M6 2.5h8l4 4v15H6z" />
+                    <path d="M14 2.5v5h4M9 12h6M9 16h6" />
+                  </svg>
+                </span>
+
+                <p>
+                  {{
+                    request.attachmentName ??
+                      ('admin.quoteRequestDetail.attachment.fallbackName' | translate)
+                  }}
+                </p>
+              </div>
+
+              <button
+                class="admin-quote-request-detail__secondary-button"
+                type="button"
+                (click)="openAttachment()"
+                [disabled]="isOpeningAttachment()"
+              >
+                @if (isOpeningAttachment()) {
+                  {{ 'admin.quoteRequestDetail.attachment.opening' | translate }}
+                } @else {
+                  {{ 'admin.quoteRequestDetail.attachment.open' | translate }}
+                }
+              </button>
+            </div>
           } @else {
-            {{ 'admin.quoteRequestDetail.attachment.open' | translate }}
+            <p class="admin-quote-request-detail__empty-copy">
+              {{ 'admin.quoteRequestDetail.attachment.none' | translate }}
+            </p>
           }
-        </button>
-      } @else {
-        <p>{{ 'admin.quoteRequestDetail.attachment.none' | translate }}</p>
-      }
-    </section>
-
-    <div class="admin-quote-request-detail__status-control">
-      <label for="request-status">
-        {{ 'admin.quoteRequestDetail.statusControl.label' | translate }}
-      </label>
-
-      <select
-        id="request-status"
-        [value]="selectedStatus()"
-        (change)="onStatusChange($event)"
-        [disabled]="isUpdatingStatus()"
-      >
-        <option value="pending">{{ 'admin.status.pending' | translate }}</option>
-        <option value="contacted">{{ 'admin.status.contacted' | translate }}</option>
-        <option value="closed">{{ 'admin.status.closed' | translate }}</option>
-      </select>
-
-      <button type="button" (click)="updateStatus()" [disabled]="isUpdatingStatus()">
-        @if (isUpdatingStatus()) {
-          {{ 'admin.quoteRequestDetail.statusControl.updating' | translate }}
-        } @else {
-          {{ 'admin.quoteRequestDetail.statusControl.update' | translate }}
-        }
-      </button>
+        </section>
+      </aside>
     </div>
   } @else {
-    <p>{{ 'admin.quoteRequestDetail.notFound' | translate }}</p>
+    <div class="admin-quote-request-detail__state">
+      <p>{{ 'admin.quoteRequestDetail.notFound' | translate }}</p>
+    </div>
   }
 </section>

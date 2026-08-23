@@ -1,9 +1,142 @@
-<button type="button" (click)="signOut()" [disabled]="isSigningOut()">
-  @if (isSigningOut()) {
-    {{ 'admin.layout.signingOut' | translate }}
-  } @else {
-    {{ 'admin.layout.signOut' | translate }}
-  }
-</button>
+<div class="admin-shell">
+  <aside class="admin-sidebar">
+    <div class="admin-sidebar__brand">
+      <img class="admin-sidebar__logo" src="/images/brand/gerson-canales-header.png" alt="" />
 
-<router-outlet />
+      <div class="admin-sidebar__brand-copy">
+        <p class="admin-sidebar__brand-name">Chef Gerson Canales</p>
+        <p class="admin-sidebar__brand-label">Admin</p>
+      </div>
+    </div>
+
+    <nav class="admin-sidebar__navigation" aria-label="Admin">
+      <a
+        class="admin-sidebar__link"
+        routerLink="/admin"
+        routerLinkActive="admin-sidebar__link--active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <span class="admin-sidebar__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M6 4.5h12A1.5 1.5 0 0 1 19.5 6v14H4.5V6A1.5 1.5 0 0 1 6 4.5Z" />
+            <path d="M8 2.5h8v4H8z" />
+            <path d="M8 10h8M8 14h8M8 18h5" />
+          </svg>
+        </span>
+
+        <span>{{ 'admin.dashboard.title' | translate }}</span>
+      </a>
+
+      <a
+        class="admin-sidebar__link"
+        routerLink="/admin/service-document"
+        routerLinkActive="admin-sidebar__link--active"
+      >
+        <span class="admin-sidebar__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M6 2.5h8l4 4v15H6z" />
+            <path d="M14 2.5v5h4M9 12h6M9 16h6" />
+          </svg>
+        </span>
+
+        <span>
+          {{ 'admin.dashboard.manageServiceDocument' | translate }}
+        </span>
+      </a>
+    </nav>
+
+    <button
+      class="admin-sidebar__sign-out"
+      type="button"
+      (click)="signOut()"
+      [disabled]="isSigningOut()"
+    >
+      <span class="admin-sidebar__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path d="M10 4H5.5v16H10M14 8l4 4-4 4M18 12H9" />
+        </svg>
+      </span>
+
+      @if (isSigningOut()) {
+        {{ 'admin.layout.signingOut' | translate }}
+      } @else {
+        {{ 'admin.layout.signOut' | translate }}
+      }
+    </button>
+  </aside>
+
+  <div class="admin-shell__main">
+    <header class="admin-mobile-header">
+      <a class="admin-mobile-header__brand" routerLink="/admin">
+        <img
+          class="admin-mobile-header__logo"
+          src="/images/brand/gerson-canales-header.png"
+          alt=""
+        />
+      </a>
+
+      <button
+        class="admin-mobile-header__sign-out"
+        type="button"
+        (click)="signOut()"
+        [disabled]="isSigningOut()"
+        [attr.aria-label]="'admin.layout.signOut' | translate"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M10 4H5.5v16H10M14 8l4 4-4 4M18 12H9" />
+        </svg>
+      </button>
+    </header>
+
+    <main class="admin-shell__content">
+      <router-outlet />
+    </main>
+
+    <nav class="admin-bottom-navigation" aria-label="Admin">
+      <a
+        class="admin-bottom-navigation__link"
+        routerLink="/admin"
+        routerLinkActive="admin-bottom-navigation__link--active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 4.5h12A1.5 1.5 0 0 1 19.5 6v14H4.5V6A1.5 1.5 0 0 1 6 4.5Z" />
+          <path d="M8 2.5h8v4H8z" />
+          <path d="M8 10h8M8 14h8M8 18h5" />
+        </svg>
+
+        <span>{{ 'admin.dashboard.title' | translate }}</span>
+      </a>
+
+      <a
+        class="admin-bottom-navigation__link"
+        routerLink="/admin/service-document"
+        routerLinkActive="admin-bottom-navigation__link--active"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 2.5h8l4 4v15H6z" />
+          <path d="M14 2.5v5h4M9 12h6M9 16h6" />
+        </svg>
+
+        <span>
+          {{ 'admin.dashboard.manageServiceDocument' | translate }}
+        </span>
+      </a>
+
+      <button
+        class="admin-bottom-navigation__link admin-bottom-navigation__button"
+        type="button"
+        (click)="signOut()"
+        [disabled]="isSigningOut()"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M10 4H5.5v16H10M14 8l4 4-4 4M18 12H9" />
+        </svg>
+
+        <span>{{ 'admin.layout.signOut' | translate }}</span>
+      </button>
+    </nav>
+
+    <app-scroll-to-top />
+  </div>
+</div>
