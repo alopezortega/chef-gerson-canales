@@ -132,8 +132,13 @@ ScrollToTop
 The administrative layout contains:
 
 ```text
+Responsive Admin shell
+Mobile header
+Mobile bottom navigation
+Desktop sidebar navigation
 Sign-out control
 RouterOutlet
+Shared ScrollToTop
 ```
 
 The login page is intentionally outside `AdminLayout`, while authenticated Admin pages render inside it.
@@ -208,7 +213,10 @@ App
     │   └── Admin Login
     │
     └── protected Admin Layout
+        ├── Mobile header and bottom navigation
+        ├── Desktop sidebar navigation
         ├── Sign-out control
+        ├── shared ScrollToTop
         └── Router Outlet
             ├── Admin Dashboard
             ├── Admin Quote Request Detail
@@ -2147,10 +2155,11 @@ Mobile keeps a vertical composition with stronger brand presence.
 
 ### Scroll-To-Top
 
-The reusable control remains mounted once in:
+The reusable control is shared by both route shells:
 
 ```text
 PublicLayout
+AdminLayout
 ```
 
 Implementation:
@@ -2426,39 +2435,22 @@ Lint
 → all files pass
 
 Production build
-→ currently blocked only by the component-style budget
-→ 5 public routes are still generated/prerendered before the budget check fails
+→ completed successfully
+→ 5 public routes prerendered
 ```
 
-Current style-budget output:
-
-```text
-src/app/pages/services/services.scss
-configured warning budget: 12.00 kB
-current size: 19.13 kB
-warning excess: 7.13 kB
-configured error budget: 16.00 kB
-error excess: 3.13 kB
-
-src/app/pages/quote-request/quote-request.scss
-configured warning budget: 12.00 kB
-current size: 12.39 kB
-warning excess: 392 bytes
-```
-
-The Services budget is a build-configuration blocker, not a TypeScript, Angular template, test or runtime failure. The responsive Services redesign intentionally contains substantial mobile and desktop SCSS. The component-style budget should be reviewed in `angular.json` before branch closure.
+The previous Services component-style budget blocker was resolved before the Admin visual-cleanup branch was closed.
 
 The expected Quote Request notification-failure test may write a diagnostic error to stderr while the test itself passes.
 
 ### Remaining visual MVP work
 
 ```text
-/servicios
-→ responsive Private Chef & Catering visual design complete
-→ mobile, laptop and large desktop manually reviewed
+Public routes
+→ complete for the current MVP
 
 /admin/**
-→ fast functional visual cleanup for the MVP
+→ responsive visual cleanup complete
 ```
 
 The public Services route remains technically:
@@ -2606,4 +2598,238 @@ download error handling
 pending-state reset
 ```
 
-The production build currently stops only on the configured `anyComponentStyle` error threshold because `services.scss` is 19.13 kB while the error budget is 16.00 kB. This must be resolved in `angular.json` before the branch is considered fully build-green.
+The component-style budget was adjusted deliberately after the responsive Services redesign. The production build is now green and continues to prerender the five public routes successfully.
+
+## Admin Visual Cleanup Closure — 2026-08-23
+
+The protected Admin area is visually complete for the current MVP.
+
+The cleanup intentionally preserves the existing Auth, routing, Supabase and service boundaries. No new Admin business functionality was introduced during the visual pass.
+
+Current protected routes remain:
+
+```text
+/admin
+→ Admin Dashboard
+
+/admin/quote-requests/:id
+→ Admin Quote Request Detail
+
+/admin/service-document
+→ Admin Service Document
+```
+
+`/admin/login` remains a public sibling route outside `AdminLayout`.
+
+### Responsive Admin shell
+
+`AdminLayout` now provides a responsive shell around all protected Admin pages.
+
+Mobile composition:
+
+```text
+brand header
+→ sign-out control
+
+RouterOutlet
+→ active Admin page
+
+fixed bottom navigation
+→ Requests
+→ Service document
+→ Sign out
+
+shared ScrollToTop
+```
+
+Desktop composition:
+
+```text
+sticky sidebar
+→ Gerson Canales brand
+→ Requests navigation
+→ Service document navigation
+→ Sign out
+
+main content area
+→ RouterOutlet
+
+shared ScrollToTop
+```
+
+The responsive shell is implemented with one Angular template and CSS-driven recomposition.
+
+### Admin Dashboard
+
+The Dashboard keeps the existing `AdminQuoteRequestService` data flow and replaces the provisional wide table with a responsive card-based presentation.
+
+Current UI includes:
+
+```text
+page heading
+service-document management link
+summary cards
+→ total
+→ pending
+→ contacted
+→ closed
+
+responsive request cards
+→ customer name and email
+→ event type
+→ event date
+→ guest count
+→ creation date
+→ translated status badge
+→ detail route link
+```
+
+The Dashboard remains responsible only for presentation and navigation. Shared request state remains owned by `AdminQuoteRequestService`.
+
+### Admin Quote Request Detail
+
+The routed detail view keeps the existing behaviour and presents it through a responsive two-area composition.
+
+Current UI includes:
+
+```text
+back navigation
+request status badge
+request information card
+status-management panel
+private attachment panel
+```
+
+The creation timestamp is formatted for display with Angular `DatePipe` rather than exposing the raw ISO string.
+
+Existing behaviour remains unchanged:
+
+```text
+ActivatedRoute id lookup
+selected request Signal
+effect-based status synchronization
+status update
+60-second private attachment signed URL
+safe window.open with noopener,noreferrer
+```
+
+### Admin Service Document
+
+The existing one-document workflow now uses responsive management cards.
+
+Current UI includes:
+
+```text
+current document card
+→ file name
+→ formatted update time
+→ delete action
+
+upload / replacement card
+→ PDF file selection
+→ selected-file feedback
+→ replace/upload action
+
+success and error feedback
+```
+
+The page continues to use Angular `viewChild` to reset the native file input after successful mutations.
+
+### Admin Login
+
+The existing Admin Login visual treatment was retained because it was already suitable for the MVP.
+
+No authentication behaviour or form architecture changed during the Admin visual cleanup.
+
+### Shared ScrollToTop reuse
+
+`ScrollToTop` now has a real second layout consumer:
+
+```text
+PublicLayout
+AdminLayout
+```
+
+The component keeps its existing browser-safe implementation:
+
+```text
+afterNextRender
+fromEvent(window, 'scroll')
+takeUntilDestroyed
+Signal
+@if
+```
+
+The Admin placement accounts for the fixed mobile bottom navigation and uses a standard bottom-right position on larger screens.
+
+### Deliberately deferred Admin functionality
+
+Request deletion remains outside the visual MVP.
+
+The future implementation must treat deletion as a complete workflow rather than a cosmetic button:
+
+```text
+confirmation UI
+HTTP/API boundary
+Database DELETE authorization
+private attachment cleanup when present
+Dashboard state refresh/synchronization
+error handling
+tests
+```
+
+This is planned for the post-MVP technical portfolio extension together with:
+
+```text
+HttpClient
+HttpInterceptorFn
+functional resolver
+RxJS request flows
+HttpTestingController
+```
+
+### Final MVP quality baseline
+
+Validation after the Admin visual cleanup:
+
+```text
+Test files
+→ 23 passed
+
+Tests
+→ 146 passed
+
+Lint
+→ all files pass
+
+Production build
+→ completed successfully
+→ 5 public routes prerendered
+```
+
+Manual visual validation includes:
+
+```text
+Admin Dashboard
+→ mobile
+→ desktop
+
+Admin Quote Request Detail
+→ mobile
+→ desktop
+
+Admin Service Document
+→ mobile
+→ desktop
+
+Admin Login
+→ desktop presentation retained
+
+Admin navigation
+→ protected routing
+→ sign out
+→ ScrollToTop
+```
+
+At this checkpoint the current functional and visual MVP is complete. Remaining work is deployment closure, real-device smoke testing and the optional interview-focused HTTP/API extension.
+
