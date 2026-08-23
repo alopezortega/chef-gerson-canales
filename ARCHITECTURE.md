@@ -2426,20 +2426,27 @@ Lint
 → all files pass
 
 Production build
-→ successful
-→ 5 public routes prerendered
+→ currently blocked only by the component-style budget
+→ 5 public routes are still generated/prerendered before the budget check fails
 ```
 
-Current non-blocking style-budget warning:
+Current style-budget output:
 
 ```text
+src/app/pages/services/services.scss
+configured warning budget: 12.00 kB
+current size: 19.13 kB
+warning excess: 7.13 kB
+configured error budget: 16.00 kB
+error excess: 3.13 kB
+
 src/app/pages/quote-request/quote-request.scss
 configured warning budget: 12.00 kB
 current size: 12.39 kB
-excess: 392 bytes
+warning excess: 392 bytes
 ```
 
-The warning does not block the production build.
+The Services budget is a build-configuration blocker, not a TypeScript, Angular template, test or runtime failure. The responsive Services redesign intentionally contains substantial mobile and desktop SCSS. The component-style budget should be reviewed in `angular.json` before branch closure.
 
 The expected Quote Request notification-failure test may write a diagnostic error to stderr while the test itself passes.
 
@@ -2447,7 +2454,8 @@ The expected Quote Request notification-failure test may write a diagnostic erro
 
 ```text
 /servicios
-→ final Private Chef & Catering visual design
+→ responsive Private Chef & Catering visual design complete
+→ mobile, laptop and large desktop manually reviewed
 
 /admin/**
 → fast functional visual cleanup for the MVP
@@ -2467,3 +2475,135 @@ while the visible commercial label remains:
 Chef privado & catering
 Private chef & catering
 ```
+
+
+## Services Visual Design Closure — 2026-08-23
+
+The public Services route is visually complete for the current MVP while keeping its existing technical and service-document boundaries.
+
+Current route and technical naming remain:
+
+```text
+/servicios
+ServicesComponent
+pages/services
+```
+
+Visible commercial labels remain:
+
+```text
+Chef privado & catering
+Private chef & catering
+```
+
+### Responsive composition
+
+The page follows the established Mobile First public design system and uses responsive SCSS to recompose the same feature content for larger screens.
+
+Current composition:
+
+```text
+Hero
+→ large gastronomic image
+→ service label, title and supporting copy
+
+Experience introduction
+→ editorial heading and copy
+→ three service cards
+
+Catering sample
+→ active service-document download action
+→ decorative sample cover
+→ three example items
+
+Process
+→ four visual steps
+→ dedicated numbered assets on desktop
+
+Final CTA
+→ shared public closing action
+
+Footer
+→ inherited from PublicLayout
+```
+
+Mobile and desktop intentionally use different compositions through CSS while preserving the same route and business workflow.
+
+### Services visual assets
+
+Current Services assets include dedicated imagery for:
+
+```text
+hero plate
+private dining
+celebrations
+custom catering
+service icons
+catering sample items
+process icons
+process numbered ornaments
+decorative olive branches
+```
+
+The catering sample cover now uses:
+
+```text
+public/images/services/services-catering-sample-salmorejo-tuna.png
+```
+
+The numbered process ornaments are stored individually as:
+
+```text
+services-process-number-01.png
+services-process-number-02.png
+services-process-number-03.png
+services-process-number-04.png
+```
+
+### Service-document workflow preserved
+
+The redesign does not change the existing `ServiceDocumentService` responsibility or signed-URL flow.
+
+```text
+active service document metadata
+→ ServicesComponent
+→ visitor selects download icon
+→ create 60-second signed URL
+→ PDF opens in a safe new tab
+```
+
+The desktop download control is intentionally icon-only and retains a translated accessible name.
+
+### Responsive validation
+
+Manually reviewed on:
+
+```text
+mobile viewport
+laptop display
+large LG / ultrawide display
+```
+
+The ultrawide layout keeps a controlled max-width rather than stretching cards and typography across the complete viewport. Further ultrawide polish is deferred until the deployed Netlify URL can be tested on real devices and browsers.
+
+### Quality status
+
+```text
+23 test files passed
+146 tests passed
+lint passes
+```
+
+No additional Services-specific tests are required for the visual-only changes because the existing behavioural coverage still validates:
+
+```text
+active document loading
+download no-op without a document
+duplicate-download prevention
+signed URL request
+safe window.open arguments
+download error handling
+pending-state reset
+```
+
+The production build currently stops only on the configured `anyComponentStyle` error threshold because `services.scss` is 19.13 kB while the error budget is 16.00 kB. This must be resolved in `angular.json` before the branch is considered fully build-green.
