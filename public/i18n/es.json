@@ -314,81 +314,97 @@
   },
   "services": {
     "hero": {
-      "label": "Chef privado & catering",
-      "title": "Experiencias gastronómicas adaptadas a cada ocasión",
-      "description": "Propuestas provisionales para celebraciones privadas, encuentros profesionales y experiencias personalizadas."
+      "label": "Servicios",
+      "titleLine1": "Chef privado",
+      "titleLine2": "& catering",
+      "description": "Experiencias gastronómicas hechas a tu medida.",
+      "imageAlt": "Plato gastronómico de vieira con salsa, flores comestibles y microbrotes"
     },
     "experiences": {
-      "label": "Qué podemos preparar",
-      "title": "Una propuesta para cada tipo de encuentro",
+      "label": "Cocina que conecta",
+      "title": "Creamos experiencias íntimas alrededor de la mesa.",
+      "description": "Cocina de autor, ingredientes de temporada y un servicio cuidado en cada detalle para que tú solo te ocupes de disfrutar.",
       "empty": "Todavía no hay experiencias disponibles.",
       "items": [
         {
-          "id": "private-dinners",
-          "title": "Cenas privadas en casa",
-          "description": "Una experiencia gastronómica personalizada para disfrutar en un entorno íntimo y cuidado."
+          "id": "private-dining",
+          "title": "Chef privado en casa",
+          "description": "Vive una experiencia única en la comodidad de tu hogar.",
+          "image": "/images/services/services-private-dining.png",
+          "imageAlt": "Cena privada con plato gastronómico servido en una mesa iluminada con velas",
+          "icon": "/images/services/services-private-dining-icon.png"
         },
         {
-          "id": "family-celebrations",
-          "title": "Celebraciones familiares",
-          "description": "Propuestas adaptadas para cumpleaños, aniversarios y otros encuentros especiales."
+          "id": "celebrations",
+          "title": "Celebraciones",
+          "description": "Creamos momentos inolvidables para ocasiones especiales.",
+          "image": "/images/services/services-celebration.png",
+          "imageAlt": "Invitados brindando durante una celebración íntima a la luz de las velas",
+          "icon": "/images/services/services-celebration-icon.png"
         },
         {
-          "id": "corporate-events",
-          "title": "Eventos corporativos",
-          "description": "Opciones gastronómicas para reuniones de equipo, presentaciones y encuentros profesionales."
-        },
-        {
-          "id": "meeting-catering",
-          "title": "Catering para reuniones",
-          "description": "Formatos flexibles para grupos reducidos, con propuestas saladas y dulces adaptadas al espacio y a las necesidades del evento."
-        },
-        {
-          "id": "gastronomic-workshops",
-          "title": "Talleres gastronómicos",
-          "description": "Experiencias participativas para cocinar, aprender y disfrutar en grupo."
-        },
-        {
-          "id": "custom-menus",
-          "title": "Menús personalizados",
-          "description": "Propuestas creadas según los gustos y las características de cada ocasión, incluyendo repostería cuando forma parte de la experiencia."
+          "id": "custom-catering",
+          "title": "Catering a medida",
+          "description": "Propuestas personalizadas para eventos corporativos y privados.",
+          "image": "/images/services/services-custom-catering.png",
+          "imageAlt": "Selección de pequeños bocados preparados para un servicio de catering",
+          "icon": "/images/services/services-custom-catering-icon.png"
         }
       ]
-    },
-    "process": {
-      "label": "Cómo trabajamos",
-      "title": "De la primera idea a la experiencia final",
-      "steps": [
-        {
-          "id": "conversation",
-          "title": "Cuéntanos tu idea",
-          "description": "Conocemos el tipo de evento, el número de invitados y las necesidades principales."
-        },
-        {
-          "id": "proposal",
-          "title": "Preparamos una propuesta",
-          "description": "Diseñamos una opción gastronómica adaptada a la ocasión y al formato del encuentro."
-        },
-        {
-          "id": "experience",
-          "title": "Cuidamos la experiencia",
-          "description": "Organizamos los detalles necesarios para que el servicio funcione de principio a fin."
-        }
-      ]
-    },
-    "quoteCta": {
-      "label": "Hablemos de tu evento",
-      "title": "¿Tienes una celebración o encuentro en mente?",
-      "description": "Cuéntanos los detalles y prepararemos una propuesta adaptada a tus necesidades.",
-      "action": "Contactar"
     },
     "document": {
-      "loading": "Comprobando documento disponible...",
-      "title": "Descarga el dossier de servicios",
-      "description": "Consulta el documento con la información actualizada sobre los servicios disponibles.",
-      "download": "Descargar dossier",
+      "loading": "Comprobando muestra disponible...",
+      "label": "Explora una propuesta real",
+      "title": "Muestra de catering",
+      "description": "Descarga una muestra orientativa para conocer el estilo de cocina, la selección de bocados y la forma de presentar una experiencia.",
+      "download": "Descargar muestra (PDF)",
       "downloading": "Preparando descarga...",
-      "error": "No se ha podido preparar la descarga. Inténtalo de nuevo."
+      "format": "Formato PDF",
+      "error": "No se ha podido preparar la descarga. Inténtalo de nuevo.",
+      "previewTitle": "Muestra de catering",
+      "samples": {
+        "gilda": {
+          "title": "Gildas mixtas",
+          "description": "Una selección de bocados para comenzar la experiencia."
+        },
+        "salmon": {
+          "title": "Wraps de salmón",
+          "description": "Salmón, crema suave, hojas frescas y matices cítricos."
+        },
+        "pistachio": {
+          "title": "Cupcake de pistacho",
+          "description": "Un pequeño detalle dulce para completar la propuesta."
+        }
+      }
+    },
+    "process": {
+      "title": "A tu medida, siempre",
+      "steps": [
+        {
+          "id": "ideas",
+          "title": "Conocemos tus ideas",
+          "description": "Escuchamos, entendemos y definimos la experiencia.",
+          "icon": "/images/services/services-process-ideas-icon.png"
+        },
+        {
+          "id": "menu",
+          "title": "Diseñamos el menú",
+          "description": "Propuesta personalizada con ingredientes de temporada.",
+          "icon": "/images/services/services-process-menu-icon.png"
+        },
+        {
+          "id": "service",
+          "title": "Nos encargamos de todo",
+          "description": "Compras, mise en place, servicio y presentación.",
+          "icon": "/images/services/services-process-service-icon.png"
+        },
+        {
+          "id": "enjoy",
+          "title": "Tú solo disfrutas",
+          "description": "Nosotros cuidamos cada detalle.",
+          "icon": "/images/services/services-process-enjoy-icon.png"
+        }
+      ]
     }
   },
   "quoteRequest": {

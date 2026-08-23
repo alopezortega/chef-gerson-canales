@@ -481,6 +481,14 @@ DestroyRef
 
 This keeps browser event handling compatible with SSR and prevents abandoned global listeners.
 
+The Quote Request page also listens to:
+
+```text
+window:beforeunload
+```
+
+through Angular `HostListener` so a dirty public form is protected when the visitor reloads or leaves the browser page entirely.
+
 ---
 
 ## Template Strategy
@@ -576,6 +584,18 @@ panoramic image blocks
 shared FinalCta before Footer
 ```
 
+Two repeated visual assets were replaced without changing the Gallery service boundary or item count:
+
+```text
+gallery-03-candlelit-table.png
+→ gallery-19-beetroot-salad-candlelight.png
+
+gallery-04-chef-plating.png
+→ gallery-20-glazed-duck-plate.png
+```
+
+The new items use dedicated translated title and alternative-text keys in both language files.
+
 The Gallery intentionally does not include filters, categories, lightbox behaviour or Admin management in the current MVP.
 
 ### Gallery model
@@ -615,7 +635,9 @@ The component owns UI state through Angular Signals:
 
 ```text
 attachment
+attachmentError
 isSubmitting
+showLoadingSuccess
 submissionSuccess
 submissionError
 ```
@@ -695,6 +717,91 @@ The bucket remains private. Public read access is not enabled.
 Authenticated Admin users can read objects under a dedicated Storage `SELECT` policy. The application still does not expose permanent public URLs; it creates short-lived signed URLs when an Admin opens an attachment.
 
 ---
+
+
+### Quote Request client validation and leave protection
+
+The public Quote Request page now includes additional client-side validation:
+
+```text
+name
+→ required
+→ rejects numeric characters
+
+email
+→ required
+→ Angular email validator
+
+phone
+→ optional
+→ rejects alphabetic characters
+
+eventDate
+→ optional
+→ must be later than the current day
+
+guestCount
+→ required
+→ minimum 1
+
+attachment
+→ PDF / JPEG / PNG
+→ maximum 10 MB
+```
+
+The native date input also receives a minimum value equal to tomorrow.
+
+Submission feedback keeps the persisted request as the authoritative result:
+
+```text
+submit valid form
+→ show full-viewport loading overlay
+→ keep loading visible for at least 3.5 seconds
+→ show success confirmation while the GIF is still visible
+→ hide overlay
+→ render the normal success message
+→ reset form and attachment
+```
+
+Current loading asset:
+
+```text
+public/images/quote-request/quote-request-loading-chef-black.gif
+```
+
+The page protects unfinished form data through two complementary browser/navigation mechanisms.
+
+Angular navigation:
+
+```text
+quoteRequestPendingChangesGuard
+→ CanDeactivateFn<QuoteRequestComponent>
+→ calls component.canDeactivate()
+→ opens a custom native <dialog>
+→ resolves Promise<boolean>
+```
+
+The protected public route is:
+
+```text
+/solicitar-presupuesto
+→ canDeactivate: [quoteRequestPendingChangesGuard]
+```
+
+The custom dialog is shown only when the form contains pending changes.
+
+Browser-level exit:
+
+```text
+beforeunload
+→ F5 / reload
+→ close tab or window
+→ navigate away from the Angular application
+```
+
+`beforeunload` uses the browser-native confirmation UI because browsers do not allow custom text or styling for this event.
+
+After a successful submission the form is reset, so subsequent navigation does not trigger the unsaved-changes warning.
 
 ## Admin Quote Request Management
 
@@ -1900,6 +2007,7 @@ public/images/
 ├── brand/
 ├── gallery/
 ├── home/
+├── quote-request/
 └── ui/
 ```
 
@@ -2262,3 +2370,240 @@ gallery.mock.ts
 ```
 
 The current implementation keeps presentation separate from the gallery data source and reuses the shared `FinalCta` before the Footer.
+
+## Latest Public MVP Checkpoint — 2026-08-21
+
+The following public visual routes are now complete for the current MVP:
+
+```text
+Home
+About
+Gallery
+Quote Request / Contact
+```
+
+The Quote Request route now combines:
+
+```text
+final responsive mobile and desktop visual design
+Reactive Forms validation
+attachment MIME and size validation
+future-date validation
+animated submission feedback
+success and error states
+CanDeactivate unsaved-changes protection
+beforeunload browser protection
+custom accessible leave dialog
+Supabase persistence
+optional private attachment upload
+Edge Function email notification
+```
+
+The Quote Request design remains Mobile First.
+
+Desktop reuses the same semantic Angular template and recomposes the page through responsive SCSS. No duplicate mobile/desktop Angular templates are maintained.
+
+The decorative GC watermark was intentionally removed from the final Quote Request composition because it competed visually with the form.
+
+The Gallery remains at:
+
+```text
+18 images
+```
+
+with the two repeated images replaced by new food photography.
+
+### Latest quality baseline
+
+```text
+Test files
+→ 23 passed
+
+Tests
+→ 146 passed
+
+Lint
+→ all files pass
+
+Production build
+→ currently blocked only by the component-style budget
+→ 5 public routes are still generated/prerendered before the budget check fails
+```
+
+Current style-budget output:
+
+```text
+src/app/pages/services/services.scss
+configured warning budget: 12.00 kB
+current size: 19.13 kB
+warning excess: 7.13 kB
+configured error budget: 16.00 kB
+error excess: 3.13 kB
+
+src/app/pages/quote-request/quote-request.scss
+configured warning budget: 12.00 kB
+current size: 12.39 kB
+warning excess: 392 bytes
+```
+
+The Services budget is a build-configuration blocker, not a TypeScript, Angular template, test or runtime failure. The responsive Services redesign intentionally contains substantial mobile and desktop SCSS. The component-style budget should be reviewed in `angular.json` before branch closure.
+
+The expected Quote Request notification-failure test may write a diagnostic error to stderr while the test itself passes.
+
+### Remaining visual MVP work
+
+```text
+/servicios
+→ responsive Private Chef & Catering visual design complete
+→ mobile, laptop and large desktop manually reviewed
+
+/admin/**
+→ fast functional visual cleanup for the MVP
+```
+
+The public Services route remains technically:
+
+```text
+ServicesComponent
+pages/services
+/servicios
+```
+
+while the visible commercial label remains:
+
+```text
+Chef privado & catering
+Private chef & catering
+```
+
+
+## Services Visual Design Closure — 2026-08-23
+
+The public Services route is visually complete for the current MVP while keeping its existing technical and service-document boundaries.
+
+Current route and technical naming remain:
+
+```text
+/servicios
+ServicesComponent
+pages/services
+```
+
+Visible commercial labels remain:
+
+```text
+Chef privado & catering
+Private chef & catering
+```
+
+### Responsive composition
+
+The page follows the established Mobile First public design system and uses responsive SCSS to recompose the same feature content for larger screens.
+
+Current composition:
+
+```text
+Hero
+→ large gastronomic image
+→ service label, title and supporting copy
+
+Experience introduction
+→ editorial heading and copy
+→ three service cards
+
+Catering sample
+→ active service-document download action
+→ decorative sample cover
+→ three example items
+
+Process
+→ four visual steps
+→ dedicated numbered assets on desktop
+
+Final CTA
+→ shared public closing action
+
+Footer
+→ inherited from PublicLayout
+```
+
+Mobile and desktop intentionally use different compositions through CSS while preserving the same route and business workflow.
+
+### Services visual assets
+
+Current Services assets include dedicated imagery for:
+
+```text
+hero plate
+private dining
+celebrations
+custom catering
+service icons
+catering sample items
+process icons
+process numbered ornaments
+decorative olive branches
+```
+
+The catering sample cover now uses:
+
+```text
+public/images/services/services-catering-sample-salmorejo-tuna.png
+```
+
+The numbered process ornaments are stored individually as:
+
+```text
+services-process-number-01.png
+services-process-number-02.png
+services-process-number-03.png
+services-process-number-04.png
+```
+
+### Service-document workflow preserved
+
+The redesign does not change the existing `ServiceDocumentService` responsibility or signed-URL flow.
+
+```text
+active service document metadata
+→ ServicesComponent
+→ visitor selects download icon
+→ create 60-second signed URL
+→ PDF opens in a safe new tab
+```
+
+The desktop download control is intentionally icon-only and retains a translated accessible name.
+
+### Responsive validation
+
+Manually reviewed on:
+
+```text
+mobile viewport
+laptop display
+large LG / ultrawide display
+```
+
+The ultrawide layout keeps a controlled max-width rather than stretching cards and typography across the complete viewport. Further ultrawide polish is deferred until the deployed Netlify URL can be tested on real devices and browsers.
+
+### Quality status
+
+```text
+23 test files passed
+146 tests passed
+lint passes
+```
+
+No additional Services-specific tests are required for the visual-only changes because the existing behavioural coverage still validates:
+
+```text
+active document loading
+download no-op without a document
+duplicate-download prevention
+signed URL request
+safe window.open arguments
+download error handling
+pending-state reset
+```
+
+The production build currently stops only on the configured `anyComponentStyle` error threshold because `services.scss` is 19.13 kB while the error budget is 16.00 kB. This must be resolved in `angular.json` before the branch is considered fully build-green.

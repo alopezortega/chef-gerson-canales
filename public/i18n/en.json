@@ -318,81 +318,97 @@
   },
   "services": {
     "hero": {
-      "label": "Private chef & catering",
-      "title": "Dining experiences tailored to every occasion",
-      "description": "Provisional proposals for private celebrations, professional gatherings and personalized experiences."
+      "label": "Services",
+      "titleLine1": "Private chef",
+      "titleLine2": "& catering",
+      "description": "Dining experiences tailored to you.",
+      "imageAlt": "Gourmet scallop dish with sauce, edible flowers and microgreens"
     },
     "experiences": {
-      "label": "What we can prepare",
-      "title": "A proposal for every type of gathering",
+      "label": "Cuisine that connects",
+      "title": "We create intimate experiences around the table.",
+      "description": "Creative cuisine, seasonal ingredients and thoughtful service in every detail, so all you need to do is enjoy.",
       "empty": "There are no experiences available yet.",
       "items": [
         {
-          "id": "private-dinners",
-          "title": "Private dinners at home",
-          "description": "A personalized dining experience to enjoy in an intimate and carefully prepared setting."
+          "id": "private-dining",
+          "title": "Private chef at home",
+          "description": "Enjoy a unique dining experience in the comfort of your home.",
+          "image": "/images/services/services-private-dining.png",
+          "imageAlt": "Private dining table with a gourmet dish served by candlelight",
+          "icon": "/images/services/services-private-dining-icon.png"
         },
         {
-          "id": "family-celebrations",
-          "title": "Family celebrations",
-          "description": "Tailored proposals for birthdays, anniversaries and other special gatherings."
+          "id": "celebrations",
+          "title": "Celebrations",
+          "description": "We create memorable moments for special occasions.",
+          "image": "/images/services/services-celebration.png",
+          "imageAlt": "Guests raising their glasses during an intimate candlelit celebration",
+          "icon": "/images/services/services-celebration-icon.png"
         },
         {
-          "id": "corporate-events",
-          "title": "Corporate events",
-          "description": "Dining options for team meetings, presentations and professional gatherings."
-        },
-        {
-          "id": "meeting-catering",
-          "title": "Meeting catering",
-          "description": "Flexible formats for small groups, with savoury and sweet options adapted to the venue and the needs of the event."
-        },
-        {
-          "id": "gastronomic-workshops",
-          "title": "Cooking workshops",
-          "description": "Interactive experiences designed to cook, learn and enjoy as a group."
-        },
-        {
-          "id": "custom-menus",
-          "title": "Custom menus",
-          "description": "Proposals designed around the preferences and characteristics of each occasion, including pastry when it forms part of the experience."
+          "id": "custom-catering",
+          "title": "Tailored catering",
+          "description": "Personalized proposals for private and corporate events.",
+          "image": "/images/services/services-custom-catering.png",
+          "imageAlt": "Selection of small bites prepared for a catering service",
+          "icon": "/images/services/services-custom-catering-icon.png"
         }
       ]
-    },
-    "process": {
-      "label": "How we work",
-      "title": "From the first idea to the final experience",
-      "steps": [
-        {
-          "id": "conversation",
-          "title": "Tell us about your idea",
-          "description": "We learn about the type of event, the number of guests and the main requirements."
-        },
-        {
-          "id": "proposal",
-          "title": "We prepare a proposal",
-          "description": "We design a dining option adapted to the occasion and the format of the gathering."
-        },
-        {
-          "id": "experience",
-          "title": "We take care of the experience",
-          "description": "We organize the necessary details so the service runs smoothly from beginning to end."
-        }
-      ]
-    },
-    "quoteCta": {
-      "label": "Let us talk about your event",
-      "title": "Do you have a celebration or gathering in mind?",
-      "description": "Share the details and we will prepare a proposal tailored to your needs.",
-      "action": "Contact"
     },
     "document": {
-      "loading": "Checking available document...",
-      "title": "Download the services brochure",
-      "description": "View the document with the latest information about the available services.",
-      "download": "Download brochure",
+      "loading": "Checking available sample...",
+      "label": "Explore a real proposal",
+      "title": "Catering sample",
+      "description": "Download an illustrative sample to discover the style of cuisine, selection of bites and way each experience can be presented.",
+      "download": "Download sample (PDF)",
       "downloading": "Preparing download...",
-      "error": "The download could not be prepared. Please try again."
+      "format": "PDF format",
+      "error": "The download could not be prepared. Please try again.",
+      "previewTitle": "Catering sample",
+      "samples": {
+        "gilda": {
+          "title": "Mixed gildas",
+          "description": "A selection of small bites to begin the experience."
+        },
+        "salmon": {
+          "title": "Salmon wraps",
+          "description": "Salmon, soft cream, fresh leaves and citrus notes."
+        },
+        "pistachio": {
+          "title": "Pistachio cupcake",
+          "description": "A small sweet detail to complete the proposal."
+        }
+      }
+    },
+    "process": {
+      "title": "Tailored to you, always",
+      "steps": [
+        {
+          "id": "ideas",
+          "title": "We get to know your ideas",
+          "description": "We listen, understand and define the experience.",
+          "icon": "/images/services/services-process-ideas-icon.png"
+        },
+        {
+          "id": "menu",
+          "title": "We design the menu",
+          "description": "A personalized proposal using seasonal ingredients.",
+          "icon": "/images/services/services-process-menu-icon.png"
+        },
+        {
+          "id": "service",
+          "title": "We take care of everything",
+          "description": "Shopping, mise en place, service and presentation.",
+          "icon": "/images/services/services-process-service-icon.png"
+        },
+        {
+          "id": "enjoy",
+          "title": "You simply enjoy",
+          "description": "We take care of every detail.",
+          "icon": "/images/services/services-process-enjoy-icon.png"
+        }
+      ]
     }
   },
   "quoteRequest": {
