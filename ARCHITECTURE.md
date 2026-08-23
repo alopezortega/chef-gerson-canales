@@ -481,6 +481,14 @@ DestroyRef
 
 This keeps browser event handling compatible with SSR and prevents abandoned global listeners.
 
+The Quote Request page also listens to:
+
+```text
+window:beforeunload
+```
+
+through Angular `HostListener` so a dirty public form is protected when the visitor reloads or leaves the browser page entirely.
+
 ---
 
 ## Template Strategy
@@ -576,6 +584,18 @@ panoramic image blocks
 shared FinalCta before Footer
 ```
 
+Two repeated visual assets were replaced without changing the Gallery service boundary or item count:
+
+```text
+gallery-03-candlelit-table.png
+→ gallery-19-beetroot-salad-candlelight.png
+
+gallery-04-chef-plating.png
+→ gallery-20-glazed-duck-plate.png
+```
+
+The new items use dedicated translated title and alternative-text keys in both language files.
+
 The Gallery intentionally does not include filters, categories, lightbox behaviour or Admin management in the current MVP.
 
 ### Gallery model
@@ -615,7 +635,9 @@ The component owns UI state through Angular Signals:
 
 ```text
 attachment
+attachmentError
 isSubmitting
+showLoadingSuccess
 submissionSuccess
 submissionError
 ```
@@ -695,6 +717,91 @@ The bucket remains private. Public read access is not enabled.
 Authenticated Admin users can read objects under a dedicated Storage `SELECT` policy. The application still does not expose permanent public URLs; it creates short-lived signed URLs when an Admin opens an attachment.
 
 ---
+
+
+### Quote Request client validation and leave protection
+
+The public Quote Request page now includes additional client-side validation:
+
+```text
+name
+→ required
+→ rejects numeric characters
+
+email
+→ required
+→ Angular email validator
+
+phone
+→ optional
+→ rejects alphabetic characters
+
+eventDate
+→ optional
+→ must be later than the current day
+
+guestCount
+→ required
+→ minimum 1
+
+attachment
+→ PDF / JPEG / PNG
+→ maximum 10 MB
+```
+
+The native date input also receives a minimum value equal to tomorrow.
+
+Submission feedback keeps the persisted request as the authoritative result:
+
+```text
+submit valid form
+→ show full-viewport loading overlay
+→ keep loading visible for at least 3.5 seconds
+→ show success confirmation while the GIF is still visible
+→ hide overlay
+→ render the normal success message
+→ reset form and attachment
+```
+
+Current loading asset:
+
+```text
+public/images/quote-request/quote-request-loading-chef-black.gif
+```
+
+The page protects unfinished form data through two complementary browser/navigation mechanisms.
+
+Angular navigation:
+
+```text
+quoteRequestPendingChangesGuard
+→ CanDeactivateFn<QuoteRequestComponent>
+→ calls component.canDeactivate()
+→ opens a custom native <dialog>
+→ resolves Promise<boolean>
+```
+
+The protected public route is:
+
+```text
+/solicitar-presupuesto
+→ canDeactivate: [quoteRequestPendingChangesGuard]
+```
+
+The custom dialog is shown only when the form contains pending changes.
+
+Browser-level exit:
+
+```text
+beforeunload
+→ F5 / reload
+→ close tab or window
+→ navigate away from the Angular application
+```
+
+`beforeunload` uses the browser-native confirmation UI because browsers do not allow custom text or styling for this event.
+
+After a successful submission the form is reset, so subsequent navigation does not trigger the unsaved-changes warning.
 
 ## Admin Quote Request Management
 
@@ -1900,6 +2007,7 @@ public/images/
 ├── brand/
 ├── gallery/
 ├── home/
+├── quote-request/
 └── ui/
 ```
 
@@ -2262,3 +2370,100 @@ gallery.mock.ts
 ```
 
 The current implementation keeps presentation separate from the gallery data source and reuses the shared `FinalCta` before the Footer.
+
+## Latest Public MVP Checkpoint — 2026-08-21
+
+The following public visual routes are now complete for the current MVP:
+
+```text
+Home
+About
+Gallery
+Quote Request / Contact
+```
+
+The Quote Request route now combines:
+
+```text
+final responsive mobile and desktop visual design
+Reactive Forms validation
+attachment MIME and size validation
+future-date validation
+animated submission feedback
+success and error states
+CanDeactivate unsaved-changes protection
+beforeunload browser protection
+custom accessible leave dialog
+Supabase persistence
+optional private attachment upload
+Edge Function email notification
+```
+
+The Quote Request design remains Mobile First.
+
+Desktop reuses the same semantic Angular template and recomposes the page through responsive SCSS. No duplicate mobile/desktop Angular templates are maintained.
+
+The decorative GC watermark was intentionally removed from the final Quote Request composition because it competed visually with the form.
+
+The Gallery remains at:
+
+```text
+18 images
+```
+
+with the two repeated images replaced by new food photography.
+
+### Latest quality baseline
+
+```text
+Test files
+→ 23 passed
+
+Tests
+→ 146 passed
+
+Lint
+→ all files pass
+
+Production build
+→ successful
+→ 5 public routes prerendered
+```
+
+Current non-blocking style-budget warning:
+
+```text
+src/app/pages/quote-request/quote-request.scss
+configured warning budget: 12.00 kB
+current size: 12.39 kB
+excess: 392 bytes
+```
+
+The warning does not block the production build.
+
+The expected Quote Request notification-failure test may write a diagnostic error to stderr while the test itself passes.
+
+### Remaining visual MVP work
+
+```text
+/servicios
+→ final Private Chef & Catering visual design
+
+/admin/**
+→ fast functional visual cleanup for the MVP
+```
+
+The public Services route remains technically:
+
+```text
+ServicesComponent
+pages/services
+/servicios
+```
+
+while the visible commercial label remains:
+
+```text
+Chef privado & catering
+Private chef & catering
+```

@@ -1,46 +1,217 @@
 <main class="services-page">
   <section class="services-hero" aria-labelledby="services-hero-title">
+    <img
+      class="services-hero__background"
+      src="/images/services/services-hero-mobile-scallop-plate.png"
+      [alt]="'services.hero.imageAlt' | translate"
+    />
+
     <div class="services-hero__content">
       <p class="services-hero__label">
         {{ 'services.hero.label' | translate }}
       </p>
 
       <h1 id="services-hero-title" class="services-hero__title">
-        {{ 'services.hero.title' | translate }}
+        <span>{{ 'services.hero.titleLine1' | translate }}</span>
+        <span>{{ 'services.hero.titleLine2' | translate }}</span>
       </h1>
 
       <p class="services-hero__description">
         {{ 'services.hero.description' | translate }}
       </p>
+
+      <img
+        class="services-hero__olive"
+        src="/images/services/services-olive-sprig.png"
+        alt=""
+        aria-hidden="true"
+      />
     </div>
   </section>
 
+  <section class="services-experiences" aria-labelledby="services-experiences-title">
+    <header class="services-experiences__header">
+      <p class="services-experiences__label">
+        {{ 'services.experiences.label' | translate }}
+      </p>
+
+      <h2 id="services-experiences-title" class="services-experiences__title">
+        {{ 'services.experiences.title' | translate }}
+      </h2>
+
+      <p class="services-experiences__description">
+        {{ 'services.experiences.description' | translate }}
+      </p>
+
+      <img
+        class="services-experiences__divider"
+        src="/images/services/services-olive-sprig.png"
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+      />
+    </header>
+
+    @let experiences = 'services.experiences.items' | translate;
+
+    @if (experiences && experiences !== 'services.experiences.items') {
+      <div class="services-experiences__list">
+        @for (experience of experiences; track experience.id) {
+          <article class="services-experience">
+            <img
+              class="services-experience__photo"
+              [src]="experience.image"
+              [alt]="experience.imageAlt"
+              loading="lazy"
+            />
+
+            <div class="services-experience__body">
+              <img
+                class="services-experience__icon"
+                [src]="experience.icon"
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+              />
+
+              <div class="services-experience__copy">
+                <h3 class="services-experience__title">
+                  {{ experience.title }}
+                </h3>
+
+                <p class="services-experience__description">
+                  {{ experience.description }}
+                </p>
+              </div>
+            </div>
+          </article>
+        } @empty {
+          <p class="services-experiences__empty">
+            {{ 'services.experiences.empty' | translate }}
+          </p>
+        }
+      </div>
+    }
+  </section>
+
   @if (isDocumentLoading()) {
-    <p class="services-document__loading">
-      {{ 'services.document.loading' | translate }}
-    </p>
+    <section class="services-document services-document--loading" aria-live="polite">
+      <p class="services-document__loading">
+        {{ 'services.document.loading' | translate }}
+      </p>
+    </section>
   } @else if (currentDocument()) {
     <section class="services-document" aria-labelledby="services-document-title">
-      <div class="services-document__content">
-        <h2 id="services-document-title" class="services-document__title">
-          {{ 'services.document.title' | translate }}
-        </h2>
+      <div class="services-document__card">
+        <header class="services-document__content">
+          <p class="services-document__label">
+            {{ 'services.document.label' | translate }}
+          </p>
 
-        <p class="services-document__description">
-          {{ 'services.document.description' | translate }}
-        </p>
+          <span class="services-document__label-rule" aria-hidden="true"></span>
+
+          <h2 id="services-document-title" class="services-document__title">
+            {{ 'services.document.title' | translate }}
+          </h2>
+
+          <p class="services-document__description">
+            {{ 'services.document.description' | translate }}
+          </p>
+
+          <img
+            class="services-document__header-olive"
+            src="/images/services/services-catering-sample-olive-branch.png"
+            alt=""
+            aria-hidden="true"
+            loading="lazy"
+          />
+        </header>
+
+        <div class="services-document__visual">
+          <div class="services-document__sheet" aria-hidden="true">
+            <p class="services-document__sheet-title">
+              {{ 'services.document.previewTitle' | translate }}
+            </p>
+
+            <div class="services-document__sheet-heading">
+              <span></span>
+
+              <img src="/images/services/services-olive-sprig.png" alt="" loading="lazy" />
+
+              <span></span>
+            </div>
+
+            <div class="services-document__sample">
+              <img
+                src="/images/services/services-catering-sample-gilda.png"
+                alt=""
+                loading="lazy"
+              />
+
+              <div>
+                <strong>
+                  {{ 'services.document.samples.gilda.title' | translate }}
+                </strong>
+
+                <span>
+                  {{ 'services.document.samples.gilda.description' | translate }}
+                </span>
+              </div>
+            </div>
+
+            <div class="services-document__sample">
+              <img
+                src="/images/services/services-catering-sample-salmon-wrap.png"
+                alt=""
+                loading="lazy"
+              />
+
+              <div>
+                <strong>
+                  {{ 'services.document.samples.salmon.title' | translate }}
+                </strong>
+
+                <span>
+                  {{ 'services.document.samples.salmon.description' | translate }}
+                </span>
+              </div>
+            </div>
+
+            <div class="services-document__sample">
+              <img
+                src="/images/services/services-catering-sample-pistachio-cupcake.png"
+                alt=""
+                loading="lazy"
+              />
+
+              <div>
+                <strong>
+                  {{ 'services.document.samples.pistachio.title' | translate }}
+                </strong>
+
+                <span>
+                  {{ 'services.document.samples.pistachio.description' | translate }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <button
-          class="services-document__button"
+          class="services-document__download"
           type="button"
           [disabled]="isDownloading()"
+          [attr.aria-label]="
+            (isDownloading() ? 'services.document.downloading' : 'services.document.download')
+              | translate
+          "
           (click)="downloadServiceDocument()"
         >
-          @if (isDownloading()) {
-            {{ 'services.document.downloading' | translate }}
-          } @else {
-            {{ 'services.document.download' | translate }}
-          }
+          <svg class="services-document__download-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 4v10" />
+            <path d="m8.5 11 3.5 3.5 3.5-3.5" />
+            <path d="M7 19h10" />
+          </svg>
         </button>
 
         @if (downloadError()) {
@@ -52,83 +223,57 @@
     </section>
   }
 
-  <section class="services-experiences" aria-labelledby="services-experiences-title">
-    <header class="services-experiences__header">
-      <p class="services-experiences__label">
-        {{ 'services.experiences.label' | translate }}
-      </p>
-
-      <h2 id="services-experiences-title" class="services-experiences__title">
-        {{ 'services.experiences.title' | translate }}
-      </h2>
-    </header>
-
-    @let experiences = 'services.experiences.items' | translate;
-
-    @if (experiences && experiences !== 'services.experiences.items') {
-      <div class="services-experiences__grid">
-        @for (experience of experiences; track experience.id) {
-          <article class="services-experiences__card">
-            <h3>{{ experience.title }}</h3>
-            <p>{{ experience.description }}</p>
-          </article>
-        } @empty {
-          <p class="services-experiences__empty">
-            {{ 'services.experiences.empty' | translate }}
-          </p>
-        }
-      </div>
-    }
-  </section>
-
   <section class="services-process" aria-labelledby="services-process-title">
     <header class="services-process__header">
-      <p class="services-process__label">
-        {{ 'services.process.label' | translate }}
-      </p>
-
       <h2 id="services-process-title" class="services-process__title">
         {{ 'services.process.title' | translate }}
       </h2>
+
+      <div class="services-process__title-decoration" aria-hidden="true">
+        <span></span>
+
+        <img src="/images/services/services-olive-sprig.png" alt="" loading="lazy" />
+
+        <span></span>
+      </div>
     </header>
 
     @let processSteps = 'services.process.steps' | translate;
 
     @if (processSteps && processSteps !== 'services.process.steps') {
-      <ol class="services-process__list">
-        @for (processStep of processSteps; track processStep.id; let stepNumber = $index) {
-          <li class="services-process__item">
-            <span class="services-process__number" aria-hidden="true">
-              {{ stepNumber + 1 }}
-            </span>
+      <div class="services-process__layout">
+        <div class="services-process__timeline-mask">
+          <img
+            class="services-process__timeline"
+            src="/images/services/services-process-number-timeline.png"
+            alt=""
+            aria-hidden="true"
+            loading="lazy"
+          />
+        </div>
 
-            <div class="services-process__content">
-              <h3>{{ processStep.title }}</h3>
-              <p>{{ processStep.description }}</p>
-            </div>
-          </li>
-        }
-      </ol>
+        <ol class="services-process__list">
+          @for (processStep of processSteps; track processStep.id) {
+            <li class="services-process__item">
+              <img
+                class="services-process__icon"
+                [src]="processStep.icon"
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+              />
+
+              <div class="services-process__content">
+                <h3>{{ processStep.title }}</h3>
+
+                <p>{{ processStep.description }}</p>
+              </div>
+            </li>
+          }
+        </ol>
+      </div>
     }
   </section>
 
-  <section class="services-quote" aria-labelledby="services-quote-title">
-    <div class="services-quote__content">
-      <p class="services-quote__label">
-        {{ 'services.quoteCta.label' | translate }}
-      </p>
-
-      <h2 id="services-quote-title" class="services-quote__title">
-        {{ 'services.quoteCta.title' | translate }}
-      </h2>
-
-      <p class="services-quote__description">
-        {{ 'services.quoteCta.description' | translate }}
-      </p>
-
-      <a class="services-quote__link" routerLink="/solicitar-presupuesto">
-        {{ 'services.quoteCta.action' | translate }}
-      </a>
-    </div>
-  </section>
+  <app-final-cta />
 </main>
