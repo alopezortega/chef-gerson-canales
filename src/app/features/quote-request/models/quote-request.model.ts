@@ -12,6 +12,7 @@ export interface QuoteRequest {
 }
 
 export interface QuoteRequestInsert {
+  id: string;
   name: string;
   email: string;
   phone: string | null;
