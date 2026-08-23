@@ -1,6 +1,7 @@
 import { inject, Injectable } from "@angular/core";
 
 import { SUPABASE_CLIENT } from "../../../core/config/supabase-client.token";
+
 import {
   QuoteRequest,
   QuoteRequestInsert,
@@ -22,7 +23,10 @@ export class QuoteRequestService {
       ? await this.uploadAttachment(attachment)
       : null;
 
+    const quoteRequestId = crypto.randomUUID();
+
     const quoteRequestInsert: QuoteRequestInsert = {
+      id: quoteRequestId,
       name: request.name,
       email: request.email,
       phone: request.phone || null,
@@ -39,29 +43,22 @@ export class QuoteRequestService {
       attachment_size: attachment?.size ?? null,
     };
 
-    const { data, error } = await this.supabaseClient
+    const { error } = await this.supabaseClient
       .from("quote_requests")
-      .insert(quoteRequestInsert)
-      .select("id")
-      .single();
+      .insert(quoteRequestInsert);
 
     if (error) {
       throw error;
     }
-    // Invoke a Supabase Edge Function to notify the system about the new quote request
+
     const { error: notificationError } = await this.supabaseClient.functions
-      .invoke(
-        "notify-quote-request",
-        {
-          body: {
-            // Send the inserted quote request id to the notification function
-            quoteRequestId: data.id,
-          },
+      .invoke("notify-quote-request", {
+        body: {
+          quoteRequestId,
         },
-      );
+      });
 
     if (notificationError) {
-      // Log notification errors but do not fail the quote request creation
       console.error(
         "Unable to send quote request notification:",
         notificationError,
