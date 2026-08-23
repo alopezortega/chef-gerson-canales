@@ -102,124 +102,260 @@
     </section>
   } @else if (currentDocument()) {
     <section class="services-document" aria-labelledby="services-document-title">
-      <div class="services-document__card">
-        <header class="services-document__content">
+      <div class="services-document__mobile">
+        <div class="services-document__card">
+          <header class="services-document__content">
+            <p class="services-document__label">
+              {{ 'services.document.label' | translate }}
+            </p>
+
+            <span class="services-document__label-rule" aria-hidden="true"></span>
+
+            <h2 id="services-document-title" class="services-document__title">
+              {{ 'services.document.title' | translate }}
+            </h2>
+
+            <p class="services-document__description">
+              {{ 'services.document.description' | translate }}
+            </p>
+
+            <img
+              class="services-document__header-olive"
+              src="/images/services/services-catering-sample-olive-branch.png"
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+            />
+          </header>
+
+          <div class="services-document__visual">
+            <div class="services-document__sheet" aria-hidden="true">
+              <p class="services-document__sheet-title">
+                {{ 'services.document.previewTitle' | translate }}
+              </p>
+
+              <div class="services-document__sheet-heading">
+                <span></span>
+
+                <img src="/images/services/services-olive-sprig.png" alt="" loading="lazy" />
+
+                <span></span>
+              </div>
+
+              <div class="services-document__sample">
+                <img
+                  src="/images/services/services-catering-sample-gilda.png"
+                  alt=""
+                  loading="lazy"
+                />
+
+                <div>
+                  <strong>
+                    {{ 'services.document.samples.gilda.title' | translate }}
+                  </strong>
+
+                  <span>
+                    {{ 'services.document.samples.gilda.description' | translate }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="services-document__sample">
+                <img
+                  src="/images/services/services-catering-sample-salmon-wrap.png"
+                  alt=""
+                  loading="lazy"
+                />
+
+                <div>
+                  <strong>
+                    {{ 'services.document.samples.salmon.title' | translate }}
+                  </strong>
+
+                  <span>
+                    {{ 'services.document.samples.salmon.description' | translate }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="services-document__sample">
+                <img
+                  src="/images/services/services-catering-sample-pistachio-cupcake.png"
+                  alt=""
+                  loading="lazy"
+                />
+
+                <div>
+                  <strong>
+                    {{ 'services.document.samples.pistachio.title' | translate }}
+                  </strong>
+
+                  <span>
+                    {{ 'services.document.samples.pistachio.description' | translate }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button
+            class="services-document__download"
+            type="button"
+            [disabled]="isDownloading()"
+            [attr.aria-label]="
+              (isDownloading() ? 'services.document.downloading' : 'services.document.download')
+                | translate
+            "
+            (click)="downloadServiceDocument()"
+          >
+            <svg class="services-document__download-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 4v10" />
+              <path d="m8.5 11 3.5 3.5 3.5-3.5" />
+              <path d="M7 19h10" />
+            </svg>
+          </button>
+
+          @if (downloadError()) {
+            <p class="services-document__error" role="alert">
+              {{ 'services.document.error' | translate }}
+            </p>
+          }
+        </div>
+      </div>
+
+      <div class="services-document__desktop">
+        <div class="services-document-desktop__copy">
           <p class="services-document__label">
             {{ 'services.document.label' | translate }}
           </p>
 
           <span class="services-document__label-rule" aria-hidden="true"></span>
 
-          <h2 id="services-document-title" class="services-document__title">
+          <h2 class="services-document-desktop__title">
             {{ 'services.document.title' | translate }}
           </h2>
 
-          <p class="services-document__description">
-            {{ 'services.document.description' | translate }}
-          </p>
+          <div class="services-document-desktop__copy-body">
+            <p class="services-document-desktop__description">
+              {{ 'services.document.description' | translate }}
+            </p>
+
+            <button
+              class="services-document-desktop__download"
+              type="button"
+              [disabled]="isDownloading()"
+              [attr.aria-label]="
+                (isDownloading() ? 'services.document.downloading' : 'services.document.download')
+                  | translate
+              "
+              (click)="downloadServiceDocument()"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 4v10" />
+                <path d="m8.5 11 3.5 3.5 3.5-3.5" />
+                <path d="M7 19h10" />
+              </svg>
+            </button>
+          </div>
 
           <img
-            class="services-document__header-olive"
-            src="/images/services/services-catering-sample-olive-branch.png"
+            class="services-document-desktop__branch"
+            src="/images/services/services-process-decorative-branch.png"
             alt=""
             aria-hidden="true"
             loading="lazy"
           />
-        </header>
+        </div>
 
-        <div class="services-document__visual">
-          <div class="services-document__sheet" aria-hidden="true">
-            <p class="services-document__sheet-title">
+        <div class="services-document-desktop__featured">
+          <div class="services-document-desktop__featured-sheet">
+            <p class="services-document-desktop__featured-title">
               {{ 'services.document.previewTitle' | translate }}
             </p>
 
-            <div class="services-document__sheet-heading">
-              <span></span>
+            <img
+              class="services-document-desktop__featured-image"
+              src="/images/services/services-catering-sample-salmorejo-tuna.png"
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+            />
 
-              <img src="/images/services/services-olive-sprig.png" alt="" loading="lazy" />
-
-              <span></span>
-            </div>
-
-            <div class="services-document__sample">
-              <img
-                src="/images/services/services-catering-sample-gilda.png"
-                alt=""
-                loading="lazy"
-              />
-
-              <div>
-                <strong>
-                  {{ 'services.document.samples.gilda.title' | translate }}
-                </strong>
-
-                <span>
-                  {{ 'services.document.samples.gilda.description' | translate }}
-                </span>
-              </div>
-            </div>
-
-            <div class="services-document__sample">
-              <img
-                src="/images/services/services-catering-sample-salmon-wrap.png"
-                alt=""
-                loading="lazy"
-              />
-
-              <div>
-                <strong>
-                  {{ 'services.document.samples.salmon.title' | translate }}
-                </strong>
-
-                <span>
-                  {{ 'services.document.samples.salmon.description' | translate }}
-                </span>
-              </div>
-            </div>
-
-            <div class="services-document__sample">
-              <img
-                src="/images/services/services-catering-sample-pistachio-cupcake.png"
-                alt=""
-                loading="lazy"
-              />
-
-              <div>
-                <strong>
-                  {{ 'services.document.samples.pistachio.title' | translate }}
-                </strong>
-
-                <span>
-                  {{ 'services.document.samples.pistachio.description' | translate }}
-                </span>
-              </div>
-            </div>
+            <span class="services-document-desktop__signature"> Gerson Canales </span>
           </div>
         </div>
 
-        <button
-          class="services-document__download"
-          type="button"
-          [disabled]="isDownloading()"
-          [attr.aria-label]="
-            (isDownloading() ? 'services.document.downloading' : 'services.document.download')
-              | translate
-          "
-          (click)="downloadServiceDocument()"
-        >
-          <svg class="services-document__download-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M12 4v10" />
-            <path d="m8.5 11 3.5 3.5 3.5-3.5" />
-            <path d="M7 19h10" />
-          </svg>
-        </button>
-
-        @if (downloadError()) {
-          <p class="services-document__error" role="alert">
-            {{ 'services.document.error' | translate }}
+        <div class="services-document-desktop__selection">
+          <p class="services-document-desktop__selection-label">
+            {{ 'services.document.previewTitle' | translate }}
           </p>
-        }
+
+          <span class="services-document-desktop__selection-rule" aria-hidden="true"></span>
+
+          <article class="services-document-desktop__sample">
+            <img
+              src="/images/services/services-catering-sample-gilda.png"
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+            />
+
+            <div>
+              <h3>
+                {{ 'services.document.samples.gilda.title' | translate }}
+              </h3>
+
+              <p>
+                {{ 'services.document.samples.gilda.description' | translate }}
+              </p>
+            </div>
+          </article>
+
+          <article class="services-document-desktop__sample">
+            <img
+              src="/images/services/services-catering-sample-salmon-wrap.png"
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+            />
+
+            <div>
+              <h3>
+                {{ 'services.document.samples.salmon.title' | translate }}
+              </h3>
+
+              <p>
+                {{ 'services.document.samples.salmon.description' | translate }}
+              </p>
+            </div>
+          </article>
+
+          <article class="services-document-desktop__sample">
+            <img
+              src="/images/services/services-catering-sample-pistachio-cupcake.png"
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+            />
+
+            <div>
+              <h3>
+                {{ 'services.document.samples.pistachio.title' | translate }}
+              </h3>
+
+              <p>
+                {{ 'services.document.samples.pistachio.description' | translate }}
+              </p>
+            </div>
+          </article>
+        </div>
       </div>
+
+      @if (downloadError()) {
+        <p class="services-document__error services-document__error--desktop" role="alert">
+          {{ 'services.document.error' | translate }}
+        </p>
+      }
     </section>
   }
 
@@ -241,32 +377,78 @@
     @let processSteps = 'services.process.steps' | translate;
 
     @if (processSteps && processSteps !== 'services.process.steps') {
-      <div class="services-process__layout">
-        <div class="services-process__timeline-mask">
-          <img
-            class="services-process__timeline"
-            src="/images/services/services-process-number-timeline.png"
-            alt=""
-            aria-hidden="true"
-            loading="lazy"
-          />
+      <div class="services-process__mobile">
+        <div class="services-process__layout">
+          <div class="services-process__timeline-mask">
+            <img
+              class="services-process__timeline"
+              src="/images/services/services-process-number-timeline.png"
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+            />
+          </div>
+
+          <ol class="services-process__list">
+            @for (processStep of processSteps; track processStep.id) {
+              <li class="services-process__item">
+                <img
+                  class="services-process__icon"
+                  [src]="processStep.icon"
+                  alt=""
+                  aria-hidden="true"
+                  loading="lazy"
+                />
+
+                <div class="services-process__content">
+                  <h3>{{ processStep.title }}</h3>
+
+                  <p>{{ processStep.description }}</p>
+                </div>
+              </li>
+            }
+          </ol>
+        </div>
+      </div>
+
+      <div class="services-process__desktop">
+        <div class="services-process-desktop__intro">
+          <h2>
+            {{ 'services.process.title' | translate }}
+          </h2>
+
+          <div class="services-process-desktop__intro-decoration" aria-hidden="true">
+            <span></span>
+
+            <img src="/images/services/services-olive-sprig.png" alt="" />
+          </div>
         </div>
 
-        <ol class="services-process__list">
-          @for (processStep of processSteps; track processStep.id) {
-            <li class="services-process__item">
+        <ol class="services-process-desktop__list">
+          @for (processStep of processSteps; track processStep.id; let stepNumber = $index) {
+            <li class="services-process-desktop__item">
               <img
-                class="services-process__icon"
-                [src]="processStep.icon"
+                class="services-process-desktop__number"
+                [src]="'/images/services/services-process-number-0' + (stepNumber + 1) + '.png'"
                 alt=""
                 aria-hidden="true"
                 loading="lazy"
               />
 
-              <div class="services-process__content">
-                <h3>{{ processStep.title }}</h3>
+              <div class="services-process-desktop__body">
+                <img
+                  class="services-process-desktop__icon"
+                  [src]="processStep.icon"
+                  alt=""
+                  aria-hidden="true"
+                  loading="lazy"
+                />
 
-                <p>{{ processStep.description }}</p>
+                <div class="services-process-desktop__copy">
+                  <h3>{{ processStep.title }}</h3>
+
+                  <p>{{ processStep.description }}</p>
+                </div>
               </div>
             </li>
           }
