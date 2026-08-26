@@ -1,14 +1,14 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { TranslatePipe } from '@ngx-translate/core';
+import { Component, inject, OnInit } from "@angular/core";
+import { RouterLink } from "@angular/router";
+import { TranslatePipe } from "@ngx-translate/core";
 
-import { AdminQuoteRequestService } from '../../features/quote-request/services/admin-quote-request.service';
+import { AdminQuoteRequestService } from "../../features/quote-request/services/admin-quote-request.service";
 
 @Component({
-  selector: 'admin-dashboard',
+  selector: "admin-dashboard",
   imports: [RouterLink, TranslatePipe],
-  templateUrl: './admin-dashboard.html',
-  styleUrl: './admin-dashboard.scss',
+  templateUrl: "./admin-dashboard.html",
+  styleUrl: "./admin-dashboard.scss",
 })
 export class AdminDashboard implements OnInit {
   private readonly adminQuoteRequestService = inject(AdminQuoteRequestService);
@@ -18,6 +18,6 @@ export class AdminDashboard implements OnInit {
   protected readonly hasError = this.adminQuoteRequestService.hasError;
 
   ngOnInit(): void {
-    void this.adminQuoteRequestService.loadQuoteRequests();
+    void this.adminQuoteRequestService.loadQuoteRequests().subscribe();
   }
 }
