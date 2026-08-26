@@ -581,6 +581,13 @@
         "label": "Status",
         "updating": "Updating...",
         "update": "Update status"
+      },
+      "delete": {
+        "title": "Delete request",
+        "description": "This action permanently deletes the quote request and its private attachment, if one exists.",
+        "action": "Delete request",
+        "deleting": "Deleting request...",
+        "confirm": "Are you sure you want to delete this quote request? This action cannot be undone."
       }
     },
     "serviceDocument": {

@@ -27,6 +27,7 @@ The application is designed with:
 - Angular Router
 - Angular Signals
 - RxJS
+- Angular HttpClient
 - Angular SSR
 - `ngx-translate`
 - Vitest
@@ -435,7 +436,17 @@ service owns mutable state
 
 This keeps state ownership clear and prevents presentation components from modifying shared state directly.
 
-RxJS is currently used for Angular Router event handling.
+RxJS is used for Angular Router event handling and for HTTP request flows behind the application API boundary.
+
+Current HTTP flows compose operators such as:
+
+```text
+tap
+catchError
+finalize
+```
+
+Feature services keep Angular Signals as the synchronous UI state while API client services expose cold `Observable<T>` request contracts.
 
 ---
 
@@ -2762,31 +2773,33 @@ Signal
 
 The Admin placement accounts for the fixed mobile bottom navigation and uses a standard bottom-right position on larger screens.
 
-### Deliberately deferred Admin functionality
+### Post-MVP Admin API extension
 
-Request deletion remains outside the visual MVP.
+The previously deferred Quote Request deletion workflow is now implemented as part of the HTTP/API architecture extension.
 
-The future implementation must treat deletion as a complete workflow rather than a cosmetic button:
+The Admin Quote Request feature now uses an Angular API boundary for:
+
+```text
+GET request list
+GET request detail
+PATCH request status
+DELETE request
+GET private attachment signed URL
+```
+
+Deletion is a complete workflow:
 
 ```text
 confirmation UI
-HTTP/API boundary
-Database DELETE authorization
-private attachment cleanup when present
-Dashboard state refresh/synchronization
-error handling
-tests
+→ Angular HttpClient
+→ authenticated Supabase Edge Function
+→ Database DELETE authorization
+→ private attachment cleanup when present
+→ local Signal synchronization
+→ tests
 ```
 
-This is planned for the post-MVP technical portfolio extension together with:
-
-```text
-HttpClient
-HttpInterceptorFn
-functional resolver
-RxJS request flows
-HttpTestingController
-```
+The remaining API migration continues with the public Quote Request submission flow and Service Document data/storage operations.
 
 ### Final MVP quality baseline
 
@@ -2832,4 +2845,266 @@ Admin navigation
 ```
 
 At this checkpoint the current functional and visual MVP is complete. Remaining work is deployment closure, real-device smoke testing and the optional interview-focused HTTP/API extension.
+---
 
+## HTTP API Boundary — 2026-08-26
+
+The post-MVP technical extension is actively moving application data and Storage operations away from direct `supabase-js` calls in Angular.
+
+Current target architecture:
+
+```text
+Angular page / component
+        ↓
+feature state service
+Signals + RxJS orchestration
+        ↓
+API client service
+HttpClient + Observable<T>
+        ↓
+HTTP
+        ↓
+Supabase Edge Functions
+        ↓
+PostgreSQL + Supabase Storage
+```
+
+This boundary allows Angular to depend on application HTTP contracts instead of the persistence SDK.
+
+Supabase remains the backend platform and persistence implementation.
+
+### HttpClient configuration
+
+Angular registers HttpClient globally with:
+
+```text
+provideHttpClient
+withFetch
+withInterceptors
+```
+
+The functional authentication interceptor is stored under:
+
+```text
+src/app/core/interceptors/auth.interceptor.ts
+```
+
+`AuthService` exposes the current access token through a readonly Signal.
+
+The interceptor reads that abstraction and adds:
+
+```text
+Authorization: Bearer <access-token>
+```
+
+to authenticated API requests.
+
+Authentication is still provided by Supabase Auth during this phase. A later dedicated phase will decouple Auth itself from direct Supabase usage.
+
+### Admin Quote Request API client
+
+Current API client:
+
+```text
+src/app/features/quote-request/api/admin-quote-request-api.service.ts
+```
+
+It exposes `Observable<T>` contracts through Angular HttpClient:
+
+```text
+getQuoteRequests()
+getQuoteRequestById(id)
+updateQuoteRequestStatus(id, status)
+deleteQuoteRequest(id)
+getAttachmentSignedUrl(attachmentPath)
+```
+
+Current deployed Edge Functions:
+
+```text
+supabase/functions/quote-requests/
+supabase/functions/delete-quote-request/
+supabase/functions/quote-request-attachments/
+```
+
+Current Admin HTTP contracts:
+
+```text
+GET    /functions/v1/quote-requests
+GET    /functions/v1/quote-requests/:id
+PATCH  /functions/v1/quote-requests/:id
+DELETE /functions/v1/delete-quote-request/:id
+GET    /functions/v1/quote-request-attachments/:attachmentPath
+```
+
+### Authentication and authorization
+
+Admin Edge Functions receive the browser JWT and create a Supabase client using the request authorization context.
+
+Security flow:
+
+```text
+authenticated Admin session
+→ JWT
+→ Angular interceptor
+→ Authorization header
+→ Edge Function
+→ Supabase authenticated client
+→ PostgreSQL GRANT + RLS
+→ Storage policies
+```
+
+The Admin data functions intentionally do not use `service_role` simply to bypass authorization.
+
+Current permissions include authenticated DELETE access to `quote_requests` and authenticated deletion of objects from:
+
+```text
+quote-request-attachments
+```
+
+RLS remains the final row-level authorization boundary.
+
+### RxJS and Signal boundary
+
+API client services return cold HttpClient Observables.
+
+Feature services compose those flows and synchronize application state:
+
+```text
+HttpClient Observable
+→ pipe(...)
+→ tap
+→ update/set Signals
+→ catchError when feature state must react
+→ finalize pending state
+→ component subscribes
+```
+
+The component is the final consumer for request flows that require execution.
+
+For simple pass-through methods such as signed URL retrieval, the feature service returns the Observable without subscribing.
+
+### Admin Quote Request state
+
+`AdminQuoteRequestService` now owns:
+
+```text
+requests
+selectedRequest
+isLoading
+hasError
+isUpdatingStatus
+isDeleting
+```
+
+List, detail and status operations no longer call the Supabase Database SDK directly.
+
+Private attachment signed URL creation no longer calls Supabase Storage directly from Angular.
+
+Successful status mutations synchronize both:
+
+```text
+selectedRequest
+requests
+```
+
+Successful deletion removes the request from the list and clears `selectedRequest` when it matches the deleted id.
+
+### Tests
+
+The HTTP migration includes focused tests for:
+
+```text
+AdminQuoteRequestApiService
+→ GET list
+→ GET detail
+→ PATCH status
+→ DELETE
+→ signed attachment URL
+
+AdminQuoteRequestService
+→ Observable request flows
+→ Signal synchronization
+→ pending state
+→ error state
+→ deletion
+→ signed URL pass-through
+
+AdminDashboard
+→ Observable-based loading contract
+
+AdminQuoteRequestDetail
+→ Observable-based detail loading
+→ status update
+→ attachment opening
+→ pending/error handling
+```
+
+HttpClient API tests use:
+
+```text
+HttpTestingController
+```
+
+and do not call the remote backend.
+
+### Current validation baseline
+
+Validated on 2026-08-26:
+
+```text
+Test files
+→ 24 passed
+
+Tests
+→ 154 passed
+
+Lint
+→ all files pass
+
+Production build
+→ completed successfully
+→ 5 public routes prerendered
+```
+
+Current build also reports a non-blocking initial bundle budget warning:
+
+```text
+configured initial warning budget
+→ 500.00 kB
+
+current initial bundle
+→ 545.16 kB
+```
+
+### Current migration status
+
+Completed behind the HTTP API boundary:
+
+```text
+Admin Quote Requests
+→ list
+→ detail
+→ status update
+→ deletion
+→ private attachment signed URL
+```
+
+Still pending in the same API-layer branch:
+
+```text
+public Quote Request POST
+public attachment upload
+Service Document metadata / Storage operations
+interceptor request scoping
+functional resolver for Admin detail
+final API tests and cleanup
+```
+
+After the data and Storage migration is complete, authentication will be handled as a separate decoupling phase.
+
+The active branch remains:
+
+```text
+feature/http-api-layer
+```
