@@ -1,19 +1,21 @@
-import { signal } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
-import { provideTranslateService } from '@ngx-translate/core';
-import { vi } from 'vitest';
+import { signal } from "@angular/core";
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { provideRouter } from "@angular/router";
+import { provideTranslateService } from "@ngx-translate/core";
+import { of } from "rxjs";
+import { vi } from "vitest";
 
-import { AdminQuoteRequestService } from '../../features/quote-request/services/admin-quote-request.service';
-import { AdminDashboard } from './admin-dashboard';
+import type { AdminQuoteRequest } from "../../features/quote-request/models/admin-quote-request.model";
+import { AdminQuoteRequestService } from "../../features/quote-request/services/admin-quote-request.service";
+import { AdminDashboard } from "./admin-dashboard";
 
-describe('AdminDashboard', () => {
+describe("AdminDashboard", () => {
   let component: AdminDashboard;
   let fixture: ComponentFixture<AdminDashboard>;
 
   const loadQuoteRequestsMock = vi.fn();
 
-  const requestsState = signal([]);
+  const requestsState = signal<AdminQuoteRequest[]>([]);
   const isLoadingState = signal(false);
   const hasErrorState = signal(false);
 
@@ -31,15 +33,15 @@ describe('AdminDashboard', () => {
     isLoadingState.set(false);
     hasErrorState.set(false);
 
-    loadQuoteRequestsMock.mockResolvedValue(undefined);
+    loadQuoteRequestsMock.mockReturnValue(of([]));
 
     await TestBed.configureTestingModule({
       imports: [AdminDashboard],
       providers: [
         provideRouter([]),
         provideTranslateService({
-          lang: 'es',
-          fallbackLang: 'es',
+          lang: "es",
+          fallbackLang: "es",
         }),
         {
           provide: AdminQuoteRequestService,
@@ -52,13 +54,13 @@ describe('AdminDashboard', () => {
     component = fixture.componentInstance;
   });
 
-  it('should create', () => {
+  it("should create", () => {
     fixture.detectChanges();
 
     expect(component).toBeTruthy();
   });
 
-  it('should load quote requests on initialization', () => {
+  it("should load quote requests on initialization", () => {
     fixture.detectChanges();
 
     expect(loadQuoteRequestsMock).toHaveBeenCalledTimes(1);
