@@ -1,9 +1,9 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
-import { SUPABASE_CLIENT } from '../config/supabase-client.token';
-import type { User } from '@supabase/supabase-js';
+import { computed, inject, Injectable, signal } from "@angular/core";
+import { SUPABASE_CLIENT } from "../config/supabase-client.token";
+import type { User } from "@supabase/supabase-js";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class AuthService {
   private readonly supabaseClient = inject(SUPABASE_CLIENT);
@@ -14,6 +14,9 @@ export class AuthService {
   readonly user = this.userState.asReadonly();
   readonly isLoading = this.loadingState.asReadonly();
   readonly isAuthenticated = computed(() => this.user() !== null);
+
+  private readonly accessTokenState = signal<string | null>(null);
+  readonly accessToken = this.accessTokenState.asReadonly();
 
   constructor() {
     this.loadInitialSession();
@@ -29,10 +32,12 @@ export class AuthService {
       }
 
       this.userState.set(data.session?.user ?? null);
+      this.accessTokenState.set(data.session?.access_token ?? null);
     } catch (error) {
-      console.error('Unable to recover the authentication session:', error);
+      console.error("Unable to recover the authentication session:", error);
 
       this.userState.set(null);
+      this.accessTokenState.set(null);
     } finally {
       this.loadingState.set(false);
     }
@@ -41,6 +46,7 @@ export class AuthService {
   private listenToAuthChanges(): void {
     this.supabaseClient.auth.onAuthStateChange((_event, session) => {
       this.userState.set(session?.user ?? null);
+      this.accessTokenState.set(session?.access_token ?? null);
     });
   }
 

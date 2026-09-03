@@ -1,21 +1,33 @@
-import { DatePipe } from '@angular/common';
-import { Component, ElementRef, inject, OnInit, signal, viewChild } from '@angular/core';
-import { TranslatePipe } from '@ngx-translate/core';
+import { DatePipe } from "@angular/common";
+import {
+  Component,
+  ElementRef,
+  inject,
+  OnInit,
+  signal,
+  viewChild,
+} from "@angular/core";
+import { TranslatePipe } from "@ngx-translate/core";
 
-import { ServiceDocumentService } from '../../features/service-document/services/service-document.service';
+import { ServiceDocumentService } from "../../features/service-document/services/service-document.service";
 
 @Component({
-  selector: 'admin-service-document',
+  selector: "admin-service-document",
   imports: [DatePipe, TranslatePipe],
-  templateUrl: './admin-service-document.html',
-  styleUrl: './admin-service-document.scss',
+  templateUrl: "./admin-service-document.html",
+  styleUrl: "./admin-service-document.scss",
 })
 export class AdminServiceDocument implements OnInit {
-  private readonly serviceDocumentService = inject(ServiceDocumentService);
+  private readonly serviceDocumentService = inject(
+    ServiceDocumentService,
+  );
 
-  private readonly fileInput = viewChild<ElementRef<HTMLInputElement>>('serviceDocumentInput');
+  private readonly fileInput = viewChild<ElementRef<HTMLInputElement>>(
+    "serviceDocumentInput",
+  );
 
-  protected readonly currentDocument = this.serviceDocumentService.currentDocument;
+  protected readonly currentDocument =
+    this.serviceDocumentService.currentDocument;
 
   protected readonly isLoading = this.serviceDocumentService.isLoading;
 
@@ -26,12 +38,17 @@ export class AdminServiceDocument implements OnInit {
   protected readonly hasError = this.serviceDocumentService.hasError;
 
   protected readonly selectedFile = signal<File | null>(null);
+
   protected readonly uploadSuccess = signal(false);
+
   protected readonly deleteSuccess = signal(false);
+
   protected readonly invalidFile = signal(false);
 
   ngOnInit(): void {
-    void this.serviceDocumentService.loadCurrentDocument();
+    this.serviceDocumentService
+      .loadCurrentDocument()
+      .subscribe();
   }
 
   protected onFileSelected(event: Event): void {
@@ -47,7 +64,7 @@ export class AdminServiceDocument implements OnInit {
       return;
     }
 
-    if (file.type !== 'application/pdf') {
+    if (file.type !== "application/pdf") {
       this.resetFileInput();
       this.invalidFile.set(true);
       return;
@@ -56,7 +73,7 @@ export class AdminServiceDocument implements OnInit {
     this.selectedFile.set(file);
   }
 
-  protected async uploadDocument(): Promise<void> {
+  protected uploadDocument(): void {
     const file = this.selectedFile();
 
     if (!file || this.isUploading()) {
@@ -66,16 +83,20 @@ export class AdminServiceDocument implements OnInit {
     this.uploadSuccess.set(false);
     this.deleteSuccess.set(false);
 
-    try {
-      await this.serviceDocumentService.uploadDocument(file);
-      this.resetFileInput();
-      this.uploadSuccess.set(true);
-    } catch {
-      this.uploadSuccess.set(false);
-    }
+    this.serviceDocumentService
+      .uploadDocument(file)
+      .subscribe({
+        next: () => {
+          this.resetFileInput();
+          this.uploadSuccess.set(true);
+        },
+        error: () => {
+          this.uploadSuccess.set(false);
+        },
+      });
   }
 
-  protected async deleteDocument(): Promise<void> {
+  protected deleteDocument(): void {
     if (!this.currentDocument() || this.isDeleting()) {
       return;
     }
@@ -83,13 +104,17 @@ export class AdminServiceDocument implements OnInit {
     this.uploadSuccess.set(false);
     this.deleteSuccess.set(false);
 
-    try {
-      await this.serviceDocumentService.deleteCurrentDocument();
-      this.resetFileInput();
-      this.deleteSuccess.set(true);
-    } catch {
-      this.deleteSuccess.set(false);
-    }
+    this.serviceDocumentService
+      .deleteCurrentDocument()
+      .subscribe({
+        next: () => {
+          this.resetFileInput();
+          this.deleteSuccess.set(true);
+        },
+        error: () => {
+          this.deleteSuccess.set(false);
+        },
+      });
   }
 
   private resetFileInput(): void {
@@ -98,7 +123,7 @@ export class AdminServiceDocument implements OnInit {
     const input = this.fileInput()?.nativeElement;
 
     if (input) {
-      input.value = '';
+      input.value = "";
     }
   }
 }

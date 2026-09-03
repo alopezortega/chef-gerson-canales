@@ -260,6 +260,32 @@
             </p>
           }
         </section>
+
+        <section
+          class="admin-quote-request-detail__panel admin-quote-request-detail__panel--danger"
+          aria-labelledby="delete-request-title"
+        >
+          <h2 id="delete-request-title">
+            {{ 'admin.quoteRequestDetail.delete.title' | translate }}
+          </h2>
+
+          <p class="admin-quote-request-detail__danger-copy">
+            {{ 'admin.quoteRequestDetail.delete.description' | translate }}
+          </p>
+
+          <button
+            class="admin-quote-request-detail__danger-button"
+            type="button"
+            (click)="deleteQuoteRequest()"
+            [disabled]="isDeleting()"
+          >
+            @if (isDeleting()) {
+              {{ 'admin.quoteRequestDetail.delete.deleting' | translate }}
+            } @else {
+              {{ 'admin.quoteRequestDetail.delete.action' | translate }}
+            }
+          </button>
+        </section>
       </aside>
     </div>
   } @else {

@@ -1,15 +1,15 @@
-import { inject, Injectable, signal } from '@angular/core';
-import { SUPABASE_CLIENT } from '../../../core/config/supabase-client.token';
+import { inject, Injectable, signal } from "@angular/core";
+import { SUPABASE_CLIENT } from "../../../core/config/supabase-client.token";
 import type {
   AdminQuoteRequest,
   AdminQuoteRequestRow,
   QuoteRequestStatus,
-} from '../models/admin-quote-request.model';
-
-const QUOTE_ATTACHMENTS_BUCKET = 'quote-request-attachments';
+} from "../models/admin-quote-request.model";
+import { catchError, EMPTY, finalize, Observable, tap } from "rxjs";
+import { AdminQuoteRequestApiService } from "../api/admin-quote-request-api.service";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class AdminQuoteRequestService {
   private readonly supabaseClient = inject(SUPABASE_CLIENT);
@@ -20,36 +20,39 @@ export class AdminQuoteRequestService {
 
   private readonly requestsState = signal<AdminQuoteRequest[]>([]);
   readonly requests = this.requestsState.asReadonly();
-  private readonly selectedRequestState = signal<AdminQuoteRequest | null>(null);
+  private readonly selectedRequestState = signal<AdminQuoteRequest | null>(
+    null,
+  );
   readonly selectedRequest = this.selectedRequestState.asReadonly();
 
   private readonly updatingStatusState = signal<boolean>(false);
   readonly isUpdatingStatus = this.updatingStatusState.asReadonly();
 
-  async loadQuoteRequests(): Promise<void> {
+  private readonly deletingStatus = signal<boolean>(false);
+  readonly isDeleting = this.deletingStatus.asReadonly();
+
+  private readonly adminQuoteRequestApiService = inject(
+    AdminQuoteRequestApiService,
+  );
+
+  loadQuoteRequests(): Observable<AdminQuoteRequest[]> {
     this.loadingState.set(true);
     this.errorState.set(false);
-
-    try {
-      const { data, error } = await this.supabaseClient
-        .from('quote_requests')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) {
-        throw error;
-      }
-
-      const mappedRequests = (data ?? []).map((row) => this.mapRowToQuoteRequest(row));
-
-      this.requestsState.set(mappedRequests);
-    } catch (error) {
-      console.error('Unable to load quote requests:', error);
-      this.errorState.set(true);
-      this.requestsState.set([]);
-    } finally {
-      this.loadingState.set(false);
-    }
+    return this.adminQuoteRequestApiService.getQuoteRequests()
+      .pipe(
+        tap((requests) => {
+          this.requestsState.set(requests);
+        }),
+        catchError((error) => {
+          console.error("Unable to recover requests", error);
+          this.errorState.set(true);
+          this.requestsState.set([]);
+          return EMPTY;
+        }),
+        finalize(() => {
+          this.loadingState.set(false);
+        }),
+      );
   }
 
   // Mapping from database (snake_case) to Angular model (camelCase).
@@ -76,82 +79,90 @@ export class AdminQuoteRequestService {
       createdAt: row.created_at,
     };
   }
-  async loadQuoteRequestById(id: string): Promise<void> {
+  loadQuoteRequestById(id: string): Observable<AdminQuoteRequest> {
     this.loadingState.set(true);
     this.errorState.set(false);
     this.selectedRequestState.set(null);
 
-    try {
-      const { data, error } = await this.supabaseClient
-        .from('quote_requests')
-        .select('*')
-        .eq('id', id)
-        .single();
+    return this.adminQuoteRequestApiService.getQuoteRequestById(id)
+      .pipe(
+        tap((request) => {
+          this.selectedRequestState.set(request);
+        }),
+        catchError((error) => {
+          console.error("Unable to recover request", error);
+          this.errorState.set(true);
+          this.selectedRequestState.set(null);
 
-      if (error) {
-        throw error;
-      }
-
-      const mappedRequest = this.mapRowToQuoteRequest(data);
-
-      this.selectedRequestState.set(mappedRequest);
-    } catch (error) {
-      console.error('Unable to load quote request:', error);
-      this.errorState.set(true);
-      this.selectedRequestState.set(null);
-    } finally {
-      this.loadingState.set(false);
-    }
+          return EMPTY;
+        }),
+        finalize(() => {
+          this.loadingState.set(false);
+        }),
+      );
   }
 
-  async updateQuoteRequestStatus(id: string, status: QuoteRequestStatus): Promise<void> {
+  updateQuoteRequestStatus(
+    id: string,
+    status: QuoteRequestStatus,
+  ): Observable<void> {
     this.updatingStatusState.set(true);
     this.errorState.set(false);
+    return this.adminQuoteRequestApiService.updateQuoteRequestStatus(id, status)
+      .pipe(
+        tap(() => {
+          this.selectedRequestState.update((currentRequest) => {
+            if (!currentRequest || currentRequest.id !== id) {
+              return currentRequest;
+            }
 
-    try {
-      const { error } = await this.supabaseClient
-        .from('quote_requests')
-        .update({ status })
-        .eq('id', id);
-
-      if (error) {
-        throw error;
-      }
-      this.selectedRequestState.update((currentRequest) => {
-        if (!currentRequest || currentRequest.id !== id) {
-          return currentRequest;
-        }
-
-        return {
-          ...currentRequest,
-          status,
-        };
-      });
-
-      this.requestsState.update((requests) =>
-        requests.map((request) => (request.id === id ? { ...request, status } : request)),
+            return {
+              ...currentRequest,
+              status,
+            };
+          });
+          this.requestsState.update((requests) =>
+            requests.map((
+              request,
+            ) => (request.id === id ? { ...request, status } : request))
+          );
+        }),
+        catchError((error) => {
+          console.error("Unable to update status", error);
+          this.errorState.set(true);
+          return EMPTY;
+        }),
+        finalize(() => {
+          this.updatingStatusState.set(false);
+        }),
       );
-    } catch (error) {
-      console.error('Unable to update status:', error);
-      this.errorState.set(true);
-    } finally {
-      this.updatingStatusState.set(false);
-    }
+  }
+  createAttachmentSignedUrl(attachmentPath: string): Observable<string> {
+    return this.adminQuoteRequestApiService.getAttachmentSignedUrl(
+      attachmentPath,
+    );
   }
 
-  async createAttachmentSignedUrl(attachmentPath: string): Promise<string> {
-    const { data, error } = await this.supabaseClient.storage
-      .from(QUOTE_ATTACHMENTS_BUCKET)
-      .createSignedUrl(attachmentPath, 60);
-
-    if (error) {
-      throw error;
+  deleteQuoteRequest(id: string): Observable<void> {
+    if (this.isDeleting()) {
+      return EMPTY;
     }
 
-    if (!data.signedUrl) {
-      throw new Error('Unable to create attachment signed URL');
-    }
+    this.deletingStatus.set(true);
 
-    return data.signedUrl;
+    return this.adminQuoteRequestApiService.deleteQuoteRequest(id).pipe(
+      tap(() => {
+        this.requestsState.update((requests) =>
+          requests.filter((request) => request.id !== id)
+        );
+
+        if (this.selectedRequestState()?.id === id) {
+          this.selectedRequestState.set(null);
+        }
+      }),
+      finalize(() => {
+        this.deletingStatus.set(false);
+      }),
+    );
   }
 }

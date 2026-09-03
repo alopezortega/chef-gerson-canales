@@ -1,10 +1,11 @@
 import { DatePipe } from "@angular/common";
 import { Component, effect, inject, OnInit, signal } from "@angular/core";
-import { ActivatedRoute, RouterLink } from "@angular/router";
-import { TranslatePipe } from "@ngx-translate/core";
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
+import { TranslatePipe, TranslateService } from "@ngx-translate/core";
 
 import type { QuoteRequestStatus } from "../../features/quote-request/models/admin-quote-request.model";
 import { AdminQuoteRequestService } from "../../features/quote-request/services/admin-quote-request.service";
+import { finalize } from "rxjs";
 
 @Component({
   selector: "admin-quote-request-detail",
@@ -15,6 +16,8 @@ import { AdminQuoteRequestService } from "../../features/quote-request/services/
 export class AdminQuoteRequestDetail implements OnInit {
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly adminQuoteRequestService = inject(AdminQuoteRequestService);
+  private readonly router = inject(Router);
+  private readonly translate = inject(TranslateService);
 
   private readonly idUrlState = signal<string | null>(null);
   protected readonly idUrl = this.idUrlState.asReadonly();
@@ -25,6 +28,7 @@ export class AdminQuoteRequestDetail implements OnInit {
   protected readonly hasError = this.adminQuoteRequestService.hasError;
   protected readonly isUpdatingStatus =
     this.adminQuoteRequestService.isUpdatingStatus;
+  protected readonly isDeleting = this.adminQuoteRequestService.isDeleting;
   protected readonly selectedStatus = signal<QuoteRequestStatus>("pending");
 
   private readonly openingAttachmentState = signal(false);
@@ -48,7 +52,7 @@ export class AdminQuoteRequestDetail implements OnInit {
       return;
     }
 
-    void this.adminQuoteRequestService.loadQuoteRequestById(id);
+    this.adminQuoteRequestService.loadQuoteRequestById(id).subscribe();
   }
 
   protected onStatusChange(event: Event): void {
@@ -58,20 +62,20 @@ export class AdminQuoteRequestDetail implements OnInit {
     this.selectedStatus.set(status);
   }
 
-  protected async updateStatus(): Promise<void> {
+  protected updateStatus(): void {
     const request = this.selectedRequest();
 
     if (!request) {
       return;
     }
 
-    await this.adminQuoteRequestService.updateQuoteRequestStatus(
+    this.adminQuoteRequestService.updateQuoteRequestStatus(
       request.id,
       this.selectedStatus(),
-    );
+    ).subscribe();
   }
 
-  protected async openAttachment(): Promise<void> {
+  protected openAttachment(): void {
     const request = this.selectedRequest();
 
     if (!request?.attachmentPath) {
@@ -80,17 +84,49 @@ export class AdminQuoteRequestDetail implements OnInit {
 
     this.openingAttachmentState.set(true);
 
-    try {
-      const signedUrl = await this.adminQuoteRequestService
-        .createAttachmentSignedUrl(
-          request.attachmentPath,
-        );
+    this.adminQuoteRequestService
+      .createAttachmentSignedUrl(request.attachmentPath)
+      .pipe(
+        finalize(() => {
+          this.openingAttachmentState.set(false);
+        }),
+      )
+      .subscribe({
+        next: (signedUrl) => {
+          window.open(
+            signedUrl,
+            "_blank",
+            "noopener,noreferrer",
+          );
+        },
+        error: (error) => {
+          console.error("Unable to open attachment:", error);
+        },
+      });
+  }
 
-      window.open(signedUrl, "_blank", "noopener,noreferrer");
-    } catch (error) {
-      console.error("Unable to open attachment:", error);
-    } finally {
-      this.openingAttachmentState.set(false);
+  protected deleteQuoteRequest(): void {
+    const request = this.selectedRequest();
+
+    if (!request || this.isDeleting()) {
+      return;
     }
+
+    const confirmed = window.confirm(
+      this.translate.instant("admin.quoteRequestDetail.delete.confirm"),
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    this.adminQuoteRequestService.deleteQuoteRequest(request.id).subscribe({
+      next: () => {
+        void this.router.navigateByUrl("/admin");
+      },
+      error: (error) => {
+        console.error("Unable to delete quote request:", error);
+      },
+    });
   }
 }

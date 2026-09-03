@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { provideRouter } from "@angular/router";
 import { provideTranslateService } from "@ngx-translate/core";
+import { of, throwError } from "rxjs";
 
 import { QuoteRequestService } from "../../features/quote-request/services/quote-request.service";
 import { QuoteRequestComponent } from "../quote-request/quote-request";
@@ -10,12 +11,29 @@ describe("QuoteRequest", () => {
   let fixture: ComponentFixture<QuoteRequestComponent>;
 
   const quoteRequestServiceMock = {
-    createQuoteRequest: vi.fn().mockResolvedValue(undefined),
+    createQuoteRequest: vi.fn(),
+  };
+
+  const fillValidForm = (): void => {
+    component["quoteForm"].patchValue({
+      name: "Alejandro",
+      email: "alejandro@example.com",
+      eventType: "private-dinner",
+      guestCount: 2,
+      privacyAccepted: true,
+    });
+  };
+
+  const completeSuccessfulSubmission = async (): Promise<void> => {
+    await vi.advanceTimersByTimeAsync(3500);
+    await vi.advanceTimersByTimeAsync(900);
   };
 
   beforeEach(async () => {
     quoteRequestServiceMock.createQuoteRequest.mockReset();
-    quoteRequestServiceMock.createQuoteRequest.mockResolvedValue(undefined);
+    quoteRequestServiceMock.createQuoteRequest.mockReturnValue(
+      of(undefined),
+    );
 
     await TestBed.configureTestingModule({
       imports: [QuoteRequestComponent],
@@ -35,21 +53,12 @@ describe("QuoteRequest", () => {
     fixture = TestBed.createComponent(QuoteRequestComponent);
     component = fixture.componentInstance;
 
-    vi.spyOn(
-      component as unknown as {
-        waitForMinimumLoadingTime: () => Promise<void>;
-      },
-      "waitForMinimumLoadingTime",
-    ).mockResolvedValue(undefined);
-
-    vi.spyOn(
-      component as unknown as {
-        waitForSuccessConfirmation: () => Promise<void>;
-      },
-      "waitForSuccessConfirmation",
-    ).mockResolvedValue(undefined);
-
     await fixture.whenStable();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.restoreAllMocks();
   });
 
   it("should create", () => {
@@ -90,6 +99,10 @@ describe("QuoteRequest", () => {
 
   it("should initialize loading success as false", () => {
     expect(component["showLoadingSuccess"]()).toBe(false);
+  });
+
+  it("should initialize isSubmitting as false", () => {
+    expect(component["isSubmitting"]()).toBe(false);
   });
 
   it("should initialize the file input without files", () => {
@@ -162,6 +175,7 @@ describe("QuoteRequest", () => {
     const eventDateControl = component["quoteForm"].controls.eventDate;
 
     const today = new Date();
+
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, "0");
     const day = String(today.getDate()).padStart(2, "0");
@@ -196,7 +210,9 @@ describe("QuoteRequest", () => {
       "#eventDate",
     ) as HTMLInputElement;
 
-    expect(eventDateInput.min).toBe(component["minimumEventDate"]);
+    expect(eventDateInput.min).toBe(
+      component["minimumEventDate"],
+    );
   });
 
   it("should invalidate a guest count lower than one", () => {
@@ -226,7 +242,7 @@ describe("QuoteRequest", () => {
   it("should mark all controls as touched after an invalid submission", () => {
     const form = component["quoteForm"];
 
-    void component["submitQuoteRequest"]();
+    component["submitQuoteRequest"]();
 
     expect(form.controls.name.touched).toBe(true);
     expect(form.controls.email.touched).toBe(true);
@@ -235,17 +251,9 @@ describe("QuoteRequest", () => {
   });
 
   it("should validate the form with the required fields completed", () => {
-    const form = component["quoteForm"];
+    fillValidForm();
 
-    form.patchValue({
-      name: "Alejandro",
-      email: "alejandro@example.com",
-      eventType: "private-dinner",
-      guestCount: 2,
-      privacyAccepted: true,
-    });
-
-    expect(form.valid).toBe(true);
+    expect(component["quoteForm"].valid).toBe(true);
   });
 
   it("should update the attachment signal when a valid PDF is selected", () => {
@@ -323,7 +331,10 @@ describe("QuoteRequest", () => {
     fixture.detectChanges();
 
     const compiled = fixture.nativeElement as HTMLElement;
-    const fileName = compiled.querySelector(".quote-form__file-name");
+
+    const fileName = compiled.querySelector(
+      ".quote-form__file-name",
+    );
 
     expect(fileName?.textContent).toContain("menu.pdf");
   });
@@ -373,7 +384,9 @@ describe("QuoteRequest", () => {
     );
   });
 
-  it("should call quoteRequestService with the form values and attachment", async () => {
+  it("should call quoteRequestService with the form values and attachment", () => {
+    vi.useFakeTimers();
+
     const form = component["quoteForm"];
 
     form.patchValue({
@@ -397,97 +410,53 @@ describe("QuoteRequest", () => {
 
     const expectedFormValue = form.getRawValue();
 
-    await component["submitQuoteRequest"]();
+    component["submitQuoteRequest"]();
 
     expect(
       quoteRequestServiceMock.createQuoteRequest,
     ).toHaveBeenCalledWith(expectedFormValue, file);
   });
 
-  it("should not call quoteRequestService when the form is invalid", async () => {
-    await component["submitQuoteRequest"]();
+  it("should not call quoteRequestService when the form is invalid", () => {
+    component["submitQuoteRequest"]();
 
     expect(
       quoteRequestServiceMock.createQuoteRequest,
     ).not.toHaveBeenCalled();
   });
 
-  it("should not call quoteRequestService when the attachment is invalid", async () => {
-    const form = component["quoteForm"];
-
-    form.patchValue({
-      name: "Alejandro",
-      email: "alejandro@example.com",
-      eventType: "private-dinner",
-      guestCount: 2,
-      privacyAccepted: true,
-    });
+  it("should not call quoteRequestService when the attachment is invalid", () => {
+    fillValidForm();
 
     component["attachmentError"].set("type");
 
-    await component["submitQuoteRequest"]();
+    component["submitQuoteRequest"]();
 
     expect(
       quoteRequestServiceMock.createQuoteRequest,
     ).not.toHaveBeenCalled();
   });
 
-  it("should initialize isSubmitting as false", () => {
-    expect(component["isSubmitting"]()).toBe(false);
-  });
-
   it("should set isSubmitting to true while submitting", async () => {
-    let resolveRequest!: () => void;
+    vi.useFakeTimers();
 
-    quoteRequestServiceMock.createQuoteRequest.mockImplementationOnce(
-      () =>
-        new Promise<void>((resolve) => {
-          resolveRequest = resolve;
-        }),
-    );
+    fillValidForm();
 
-    const form = component["quoteForm"];
-
-    form.patchValue({
-      name: "Alejandro",
-      email: "alejandro@example.com",
-      eventType: "private-dinner",
-      guestCount: 2,
-      privacyAccepted: true,
-    });
-
-    const submitPromise = component["submitQuoteRequest"]();
+    component["submitQuoteRequest"]();
 
     expect(component["isSubmitting"]()).toBe(true);
 
-    resolveRequest();
-
-    await submitPromise;
+    await completeSuccessfulSubmission();
 
     expect(component["isSubmitting"]()).toBe(false);
   });
 
   it("should display the fullscreen loading overlay while submitting", async () => {
-    let resolveRequest!: () => void;
+    vi.useFakeTimers();
 
-    quoteRequestServiceMock.createQuoteRequest.mockImplementationOnce(
-      () =>
-        new Promise<void>((resolve) => {
-          resolveRequest = resolve;
-        }),
-    );
+    fillValidForm();
 
-    const form = component["quoteForm"];
-
-    form.patchValue({
-      name: "Alejandro",
-      email: "alejandro@example.com",
-      eventType: "private-dinner",
-      guestCount: 2,
-      privacyAccepted: true,
-    });
-
-    const submitPromise = component["submitQuoteRequest"]();
+    component["submitQuoteRequest"]();
 
     fixture.detectChanges();
 
@@ -497,9 +466,7 @@ describe("QuoteRequest", () => {
       compiled.querySelector(".quote-request-loading"),
     ).toBeTruthy();
 
-    resolveRequest();
-
-    await submitPromise;
+    await completeSuccessfulSubmission();
 
     fixture.detectChanges();
 
@@ -509,32 +476,16 @@ describe("QuoteRequest", () => {
   });
 
   it("should show the loading success while keeping the overlay visible", async () => {
-    let resolveConfirmation!: () => void;
+    vi.useFakeTimers();
 
-    vi.mocked(
-      component["waitForSuccessConfirmation"],
-    ).mockImplementationOnce(
-      () =>
-        new Promise<void>((resolve) => {
-          resolveConfirmation = resolve;
-        }),
-    );
+    fillValidForm();
 
-    const form = component["quoteForm"];
+    component["submitQuoteRequest"]();
 
-    form.patchValue({
-      name: "Alejandro",
-      email: "alejandro@example.com",
-      eventType: "private-dinner",
-      guestCount: 2,
-      privacyAccepted: true,
-    });
+    await vi.advanceTimersByTimeAsync(3500);
 
-    const submitPromise = component["submitQuoteRequest"]();
-
-    await vi.waitFor(() => {
-      expect(component["showLoadingSuccess"]()).toBe(true);
-    });
+    expect(component["showLoadingSuccess"]()).toBe(true);
+    expect(component["isSubmitting"]()).toBe(true);
 
     fixture.detectChanges();
 
@@ -552,84 +503,86 @@ describe("QuoteRequest", () => {
       compiled.querySelector(".quote-request-loading__success"),
     ).toBeTruthy();
 
-    resolveConfirmation();
-
-    await submitPromise;
-  });
-
-  it("should not show loading success when the request fails", async () => {
-    const form = component["quoteForm"];
-
-    form.patchValue({
-      name: "Alejandro",
-      email: "alejandro@example.com",
-      eventType: "private-dinner",
-      guestCount: 2,
-      privacyAccepted: true,
-    });
-
-    quoteRequestServiceMock.createQuoteRequest.mockRejectedValueOnce(
-      new Error("Upload failed"),
-    );
-
-    vi.spyOn(console, "error").mockImplementation(() => undefined);
-
-    await component["submitQuoteRequest"]();
+    await vi.advanceTimersByTimeAsync(900);
 
     expect(component["showLoadingSuccess"]()).toBe(false);
-    expect(component["submissionError"]()).toBe(true);
   });
 
-  it("should set submissionSuccess to true after a successful submission", async () => {
-    const form = component["quoteForm"];
-
-    form.patchValue({
-      name: "Alejandro",
-      email: "alejandro@example.com",
-      eventType: "private-dinner",
-      guestCount: 2,
-      privacyAccepted: true,
-    });
-
-    await component["submitQuoteRequest"]();
-
-    expect(component["submissionSuccess"]()).toBe(true);
-  });
-
-  it("should set submissionError to true after a failed submission", async () => {
-    const form = component["quoteForm"];
-
-    form.patchValue({
-      name: "Alejandro",
-      email: "alejandro@example.com",
-      eventType: "private-dinner",
-      guestCount: 2,
-      privacyAccepted: true,
-    });
+  it("should wait for the minimum loading duration before reporting an error", async () => {
+    vi.useFakeTimers();
 
     const error = new Error("Upload failed");
 
-    quoteRequestServiceMock.createQuoteRequest.mockRejectedValueOnce(error);
+    quoteRequestServiceMock.createQuoteRequest.mockReturnValueOnce(
+      throwError(() => error),
+    );
 
-    vi.spyOn(console, "error").mockImplementation(() => undefined);
+    vi.spyOn(console, "error").mockImplementation(
+      () => undefined,
+    );
 
-    await component["submitQuoteRequest"]();
+    fillValidForm();
+
+    component["submitQuoteRequest"]();
+
+    expect(component["submissionError"]()).toBe(false);
+    expect(component["isSubmitting"]()).toBe(true);
+
+    await vi.advanceTimersByTimeAsync(3499);
+
+    expect(component["submissionError"]()).toBe(false);
+
+    await vi.advanceTimersByTimeAsync(1);
 
     expect(component["submissionError"]()).toBe(true);
+    expect(component["isSubmitting"]()).toBe(false);
+    expect(component["showLoadingSuccess"]()).toBe(false);
+  });
+
+  it("should set submissionSuccess to true after a successful submission", async () => {
+    vi.useFakeTimers();
+
+    fillValidForm();
+
+    component["submitQuoteRequest"]();
+
+    await completeSuccessfulSubmission();
+
+    expect(component["submissionSuccess"]()).toBe(true);
+    expect(component["submissionError"]()).toBe(false);
+  });
+
+  it("should set submissionError to true after a failed submission", async () => {
+    vi.useFakeTimers();
+
+    const error = new Error("Unable to create quote request");
+
+    quoteRequestServiceMock.createQuoteRequest.mockReturnValueOnce(
+      throwError(() => error),
+    );
+
+    vi.spyOn(console, "error").mockImplementation(
+      () => undefined,
+    );
+
+    fillValidForm();
+
+    component["submitQuoteRequest"]();
+
+    await vi.advanceTimersByTimeAsync(3500);
+
+    expect(component["submissionError"]()).toBe(true);
+    expect(component["submissionSuccess"]()).toBe(false);
   });
 
   it("should display the success message after a successful submission", async () => {
-    const form = component["quoteForm"];
+    vi.useFakeTimers();
 
-    form.patchValue({
-      name: "Alejandro",
-      email: "alejandro@example.com",
-      eventType: "private-dinner",
-      guestCount: 2,
-      privacyAccepted: true,
-    });
+    fillValidForm();
 
-    await component["submitQuoteRequest"]();
+    component["submitQuoteRequest"]();
+
+    await completeSuccessfulSubmission();
 
     fixture.detectChanges();
 
@@ -645,19 +598,15 @@ describe("QuoteRequest", () => {
   });
 
   it("should reset the form after a successful submission", async () => {
-    const form = component["quoteForm"];
+    vi.useFakeTimers();
 
-    form.patchValue({
-      name: "Alejandro",
-      email: "alejandro@example.com",
-      eventType: "private-dinner",
-      guestCount: 2,
-      privacyAccepted: true,
-    });
+    fillValidForm();
 
-    await component["submitQuoteRequest"]();
+    component["submitQuoteRequest"]();
 
-    expect(form.getRawValue()).toEqual({
+    await completeSuccessfulSubmission();
+
+    expect(component["quoteForm"].getRawValue()).toEqual({
       name: "",
       email: "",
       phone: "",
@@ -672,15 +621,9 @@ describe("QuoteRequest", () => {
   });
 
   it("should reset the attachment after a successful submission", async () => {
-    const form = component["quoteForm"];
+    vi.useFakeTimers();
 
-    form.patchValue({
-      name: "Alejandro",
-      email: "alejandro@example.com",
-      eventType: "private-dinner",
-      guestCount: 2,
-      privacyAccepted: true,
-    });
+    fillValidForm();
 
     const file = new File(["test content"], "menu.pdf", {
       type: "application/pdf",
@@ -688,7 +631,9 @@ describe("QuoteRequest", () => {
 
     component["attachment"].set(file);
 
-    await component["submitQuoteRequest"]();
+    component["submitQuoteRequest"]();
+
+    await completeSuccessfulSubmission();
 
     expect(component["attachment"]()).toBeNull();
     expect(component["attachmentError"]()).toBeNull();

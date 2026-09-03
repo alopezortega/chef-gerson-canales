@@ -1,108 +1,70 @@
-import { TestBed } from '@angular/core/testing';
-import { vi } from 'vitest';
+import { TestBed } from "@angular/core/testing";
+import { of, Subject, throwError } from "rxjs";
+import { vi } from "vitest";
 
-import { SUPABASE_CLIENT } from '../../../core/config/supabase-client.token';
-import type { AdminQuoteRequest, AdminQuoteRequestRow } from '../models/admin-quote-request.model';
-import { AdminQuoteRequestService } from './admin-quote-request.service';
+import { SUPABASE_CLIENT } from "../../../core/config/supabase-client.token";
+import { AdminQuoteRequestApiService } from "../api/admin-quote-request-api.service";
+import type { AdminQuoteRequest } from "../models/admin-quote-request.model";
+import { AdminQuoteRequestService } from "./admin-quote-request.service";
 
-describe('AdminQuoteRequestService', () => {
+describe("AdminQuoteRequestService", () => {
   let service: AdminQuoteRequestService;
 
-  const quoteRequestRow: AdminQuoteRequestRow = {
-    id: 'request-123',
-    name: 'Alejandro',
-    email: 'alejandro@example.com',
-    phone: '600123123',
-    event_type: 'private-dinner',
-    event_date: '2026-08-15',
-    guest_count: 4,
-    location: 'Madrid',
-    dietary_requirements: 'No nuts',
-    additional_information: 'Dinner at home',
-    privacy_accepted: true,
-    attachment_path: 'request-123/menu.pdf',
-    attachment_name: 'menu.pdf',
-    attachment_type: 'application/pdf',
-    attachment_size: 117111,
-    status: 'pending',
-    created_at: '2026-08-03T08:39:38.695Z',
-  };
-
-  const expectedQuoteRequest: AdminQuoteRequest = {
-    id: 'request-123',
-    name: 'Alejandro',
-    email: 'alejandro@example.com',
-    phone: '600123123',
-    eventType: 'private-dinner',
-    eventDate: '2026-08-15',
+  const quoteRequest: AdminQuoteRequest = {
+    id: "request-123",
+    name: "Alejandro",
+    email: "alejandro@example.com",
+    phone: "600123123",
+    eventType: "private-dinner",
+    eventDate: "2026-08-15",
     guestCount: 4,
-    location: 'Madrid',
-    dietaryRequirements: 'No nuts',
-    additionalInformation: 'Dinner at home',
+    location: "Madrid",
+    dietaryRequirements: "No nuts",
+    additionalInformation: "Dinner at home",
     privacyAccepted: true,
-    attachmentPath: 'request-123/menu.pdf',
-    attachmentName: 'menu.pdf',
-    attachmentType: 'application/pdf',
+    attachmentPath: "request-123/menu.pdf",
+    attachmentName: "menu.pdf",
+    attachmentType: "application/pdf",
     attachmentSize: 117111,
-    status: 'pending',
-    createdAt: '2026-08-03T08:39:38.695Z',
+    status: "pending",
+    createdAt: "2026-08-03T08:39:38.695Z",
   };
 
-  const orderMock = vi.fn();
-  const detailEqMock = vi.fn();
-  const singleMock = vi.fn();
+  const getQuoteRequestsMock = vi.fn();
+  const getQuoteRequestByIdMock = vi.fn();
+  const updateQuoteRequestStatusMock = vi.fn();
+  const getAttachmentSignedUrlMock = vi.fn();
+  const deleteQuoteRequestMock = vi.fn();
 
-  const updateMock = vi.fn();
-  const updateEqMock = vi.fn();
-
-  const storageFromMock = vi.fn();
-  const createSignedUrlMock = vi.fn();
-
-  const selectQueryBuilderMock = {
-    order: orderMock,
-    eq: detailEqMock,
-  };
-
-  const detailQueryBuilderMock = {
-    single: singleMock,
-  };
-
-  const updateQueryBuilderMock = {
-    eq: updateEqMock,
-  };
-
-  const queryBuilderMock = {
-    select: vi.fn(),
-    update: updateMock,
-  };
-
-  const storageBucketMock = {
-    createSignedUrl: createSignedUrlMock,
-  };
-
-  const supabaseClientMock = {
-    from: vi.fn(),
-    storage: {
-      from: storageFromMock,
-    },
+  const apiServiceMock = {
+    getQuoteRequests: getQuoteRequestsMock,
+    getQuoteRequestById: getQuoteRequestByIdMock,
+    updateQuoteRequestStatus: updateQuoteRequestStatusMock,
+    getAttachmentSignedUrl: getAttachmentSignedUrlMock,
+    deleteQuoteRequest: deleteQuoteRequestMock,
   };
 
   beforeEach(() => {
     vi.clearAllMocks();
 
-    queryBuilderMock.select.mockReturnValue(selectQueryBuilderMock);
-    detailEqMock.mockReturnValue(detailQueryBuilderMock);
-    updateMock.mockReturnValue(updateQueryBuilderMock);
-    supabaseClientMock.from.mockReturnValue(queryBuilderMock);
-
-    storageFromMock.mockReturnValue(storageBucketMock);
+    getQuoteRequestsMock.mockReturnValue(of([]));
+    getQuoteRequestByIdMock.mockReturnValue(of(quoteRequest));
+    updateQuoteRequestStatusMock.mockReturnValue(of(undefined));
+    getAttachmentSignedUrlMock.mockReturnValue(
+      of("https://example.com/signed/menu.pdf"),
+    );
+    deleteQuoteRequestMock.mockReturnValue(of(undefined));
 
     TestBed.configureTestingModule({
       providers: [
         AdminQuoteRequestService,
         {
+          provide: AdminQuoteRequestApiService,
+          useValue: apiServiceMock,
+        },
+        {
           provide: SUPABASE_CLIENT,
-          useValue: supabaseClientMock,
+          useValue: {},
         },
       ],
     });
@@ -110,257 +72,271 @@ describe('AdminQuoteRequestService', () => {
     service = TestBed.inject(AdminQuoteRequestService);
   });
 
-  it('should be created', () => {
+  it("should be created", () => {
     expect(service).toBeTruthy();
   });
 
-  it('should load and map quote requests', async () => {
-    orderMock.mockResolvedValue({
-      data: [quoteRequestRow],
-      error: null,
-    });
+  it("should load quote requests", () => {
+    getQuoteRequestsMock.mockReturnValue(of([quoteRequest]));
 
-    const loadPromise = service.loadQuoteRequests();
+    service.loadQuoteRequests().subscribe();
 
-    expect(service.isLoading()).toBe(true);
+    expect(getQuoteRequestsMock).toHaveBeenCalledTimes(1);
+    expect(service.requests()).toEqual([quoteRequest]);
     expect(service.hasError()).toBe(false);
-
-    await loadPromise;
-
-    expect(supabaseClientMock.from).toHaveBeenCalledWith('quote_requests');
-    expect(queryBuilderMock.select).toHaveBeenCalledWith('*');
-    expect(orderMock).toHaveBeenCalledWith('created_at', {
-      ascending: false,
-    });
-
-    expect(service.requests()).toEqual([expectedQuoteRequest]);
     expect(service.isLoading()).toBe(false);
-    expect(service.hasError()).toBe(false);
   });
 
-  it('should handle an error when loading quote requests', async () => {
-    const supabaseError = {
-      message: 'Unable to load quote requests',
-    };
+  it("should keep loading true while quote requests are pending", () => {
+    const requestsSubject = new Subject<AdminQuoteRequest[]>();
 
-    orderMock.mockResolvedValue({
-      data: null,
-      error: supabaseError,
-    });
+    getQuoteRequestsMock.mockReturnValue(requestsSubject.asObservable());
 
-    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    service.loadQuoteRequests().subscribe();
 
-    await service.loadQuoteRequests();
+    expect(service.isLoading()).toBe(true);
+
+    requestsSubject.next([quoteRequest]);
+    requestsSubject.complete();
+
+    expect(service.requests()).toEqual([quoteRequest]);
+    expect(service.isLoading()).toBe(false);
+  });
+
+  it("should handle an error when loading quote requests", () => {
+    const error = new Error("Unable to load requests");
+    const consoleErrorSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => undefined);
+
+    getQuoteRequestsMock.mockReturnValue(
+      throwError(() => error),
+    );
+
+    service.loadQuoteRequests().subscribe();
 
     expect(service.requests()).toEqual([]);
     expect(service.hasError()).toBe(true);
     expect(service.isLoading()).toBe(false);
-    expect(consoleErrorSpy).toHaveBeenCalledWith('Unable to load quote requests:', supabaseError);
 
     consoleErrorSpy.mockRestore();
   });
 
-  it('should load and map one quote request by id', async () => {
-    singleMock.mockResolvedValue({
-      data: quoteRequestRow,
-      error: null,
-    });
+  it("should load one quote request by id", () => {
+    getQuoteRequestByIdMock.mockReturnValue(of(quoteRequest));
 
-    const loadPromise = service.loadQuoteRequestById(quoteRequestRow.id);
+    service
+      .loadQuoteRequestById(quoteRequest.id)
+      .subscribe();
 
-    expect(service.isLoading()).toBe(true);
-    expect(service.selectedRequest()).toBeNull();
-
-    await loadPromise;
-
-    expect(supabaseClientMock.from).toHaveBeenCalledWith('quote_requests');
-    expect(queryBuilderMock.select).toHaveBeenCalledWith('*');
-    expect(detailEqMock).toHaveBeenCalledWith('id', quoteRequestRow.id);
-    expect(singleMock).toHaveBeenCalledTimes(1);
-
-    expect(service.selectedRequest()).toEqual(expectedQuoteRequest);
+    expect(getQuoteRequestByIdMock).toHaveBeenCalledWith(
+      quoteRequest.id,
+    );
+    expect(service.selectedRequest()).toEqual(quoteRequest);
     expect(service.hasError()).toBe(false);
     expect(service.isLoading()).toBe(false);
   });
 
-  it('should handle an error when loading one quote request by id', async () => {
-    const supabaseError = {
-      message: 'Quote request not found',
-    };
+  it("should handle an error when loading one quote request", () => {
+    const error = new Error("Unable to load request");
+    const consoleErrorSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => undefined);
 
-    singleMock.mockResolvedValue({
-      data: null,
-      error: supabaseError,
-    });
+    getQuoteRequestByIdMock.mockReturnValue(
+      throwError(() => error),
+    );
 
-    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
-
-    await service.loadQuoteRequestById('missing-request');
+    service
+      .loadQuoteRequestById(quoteRequest.id)
+      .subscribe();
 
     expect(service.selectedRequest()).toBeNull();
     expect(service.hasError()).toBe(true);
     expect(service.isLoading()).toBe(false);
-    expect(consoleErrorSpy).toHaveBeenCalledWith('Unable to load quote request:', supabaseError);
 
     consoleErrorSpy.mockRestore();
   });
 
-  it('should update only the quote request status in Supabase', async () => {
-    updateEqMock.mockResolvedValue({
-      error: null,
-    });
+  it("should update the selected request status", () => {
+    getQuoteRequestByIdMock.mockReturnValue(of(quoteRequest));
 
-    await service.updateQuoteRequestStatus(quoteRequestRow.id, 'contacted');
+    service
+      .loadQuoteRequestById(quoteRequest.id)
+      .subscribe();
 
-    expect(supabaseClientMock.from).toHaveBeenCalledWith('quote_requests');
-    expect(updateMock).toHaveBeenCalledWith({
-      status: 'contacted',
-    });
-    expect(updateEqMock).toHaveBeenCalledWith('id', quoteRequestRow.id);
-  });
+    service
+      .updateQuoteRequestStatus(
+        quoteRequest.id,
+        "contacted",
+      )
+      .subscribe();
 
-  it('should update the selected request status after a successful update', async () => {
-    singleMock.mockResolvedValue({
-      data: quoteRequestRow,
-      error: null,
-    });
-
-    updateEqMock.mockResolvedValue({
-      error: null,
-    });
-
-    await service.loadQuoteRequestById(quoteRequestRow.id);
-    await service.updateQuoteRequestStatus(quoteRequestRow.id, 'contacted');
+    expect(updateQuoteRequestStatusMock).toHaveBeenCalledWith(
+      quoteRequest.id,
+      "contacted",
+    );
 
     expect(service.selectedRequest()).toEqual({
-      ...expectedQuoteRequest,
-      status: 'contacted',
+      ...quoteRequest,
+      status: "contacted",
     });
   });
 
-  it('should update the matching request inside the requests list', async () => {
-    orderMock.mockResolvedValue({
-      data: [quoteRequestRow],
-      error: null,
-    });
+  it("should update the matching request inside the list", () => {
+    getQuoteRequestsMock.mockReturnValue(of([quoteRequest]));
 
-    updateEqMock.mockResolvedValue({
-      error: null,
-    });
+    service.loadQuoteRequests().subscribe();
 
-    await service.loadQuoteRequests();
-    await service.updateQuoteRequestStatus(quoteRequestRow.id, 'closed');
+    service
+      .updateQuoteRequestStatus(
+        quoteRequest.id,
+        "closed",
+      )
+      .subscribe();
 
     expect(service.requests()).toEqual([
       {
-        ...expectedQuoteRequest,
-        status: 'closed',
+        ...quoteRequest,
+        status: "closed",
       },
     ]);
   });
 
-  it('should keep isUpdatingStatus true while the update is pending', async () => {
-    let resolveUpdate: ((value: { error: null }) => void) | undefined;
+  it("should keep isUpdatingStatus true while the update is pending", () => {
+    const updateSubject = new Subject<void>();
 
-    updateEqMock.mockReturnValue(
-      new Promise<{ error: null }>((resolve) => {
-        resolveUpdate = resolve;
-      }),
+    updateQuoteRequestStatusMock.mockReturnValue(
+      updateSubject.asObservable(),
     );
 
-    const updatePromise = service.updateQuoteRequestStatus(quoteRequestRow.id, 'contacted');
+    service
+      .updateQuoteRequestStatus(
+        quoteRequest.id,
+        "contacted",
+      )
+      .subscribe();
 
     expect(service.isUpdatingStatus()).toBe(true);
-    expect(service.hasError()).toBe(false);
 
-    resolveUpdate?.({
-      error: null,
-    });
-
-    await updatePromise;
+    updateSubject.next();
+    updateSubject.complete();
 
     expect(service.isUpdatingStatus()).toBe(false);
-    expect(service.hasError()).toBe(false);
   });
 
-  it('should handle an error when updating the quote request status', async () => {
-    const supabaseError = {
-      message: 'Unable to update quote request status',
-    };
+  it("should handle an error when updating status", () => {
+    const error = new Error("Unable to update status");
+    const consoleErrorSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => undefined);
 
-    orderMock.mockResolvedValue({
-      data: [quoteRequestRow],
-      error: null,
-    });
+    updateQuoteRequestStatusMock.mockReturnValue(
+      throwError(() => error),
+    );
 
-    singleMock.mockResolvedValue({
-      data: quoteRequestRow,
-      error: null,
-    });
-
-    updateEqMock.mockResolvedValue({
-      error: supabaseError,
-    });
-
-    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
-
-    await service.loadQuoteRequests();
-    await service.loadQuoteRequestById(quoteRequestRow.id);
-    await service.updateQuoteRequestStatus(quoteRequestRow.id, 'closed');
+    service
+      .updateQuoteRequestStatus(
+        quoteRequest.id,
+        "closed",
+      )
+      .subscribe();
 
     expect(service.hasError()).toBe(true);
     expect(service.isUpdatingStatus()).toBe(false);
 
-    expect(service.selectedRequest()).toEqual(expectedQuoteRequest);
-    expect(service.requests()).toEqual([expectedQuoteRequest]);
-
-    expect(consoleErrorSpy).toHaveBeenCalledWith('Unable to update status:', supabaseError);
-
     consoleErrorSpy.mockRestore();
   });
 
-  it('should create and return a signed attachment URL', async () => {
-    const signedUrl = 'https://example.supabase.co/storage/signed/menu.pdf';
+  it("should return an attachment signed URL", () => {
+    const signedUrl = "https://example.com/signed/menu.pdf";
 
-    createSignedUrlMock.mockResolvedValue({
-      data: {
-        signedUrl,
-      },
-      error: null,
-    });
+    getAttachmentSignedUrlMock.mockReturnValue(of(signedUrl));
 
-    const result = await service.createAttachmentSignedUrl(quoteRequestRow.attachment_path!);
+    let result: string | undefined;
 
-    expect(storageFromMock).toHaveBeenCalledWith('quote-request-attachments');
-    expect(createSignedUrlMock).toHaveBeenCalledWith(quoteRequestRow.attachment_path, 60);
+    service
+      .createAttachmentSignedUrl(
+        quoteRequest.attachmentPath!,
+      )
+      .subscribe((url) => {
+        result = url;
+      });
+
+    expect(getAttachmentSignedUrlMock).toHaveBeenCalledWith(
+      quoteRequest.attachmentPath,
+    );
     expect(result).toBe(signedUrl);
   });
 
-  it('should throw the Storage error when creating a signed URL fails', async () => {
-    const storageError = {
-      message: 'Object not found',
-    };
+  it("should propagate an attachment signed URL error", () => {
+    const error = new Error("Unable to create signed URL");
 
-    createSignedUrlMock.mockResolvedValue({
-      data: null,
-      error: storageError,
-    });
-
-    await expect(service.createAttachmentSignedUrl(quoteRequestRow.attachment_path!)).rejects.toBe(
-      storageError,
+    getAttachmentSignedUrlMock.mockReturnValue(
+      throwError(() => error),
     );
+
+    let receivedError: unknown;
+
+    service
+      .createAttachmentSignedUrl(
+        quoteRequest.attachmentPath!,
+      )
+      .subscribe({
+        error: (currentError) => {
+          receivedError = currentError;
+        },
+      });
+
+    expect(receivedError).toBe(error);
   });
 
-  it('should throw when Supabase does not return a signed URL', async () => {
-    createSignedUrlMock.mockResolvedValue({
-      data: {
-        signedUrl: '',
-      },
-      error: null,
-    });
+  it("should delete a quote request and remove it from the list", () => {
+    getQuoteRequestsMock.mockReturnValue(of([quoteRequest]));
 
-    await expect(
-      service.createAttachmentSignedUrl(quoteRequestRow.attachment_path!),
-    ).rejects.toThrow('Unable to create attachment signed URL');
+    service.loadQuoteRequests().subscribe();
+
+    service
+      .deleteQuoteRequest(quoteRequest.id)
+      .subscribe();
+
+    expect(deleteQuoteRequestMock).toHaveBeenCalledWith(
+      quoteRequest.id,
+    );
+    expect(service.requests()).toEqual([]);
+    expect(service.isDeleting()).toBe(false);
+  });
+
+  it("should clear the selected request after deleting it", () => {
+    getQuoteRequestByIdMock.mockReturnValue(of(quoteRequest));
+
+    service
+      .loadQuoteRequestById(quoteRequest.id)
+      .subscribe();
+
+    service
+      .deleteQuoteRequest(quoteRequest.id)
+      .subscribe();
+
+    expect(service.selectedRequest()).toBeNull();
+  });
+
+  it("should keep isDeleting true while deletion is pending", () => {
+    const deleteSubject = new Subject<void>();
+
+    deleteQuoteRequestMock.mockReturnValue(
+      deleteSubject.asObservable(),
+    );
+
+    service
+      .deleteQuoteRequest(quoteRequest.id)
+      .subscribe();
+
+    expect(service.isDeleting()).toBe(true);
+
+    deleteSubject.next();
+    deleteSubject.complete();
+
+    expect(service.isDeleting()).toBe(false);
   });
 });

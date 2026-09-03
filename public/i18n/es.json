@@ -577,6 +577,13 @@
         "label": "Estado",
         "updating": "Actualizando...",
         "update": "Actualizar estado"
+      },
+      "delete": {
+        "title": "Eliminar solicitud",
+        "description": "Esta acción elimina de forma permanente la solicitud y su archivo adjunto privado, si existe.",
+        "action": "Eliminar solicitud",
+        "deleting": "Eliminando solicitud...",
+        "confirm": "¿Seguro que quieres eliminar esta solicitud? Esta acción no se puede deshacer."
       }
     },
     "serviceDocument": {

@@ -1,66 +1,77 @@
-import { signal } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute, convertToParamMap, provideRouter } from '@angular/router';
-import { provideTranslateService } from '@ngx-translate/core';
-import { vi } from 'vitest';
+import { signal } from "@angular/core";
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import {
+  ActivatedRoute,
+  convertToParamMap,
+  provideRouter,
+} from "@angular/router";
+import { provideTranslateService } from "@ngx-translate/core";
+import { of, Subject, throwError } from "rxjs";
+import { vi } from "vitest";
 
-import type { AdminQuoteRequest } from '../../features/quote-request/models/admin-quote-request.model';
-import { AdminQuoteRequestService } from '../../features/quote-request/services/admin-quote-request.service';
-import { AdminQuoteRequestDetail } from './admin-quote-request-detail';
+import type { AdminQuoteRequest } from "../../features/quote-request/models/admin-quote-request.model";
+import { AdminQuoteRequestService } from "../../features/quote-request/services/admin-quote-request.service";
+import { AdminQuoteRequestDetail } from "./admin-quote-request-detail";
 
-describe('AdminQuoteRequestDetail', () => {
+describe("AdminQuoteRequestDetail", () => {
   let component: AdminQuoteRequestDetail;
   let fixture: ComponentFixture<AdminQuoteRequestDetail>;
 
-  const requestId = '83cda03c-531d-421f-939f-d1c541a3f596';
+  const requestId = "83cda03c-531d-421f-939f-d1c541a3f596";
 
   const quoteRequest: AdminQuoteRequest = {
     id: requestId,
-    name: 'Alejandro',
-    email: 'alejandro@example.com',
-    phone: '600123123',
-    eventType: 'private-dinner',
-    eventDate: '2026-08-15',
+    name: "Alejandro",
+    email: "alejandro@example.com",
+    phone: "600123123",
+    eventType: "private-dinner",
+    eventDate: "2026-08-15",
     guestCount: 4,
-    location: 'Madrid',
-    dietaryRequirements: 'No nuts',
-    additionalInformation: 'Dinner at home',
+    location: "Madrid",
+    dietaryRequirements: "No nuts",
+    additionalInformation: "Dinner at home",
     privacyAccepted: true,
-    attachmentPath: 'request-123/menu.pdf',
-    attachmentName: 'menu.pdf',
-    attachmentType: 'application/pdf',
+    attachmentPath: "request-123/menu.pdf",
+    attachmentName: "menu.pdf",
+    attachmentType: "application/pdf",
     attachmentSize: 117111,
-    status: 'pending',
-    createdAt: '2026-08-03T08:39:38.695Z',
+    status: "pending",
+    createdAt: "2026-08-03T08:39:38.695Z",
   };
 
   const loadQuoteRequestByIdMock = vi.fn();
   const updateQuoteRequestStatusMock = vi.fn();
   const createAttachmentSignedUrlMock = vi.fn();
+  const deleteQuoteRequestMock = vi.fn();
 
   const selectedRequestState = signal<AdminQuoteRequest | null>(null);
   const isLoadingState = signal(false);
   const hasErrorState = signal(false);
   const isUpdatingStatusState = signal(false);
+  const isDeletingState = signal(false);
 
   const adminQuoteRequestServiceMock = {
     selectedRequest: selectedRequestState.asReadonly(),
     isLoading: isLoadingState.asReadonly(),
     hasError: hasErrorState.asReadonly(),
     isUpdatingStatus: isUpdatingStatusState.asReadonly(),
+    isDeleting: isDeletingState.asReadonly(),
     loadQuoteRequestById: loadQuoteRequestByIdMock,
     updateQuoteRequestStatus: updateQuoteRequestStatusMock,
     createAttachmentSignedUrl: createAttachmentSignedUrlMock,
+    deleteQuoteRequest: deleteQuoteRequestMock,
   };
 
-  async function configureTest(routeId: string | null): Promise<void> {
+  async function configureTest(
+    routeId: string | null,
+  ): Promise<void> {
     await TestBed.configureTestingModule({
       imports: [AdminQuoteRequestDetail],
       providers: [
         provideRouter([]),
         provideTranslateService({
-          lang: 'es',
-          fallbackLang: 'es',
+          lang: "es",
+          fallbackLang: "es",
         }),
         {
           provide: AdminQuoteRequestService,
@@ -73,8 +84,8 @@ describe('AdminQuoteRequestDetail', () => {
               paramMap: convertToParamMap(
                 routeId
                   ? {
-                      id: routeId,
-                    }
+                    id: routeId,
+                  }
                   : {},
               ),
             },
@@ -83,7 +94,9 @@ describe('AdminQuoteRequestDetail', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(AdminQuoteRequestDetail);
+    fixture = TestBed.createComponent(
+      AdminQuoteRequestDetail,
+    );
     component = fixture.componentInstance;
   }
 
@@ -94,13 +107,26 @@ describe('AdminQuoteRequestDetail', () => {
     isLoadingState.set(false);
     hasErrorState.set(false);
     isUpdatingStatusState.set(false);
+    isDeletingState.set(false);
 
-    loadQuoteRequestByIdMock.mockResolvedValue(undefined);
-    updateQuoteRequestStatusMock.mockResolvedValue(undefined);
-    createAttachmentSignedUrlMock.mockResolvedValue('https://example.com/signed/menu.pdf');
+    loadQuoteRequestByIdMock.mockReturnValue(
+      of(quoteRequest),
+    );
+
+    updateQuoteRequestStatusMock.mockReturnValue(
+      of(undefined),
+    );
+
+    createAttachmentSignedUrlMock.mockReturnValue(
+      of("https://example.com/signed/menu.pdf"),
+    );
+
+    deleteQuoteRequestMock.mockReturnValue(
+      of(undefined),
+    );
   });
 
-  it('should create', async () => {
+  it("should create", async () => {
     await configureTest(requestId);
 
     fixture.detectChanges();
@@ -108,111 +134,139 @@ describe('AdminQuoteRequestDetail', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should load the quote request using the route id', async () => {
+  it("should load the quote request using the route id", async () => {
     await configureTest(requestId);
 
     fixture.detectChanges();
 
-    expect(loadQuoteRequestByIdMock).toHaveBeenCalledTimes(1);
-    expect(loadQuoteRequestByIdMock).toHaveBeenCalledWith(requestId);
+    expect(
+      loadQuoteRequestByIdMock,
+    ).toHaveBeenCalledWith(requestId);
   });
 
-  it('should expose the route id', async () => {
+  it("should expose the route id", async () => {
     await configureTest(requestId);
 
     fixture.detectChanges();
 
-    expect(component['idUrl']()).toBe(requestId);
+    expect(component["idUrl"]()).toBe(requestId);
   });
 
-  it('should not load a quote request when the route id is missing', async () => {
+  it("should not load when route id is missing", async () => {
     await configureTest(null);
 
     fixture.detectChanges();
 
-    expect(loadQuoteRequestByIdMock).not.toHaveBeenCalled();
-    expect(component['idUrl']()).toBeNull();
+    expect(
+      loadQuoteRequestByIdMock,
+    ).not.toHaveBeenCalled();
+
+    expect(component["idUrl"]()).toBeNull();
   });
 
-  it('should update the selected status from the select event', async () => {
+  it("should update selected status from the select event", async () => {
     await configureTest(requestId);
 
     const event = {
       target: {
-        value: 'closed',
+        value: "closed",
       },
     } as unknown as Event;
 
-    component['onStatusChange'](event);
+    component["onStatusChange"](event);
 
-    expect(component['selectedStatus']()).toBe('closed');
+    expect(component["selectedStatus"]()).toBe(
+      "closed",
+    );
   });
 
-  it('should call the service with the request id and selected status', async () => {
+  it("should call the service with the request id and selected status", async () => {
     selectedRequestState.set(quoteRequest);
 
     await configureTest(requestId);
 
     fixture.detectChanges();
 
-    component['selectedStatus'].set('contacted');
+    component["selectedStatus"].set("contacted");
 
-    await component['updateStatus']();
+    component["updateStatus"]();
 
-    expect(updateQuoteRequestStatusMock).toHaveBeenCalledTimes(1);
-
-    expect(updateQuoteRequestStatusMock).toHaveBeenCalledWith(quoteRequest.id, 'contacted');
+    expect(
+      updateQuoteRequestStatusMock,
+    ).toHaveBeenCalledWith(
+      quoteRequest.id,
+      "contacted",
+    );
   });
 
-  it('should not update the status when no request is selected', async () => {
+  it("should not update status when no request is selected", async () => {
     await configureTest(requestId);
 
     fixture.detectChanges();
 
-    await component['updateStatus']();
+    selectedRequestState.set(null);
 
-    expect(updateQuoteRequestStatusMock).not.toHaveBeenCalled();
+    component["updateStatus"]();
+
+    expect(
+      updateQuoteRequestStatusMock,
+    ).not.toHaveBeenCalled();
   });
 
-  it('should synchronize the selected status with the loaded request', async () => {
+  it("should synchronize selected status with the request", async () => {
     selectedRequestState.set({
       ...quoteRequest,
-      status: 'closed',
+      status: "closed",
     });
 
     await configureTest(requestId);
 
     fixture.detectChanges();
 
-    expect(component['selectedStatus']()).toBe('closed');
+    expect(component["selectedStatus"]()).toBe(
+      "closed",
+    );
   });
 
-  it('should request a signed URL and open the attachment', async () => {
-    const signedUrl = 'https://example.com/signed/menu.pdf';
+  it("should request a signed URL and open the attachment", async () => {
+    const signedUrl = "https://example.com/signed/menu.pdf";
 
     selectedRequestState.set(quoteRequest);
-    createAttachmentSignedUrlMock.mockResolvedValue(signedUrl);
 
-    const windowOpenSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
+    createAttachmentSignedUrlMock.mockReturnValue(
+      of(signedUrl),
+    );
+
+    const windowOpenSpy = vi
+      .spyOn(window, "open")
+      .mockImplementation(() => null);
 
     await configureTest(requestId);
 
     fixture.detectChanges();
 
-    await component['openAttachment']();
+    component["openAttachment"]();
 
-    expect(createAttachmentSignedUrlMock).toHaveBeenCalledTimes(1);
+    expect(
+      createAttachmentSignedUrlMock,
+    ).toHaveBeenCalledWith(
+      quoteRequest.attachmentPath,
+    );
 
-    expect(createAttachmentSignedUrlMock).toHaveBeenCalledWith(quoteRequest.attachmentPath);
+    expect(windowOpenSpy).toHaveBeenCalledWith(
+      signedUrl,
+      "_blank",
+      "noopener,noreferrer",
+    );
 
-    expect(windowOpenSpy).toHaveBeenCalledWith(signedUrl, '_blank', 'noopener,noreferrer');
-
-    expect(component['isOpeningAttachment']()).toBe(false);
+    expect(
+      component["isOpeningAttachment"](),
+    ).toBe(false);
 
     windowOpenSpy.mockRestore();
   });
 
-  it('should not open an attachment when the request has no attachment path', async () => {
+  it("should not open an attachment without attachmentPath", async () => {
     selectedRequestState.set({
       ...quoteRequest,
       attachmentPath: null,
@@ -221,74 +275,99 @@ describe('AdminQuoteRequestDetail', () => {
       attachmentSize: null,
     });
 
-    const windowOpenSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
+    const windowOpenSpy = vi
+      .spyOn(window, "open")
+      .mockImplementation(() => null);
 
     await configureTest(requestId);
 
     fixture.detectChanges();
 
-    await component['openAttachment']();
+    component["openAttachment"]();
 
-    expect(createAttachmentSignedUrlMock).not.toHaveBeenCalled();
+    expect(
+      createAttachmentSignedUrlMock,
+    ).not.toHaveBeenCalled();
 
     expect(windowOpenSpy).not.toHaveBeenCalled();
 
-    expect(component['isOpeningAttachment']()).toBe(false);
+    expect(
+      component["isOpeningAttachment"](),
+    ).toBe(false);
 
     windowOpenSpy.mockRestore();
   });
 
-  it('should keep isOpeningAttachment true while the signed URL is pending', async () => {
+  it("should keep isOpeningAttachment true while signed URL is pending", async () => {
     selectedRequestState.set(quoteRequest);
 
-    let resolveSignedUrl: ((value: string) => void) | undefined;
+    const signedUrlSubject = new Subject<string>();
 
     createAttachmentSignedUrlMock.mockReturnValue(
-      new Promise<string>((resolve) => {
-        resolveSignedUrl = resolve;
-      }),
+      signedUrlSubject.asObservable(),
     );
 
-    const windowOpenSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
+    const windowOpenSpy = vi
+      .spyOn(window, "open")
+      .mockImplementation(() => null);
 
     await configureTest(requestId);
 
     fixture.detectChanges();
 
-    const openPromise = component['openAttachment']();
+    component["openAttachment"]();
 
-    expect(component['isOpeningAttachment']()).toBe(true);
+    expect(
+      component["isOpeningAttachment"](),
+    ).toBe(true);
 
-    resolveSignedUrl?.('https://example.com/signed/menu.pdf');
+    signedUrlSubject.next(
+      "https://example.com/signed/menu.pdf",
+    );
+    signedUrlSubject.complete();
 
-    await openPromise;
-
-    expect(component['isOpeningAttachment']()).toBe(false);
+    expect(
+      component["isOpeningAttachment"](),
+    ).toBe(false);
 
     windowOpenSpy.mockRestore();
   });
 
-  it('should handle an error when opening the attachment', async () => {
-    const attachmentError = new Error('Unable to create signed URL');
+  it("should handle an attachment error", async () => {
+    const error = new Error(
+      "Unable to create signed URL",
+    );
 
     selectedRequestState.set(quoteRequest);
-    createAttachmentSignedUrlMock.mockRejectedValue(attachmentError);
 
-    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    createAttachmentSignedUrlMock.mockReturnValue(
+      throwError(() => error),
+    );
 
-    const windowOpenSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
+    const consoleErrorSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => undefined);
+
+    const windowOpenSpy = vi
+      .spyOn(window, "open")
+      .mockImplementation(() => null);
 
     await configureTest(requestId);
 
     fixture.detectChanges();
 
-    await component['openAttachment']();
+    component["openAttachment"]();
 
-    expect(consoleErrorSpy).toHaveBeenCalledWith('Unable to open attachment:', attachmentError);
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      "Unable to open attachment:",
+      error,
+    );
 
     expect(windowOpenSpy).not.toHaveBeenCalled();
 
-    expect(component['isOpeningAttachment']()).toBe(false);
+    expect(
+      component["isOpeningAttachment"](),
+    ).toBe(false);
 
     consoleErrorSpy.mockRestore();
     windowOpenSpy.mockRestore();
