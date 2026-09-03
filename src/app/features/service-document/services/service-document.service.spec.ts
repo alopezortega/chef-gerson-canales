@@ -1,49 +1,64 @@
-import { TestBed } from '@angular/core/testing';
-import { vi } from 'vitest';
+import { TestBed } from "@angular/core/testing";
+import { firstValueFrom, of, throwError } from "rxjs";
 
-import { SUPABASE_CLIENT } from '../../../core/config/supabase-client.token';
-import type { ServiceDocumentRow } from '../models/service-document.model';
-import { ServiceDocumentService } from './service-document.service';
+import { ServiceDocumentApiService } from "../api/service-document-api.service";
+import { ServiceDocument } from "../models/service-document.model";
 
-describe('ServiceDocumentService', () => {
+import { ServiceDocumentService } from "./service-document.service";
+
+describe("ServiceDocumentService", () => {
   let service: ServiceDocumentService;
 
-  const documentRow: ServiceDocumentRow = {
-    id: 'document-id',
-    storage_path: 'previous-services.pdf',
-    original_name: 'services.pdf',
-    mime_type: 'application/pdf',
+  const serviceDocument: ServiceDocument = {
+    id: "document-id",
+    storagePath: "documents/services.pdf",
+    originalName: "services.pdf",
+    mimeType: "application/pdf",
     size: 1000,
-    created_at: '2026-08-06T10:00:00.000Z',
-    updated_at: '2026-08-06T10:00:00.000Z',
+    createdAt: "2026-08-06T10:00:00.000Z",
+    updatedAt: "2026-08-06T10:00:00.000Z",
   };
 
-  const updatedDocumentRow: ServiceDocumentRow = {
-    ...documentRow,
-    storage_path: 'new-services.pdf',
-    original_name: 'new services.pdf',
+  const updatedServiceDocument: ServiceDocument = {
+    ...serviceDocument,
+    storagePath: "documents/new-services.pdf",
+    originalName: "new-services.pdf",
     size: 2000,
-    updated_at: '2026-08-06T12:00:00.000Z',
+    updatedAt: "2026-09-03T18:22:00.000Z",
   };
 
-  const fromMock = vi.fn();
-  const storageFromMock = vi.fn();
-
-  const supabaseClientMock = {
-    from: fromMock,
-    storage: {
-      from: storageFromMock,
-    },
+  const serviceDocumentApiServiceMock = {
+    getCurrentDocument: vi.fn(),
+    createDownloadSignedUrl: vi.fn(),
+    uploadDocument: vi.fn(),
+    deleteDocument: vi.fn(),
   };
 
   beforeEach(() => {
     vi.clearAllMocks();
 
+    serviceDocumentApiServiceMock.getCurrentDocument
+      .mockReturnValue(of(serviceDocument));
+
+    serviceDocumentApiServiceMock.createDownloadSignedUrl
+      .mockReturnValue(
+        of(
+          "https://example.com/signed-services-document",
+        ),
+      );
+
+    serviceDocumentApiServiceMock.uploadDocument
+      .mockReturnValue(of(updatedServiceDocument));
+
+    serviceDocumentApiServiceMock.deleteDocument
+      .mockReturnValue(of(undefined));
+
     TestBed.configureTestingModule({
       providers: [
+        ServiceDocumentService,
         {
-          provide: SUPABASE_CLIENT,
-          useValue: supabaseClientMock,
+          provide: ServiceDocumentApiService,
+          useValue: serviceDocumentApiServiceMock,
         },
       ],
     });
@@ -51,361 +66,223 @@ describe('ServiceDocumentService', () => {
     service = TestBed.inject(ServiceDocumentService);
   });
 
-  it('should be created', () => {
+  it("should create", () => {
     expect(service).toBeTruthy();
   });
 
-  it('should load and map the current document', async () => {
-    const maybeSingleMock = vi.fn().mockResolvedValue({
-      data: documentRow,
-      error: null,
-    });
+  it("should load the current document", () => {
+    service.loadCurrentDocument().subscribe();
 
-    const limitMock = vi.fn().mockReturnValue({
-      maybeSingle: maybeSingleMock,
-    });
+    expect(
+      serviceDocumentApiServiceMock.getCurrentDocument,
+    ).toHaveBeenCalledTimes(1);
 
-    const selectMock = vi.fn().mockReturnValue({
-      limit: limitMock,
-    });
-
-    fromMock.mockReturnValue({
-      select: selectMock,
-    });
-
-    await service.loadCurrentDocument();
-
-    expect(fromMock).toHaveBeenCalledWith('service_documents');
-    expect(selectMock).toHaveBeenCalledWith('*');
-    expect(limitMock).toHaveBeenCalledWith(1);
-
-    expect(service.currentDocument()).toEqual({
-      id: 'document-id',
-      storagePath: 'previous-services.pdf',
-      originalName: 'services.pdf',
-      mimeType: 'application/pdf',
-      size: 1000,
-      createdAt: '2026-08-06T10:00:00.000Z',
-      updatedAt: '2026-08-06T10:00:00.000Z',
-    });
-
-    expect(service.isLoading()).toBe(false);
-    expect(service.hasError()).toBe(false);
-  });
-
-  it('should set the current document to null when none exists', async () => {
-    const maybeSingleMock = vi.fn().mockResolvedValue({
-      data: null,
-      error: null,
-    });
-
-    fromMock.mockReturnValue({
-      select: vi.fn().mockReturnValue({
-        limit: vi.fn().mockReturnValue({
-          maybeSingle: maybeSingleMock,
-        }),
-      }),
-    });
-
-    await service.loadCurrentDocument();
-
-    expect(service.currentDocument()).toBeNull();
-    expect(service.isLoading()).toBe(false);
-    expect(service.hasError()).toBe(false);
-  });
-
-  it('should handle an error while loading the document', async () => {
-    const loadError = new Error('Unable to load document');
-
-    vi.spyOn(console, 'error').mockImplementation(() => undefined);
-
-    fromMock.mockReturnValue({
-      select: vi.fn().mockReturnValue({
-        limit: vi.fn().mockReturnValue({
-          maybeSingle: vi.fn().mockResolvedValue({
-            data: null,
-            error: loadError,
-          }),
-        }),
-      }),
-    });
-
-    await expect(service.loadCurrentDocument()).rejects.toThrow('Unable to load document');
-
-    expect(service.currentDocument()).toBeNull();
-    expect(service.isLoading()).toBe(false);
-    expect(service.hasError()).toBe(true);
-  });
-
-  it('should upload and insert the first document', async () => {
-    const file = new File(['document content'], 'New Services.pdf', {
-      type: 'application/pdf',
-    });
-
-    const uploadMock = vi.fn().mockResolvedValue({
-      error: null,
-    });
-
-    storageFromMock.mockReturnValue({
-      upload: uploadMock,
-    });
-
-    const singleMock = vi.fn().mockResolvedValue({
-      data: updatedDocumentRow,
-      error: null,
-    });
-
-    const selectMock = vi.fn().mockReturnValue({
-      single: singleMock,
-    });
-
-    const insertMock = vi.fn().mockReturnValue({
-      select: selectMock,
-    });
-
-    fromMock.mockReturnValue({
-      insert: insertMock,
-    });
-
-    await service.uploadDocument(file);
-
-    expect(storageFromMock).toHaveBeenCalledWith('service-documents');
-
-    expect(uploadMock).toHaveBeenCalledTimes(1);
-
-    const uploadedStoragePath = uploadMock.mock.calls[0][0] as string;
-
-    expect(uploadedStoragePath).toContain('new-services.pdf');
-
-    expect(uploadMock).toHaveBeenCalledWith(uploadedStoragePath, file, {
-      contentType: 'application/pdf',
-      upsert: false,
-    });
-
-    expect(insertMock).toHaveBeenCalledWith(
-      expect.objectContaining({
-        storage_path: uploadedStoragePath,
-        original_name: 'New Services.pdf',
-        mime_type: 'application/pdf',
-        size: file.size,
-      }),
+    expect(service.currentDocument()).toEqual(
+      serviceDocument,
     );
 
-    expect(service.currentDocument()).toEqual({
-      id: updatedDocumentRow.id,
-      storagePath: updatedDocumentRow.storage_path,
-      originalName: updatedDocumentRow.original_name,
-      mimeType: updatedDocumentRow.mime_type,
-      size: updatedDocumentRow.size,
-      createdAt: updatedDocumentRow.created_at,
-      updatedAt: updatedDocumentRow.updated_at,
-    });
-
-    expect(service.isUploading()).toBe(false);
+    expect(service.isLoading()).toBe(false);
     expect(service.hasError()).toBe(false);
   });
 
-  it('should replace the current document and remove the previous file', async () => {
-    const file = new File(['new document content'], 'new-services.pdf', {
-      type: 'application/pdf',
-    });
+  it("should set the current document to null when none exists", () => {
+    serviceDocumentApiServiceMock.getCurrentDocument
+      .mockReturnValueOnce(of(null));
 
-    fromMock.mockReturnValueOnce({
-      select: vi.fn().mockReturnValue({
-        limit: vi.fn().mockReturnValue({
-          maybeSingle: vi.fn().mockResolvedValue({
-            data: documentRow,
-            error: null,
-          }),
-        }),
-      }),
-    });
-
-    await service.loadCurrentDocument();
-
-    const uploadMock = vi.fn().mockResolvedValue({
-      error: null,
-    });
-
-    const removeMock = vi.fn().mockResolvedValue({
-      error: null,
-    });
-
-    storageFromMock.mockReturnValue({
-      upload: uploadMock,
-      remove: removeMock,
-    });
-
-    const singleMock = vi.fn().mockResolvedValue({
-      data: updatedDocumentRow,
-      error: null,
-    });
-
-    const selectMock = vi.fn().mockReturnValue({
-      single: singleMock,
-    });
-
-    const eqMock = vi.fn().mockReturnValue({
-      select: selectMock,
-    });
-
-    const updateMock = vi.fn().mockReturnValue({
-      eq: eqMock,
-    });
-
-    fromMock.mockReturnValue({
-      update: updateMock,
-    });
-
-    await service.uploadDocument(file);
-
-    expect(updateMock).toHaveBeenCalledTimes(1);
-    expect(eqMock).toHaveBeenCalledWith('id', documentRow.id);
-
-    expect(removeMock).toHaveBeenCalledWith([documentRow.storage_path]);
-
-    expect(service.currentDocument()?.storagePath).toBe(updatedDocumentRow.storage_path);
-
-    expect(service.isUploading()).toBe(false);
-  });
-
-  it('should clean up the uploaded file when the database operation fails', async () => {
-    const databaseError = new Error('Unable to save document metadata');
-
-    const file = new File(['document content'], 'services.pdf', {
-      type: 'application/pdf',
-    });
-
-    vi.spyOn(console, 'error').mockImplementation(() => undefined);
-
-    const uploadMock = vi.fn().mockResolvedValue({
-      error: null,
-    });
-
-    const removeMock = vi.fn().mockResolvedValue({
-      error: null,
-    });
-
-    storageFromMock.mockReturnValue({
-      upload: uploadMock,
-      remove: removeMock,
-    });
-
-    const singleMock = vi.fn().mockResolvedValue({
-      data: null,
-      error: databaseError,
-    });
-
-    fromMock.mockReturnValue({
-      insert: vi.fn().mockReturnValue({
-        select: vi.fn().mockReturnValue({
-          single: singleMock,
-        }),
-      }),
-    });
-
-    await expect(service.uploadDocument(file)).rejects.toThrow('Unable to save document metadata');
-
-    const uploadedStoragePath = uploadMock.mock.calls[0][0] as string;
-
-    expect(removeMock).toHaveBeenCalledWith([uploadedStoragePath]);
+    service.loadCurrentDocument().subscribe();
 
     expect(service.currentDocument()).toBeNull();
-    expect(service.isUploading()).toBe(false);
+    expect(service.isLoading()).toBe(false);
+    expect(service.hasError()).toBe(false);
+  });
+
+  it("should handle an error while loading the document", () => {
+    const error = new Error(
+      "Unable to load service document",
+    );
+
+    serviceDocumentApiServiceMock.getCurrentDocument
+      .mockReturnValueOnce(
+        throwError(() => error),
+      );
+
+    vi.spyOn(console, "error").mockImplementation(
+      () => undefined,
+    );
+
+    service.loadCurrentDocument().subscribe();
+
+    expect(service.currentDocument()).toBeNull();
     expect(service.hasError()).toBe(true);
+    expect(service.isLoading()).toBe(false);
   });
 
-  it('should delete the current document and its stored file', async () => {
-    fromMock.mockReturnValueOnce({
-      select: vi.fn().mockReturnValue({
-        limit: vi.fn().mockReturnValue({
-          maybeSingle: vi.fn().mockResolvedValue({
-            data: documentRow,
-            error: null,
-          }),
-        }),
-      }),
-    });
+  it("should upload a service document and update currentDocument", async () => {
+    const file = new File(
+      ["document content"],
+      "new-services.pdf",
+      {
+        type: "application/pdf",
+      },
+    );
 
-    await service.loadCurrentDocument();
+    await firstValueFrom(
+      service.uploadDocument(file),
+    );
 
-    const eqMock = vi.fn().mockResolvedValue({
-      error: null,
-    });
+    expect(
+      serviceDocumentApiServiceMock.uploadDocument,
+    ).toHaveBeenCalledWith(file);
 
-    const deleteMock = vi.fn().mockReturnValue({
-      eq: eqMock,
-    });
+    expect(service.currentDocument()).toEqual(
+      updatedServiceDocument,
+    );
 
-    fromMock.mockReturnValue({
-      delete: deleteMock,
-    });
+    expect(service.isUploading()).toBe(false);
+    expect(service.hasError()).toBe(false);
+  });
 
-    const removeMock = vi.fn().mockResolvedValue({
-      error: null,
-    });
+  it("should propagate an upload error", async () => {
+    const error = new Error(
+      "Unable to upload service document",
+    );
 
-    storageFromMock.mockReturnValue({
-      remove: removeMock,
-    });
+    const file = new File(
+      ["document content"],
+      "services.pdf",
+      {
+        type: "application/pdf",
+      },
+    );
 
-    await service.deleteCurrentDocument();
+    serviceDocumentApiServiceMock.uploadDocument
+      .mockReturnValueOnce(
+        throwError(() => error),
+      );
 
-    expect(deleteMock).toHaveBeenCalledTimes(1);
-    expect(eqMock).toHaveBeenCalledWith('id', documentRow.id);
+    vi.spyOn(console, "error").mockImplementation(
+      () => undefined,
+    );
 
-    expect(removeMock).toHaveBeenCalledWith([documentRow.storage_path]);
+    await expect(
+      firstValueFrom(service.uploadDocument(file)),
+    ).rejects.toThrow(
+      "Unable to upload service document",
+    );
+
+    expect(service.hasError()).toBe(true);
+    expect(service.isUploading()).toBe(false);
+  });
+
+  it("should delete the current document", async () => {
+    serviceDocumentApiServiceMock.getCurrentDocument
+      .mockReturnValueOnce(of(serviceDocument));
+
+    service.loadCurrentDocument().subscribe();
+
+    await firstValueFrom(
+      service.deleteCurrentDocument(),
+    );
+
+    expect(
+      serviceDocumentApiServiceMock.deleteDocument,
+    ).toHaveBeenCalledWith(serviceDocument.id);
 
     expect(service.currentDocument()).toBeNull();
     expect(service.isDeleting()).toBe(false);
     expect(service.hasError()).toBe(false);
   });
 
-  it('should do nothing when deleting without a current document', async () => {
-    await service.deleteCurrentDocument();
+  it("should do nothing when deleting without a current document", async () => {
+    await firstValueFrom(
+      service.deleteCurrentDocument(),
+    );
 
-    expect(fromMock).not.toHaveBeenCalled();
-    expect(storageFromMock).not.toHaveBeenCalled();
+    expect(
+      serviceDocumentApiServiceMock.deleteDocument,
+    ).not.toHaveBeenCalled();
+
     expect(service.isDeleting()).toBe(false);
   });
 
-  it('should create a signed URL for the document', async () => {
-    const createSignedUrlMock = vi.fn().mockResolvedValue({
-      data: {
-        signedUrl: 'https://example.com/signed-services-document',
-      },
-      error: null,
-    });
+  it("should propagate a delete error", async () => {
+    const error = new Error(
+      "Unable to delete service document",
+    );
 
-    storageFromMock.mockReturnValue({
-      createSignedUrl: createSignedUrlMock,
-    });
+    serviceDocumentApiServiceMock.getCurrentDocument
+      .mockReturnValueOnce(of(serviceDocument));
 
-    const signedUrl = await service.createDownloadSignedUrl('documents/services.pdf');
+    service.loadCurrentDocument().subscribe();
 
-    expect(storageFromMock).toHaveBeenCalledWith('service-documents');
+    serviceDocumentApiServiceMock.deleteDocument
+      .mockReturnValueOnce(
+        throwError(() => error),
+      );
 
-    expect(createSignedUrlMock).toHaveBeenCalledWith('documents/services.pdf', 60);
+    vi.spyOn(console, "error").mockImplementation(
+      () => undefined,
+    );
 
-    expect(signedUrl).toBe('https://example.com/signed-services-document');
+    await expect(
+      firstValueFrom(
+        service.deleteCurrentDocument(),
+      ),
+    ).rejects.toThrow(
+      "Unable to delete service document",
+    );
+
+    expect(service.hasError()).toBe(true);
+    expect(service.isDeleting()).toBe(false);
+
+    expect(service.currentDocument()).toEqual(
+      serviceDocument,
+    );
+  });
+
+  it("should create a signed document URL", async () => {
+    const signedUrl = await firstValueFrom(
+      service.createDownloadSignedUrl(
+        "documents/services.pdf",
+      ),
+    );
+
+    expect(
+      serviceDocumentApiServiceMock
+        .createDownloadSignedUrl,
+    ).toHaveBeenCalledWith(
+      "documents/services.pdf",
+    );
+
+    expect(signedUrl).toBe(
+      "https://example.com/signed-services-document",
+    );
 
     expect(service.hasError()).toBe(false);
   });
 
-  it('should handle an error when creating the signed URL', async () => {
-    const signedUrlError = new Error('Unable to create signed URL');
+  it("should propagate a signed URL error", async () => {
+    const error = new Error(
+      "Unable to create signed URL",
+    );
 
-    vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    serviceDocumentApiServiceMock.createDownloadSignedUrl
+      .mockReturnValueOnce(
+        throwError(() => error),
+      );
 
-    storageFromMock.mockReturnValue({
-      createSignedUrl: vi.fn().mockResolvedValue({
-        data: null,
-        error: signedUrlError,
-      }),
-    });
+    vi.spyOn(console, "error").mockImplementation(
+      () => undefined,
+    );
 
-    await expect(service.createDownloadSignedUrl('documents/services.pdf')).rejects.toThrow(
-      'Unable to create signed URL',
+    await expect(
+      firstValueFrom(
+        service.createDownloadSignedUrl(
+          "documents/services.pdf",
+        ),
+      ),
+    ).rejects.toThrow(
+      "Unable to create signed URL",
     );
 
     expect(service.hasError()).toBe(true);
