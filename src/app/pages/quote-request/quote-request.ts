@@ -15,6 +15,16 @@ import {
   Validators,
 } from "@angular/forms";
 import { TranslatePipe } from "@ngx-translate/core";
+import {
+  catchError,
+  finalize,
+  forkJoin,
+  map,
+  of,
+  switchMap,
+  throwError,
+  timer,
+} from "rxjs";
 
 import { QuoteRequestService } from "../../features/quote-request/services/quote-request.service";
 
@@ -172,7 +182,7 @@ export class QuoteRequestComponent {
     this.attachment.set(file);
   }
 
-  protected async submitQuoteRequest(): Promise<void> {
+  protected submitQuoteRequest(): void {
     if (this.quoteForm.invalid || this.attachmentError()) {
       this.quoteForm.markAllAsTouched();
       return;
@@ -186,59 +196,61 @@ export class QuoteRequestComponent {
     this.showLoadingSuccess.set(false);
     this.isSubmitting.set(true);
 
-    try {
-      const [requestResult] = await Promise.allSettled([
-        this.quoteRequestService.createQuoteRequest(formValue, attachment),
-        this.waitForMinimumLoadingTime(),
-      ]);
+    forkJoin([
+      timer(this.minimumLoadingDuration),
 
-      if (requestResult.status === "rejected") {
-        throw requestResult.reason;
-      }
+      this.quoteRequestService
+        .createQuoteRequest(formValue, attachment)
+        .pipe(
+          map(() => ({ error: null })),
+          catchError((error) => {
+            return of({ error });
+          }),
+        ),
+    ])
+      .pipe(
+        switchMap(([, requestResult]) => {
+          if (requestResult.error) {
+            return throwError(() => requestResult.error);
+          }
 
-      this.showLoadingSuccess.set(true);
+          this.showLoadingSuccess.set(true);
 
-      await this.waitForSuccessConfirmation();
+          return timer(this.successConfirmationDuration);
+        }),
+        finalize(() => {
+          this.isSubmitting.set(false);
+          this.showLoadingSuccess.set(false);
+        }),
+      )
+      .subscribe({
+        next: () => {
+          this.submissionSuccess.set(true);
 
-      this.submissionSuccess.set(true);
+          this.quoteForm.reset({
+            name: "",
+            email: "",
+            phone: "",
+            eventType: "",
+            eventDate: "",
+            guestCount: 1,
+            location: "",
+            dietaryRequirements: "",
+            additionalInformation: "",
+            privacyAccepted: false,
+          });
 
-      this.quoteForm.reset({
-        name: "",
-        email: "",
-        phone: "",
-        eventType: "",
-        eventDate: "",
-        guestCount: 1,
-        location: "",
-        dietaryRequirements: "",
-        additionalInformation: "",
-        privacyAccepted: false,
+          this.attachment.set(null);
+          this.attachmentError.set(null);
+
+          this.resetAttachmentInput();
+        },
+        error: (error) => {
+          this.submissionError.set(true);
+
+          console.error("Unable to create quote request:", error);
+        },
       });
-
-      this.attachment.set(null);
-      this.attachmentError.set(null);
-
-      this.resetAttachmentInput();
-    } catch (error) {
-      this.submissionError.set(true);
-
-      console.error("Unable to create quote request:", error);
-    } finally {
-      this.isSubmitting.set(false);
-      this.showLoadingSuccess.set(false);
-    }
-  }
-
-  protected waitForMinimumLoadingTime(): Promise<void> {
-    return new Promise((resolve) => {
-      setTimeout(resolve, this.minimumLoadingDuration);
-    });
-  }
-
-  protected waitForSuccessConfirmation(): Promise<void> {
-    return new Promise((resolve) => {
-      setTimeout(resolve, this.successConfirmationDuration);
-    });
   }
 
   private hasPendingChanges(): boolean {
