@@ -3108,3 +3108,256 @@ The active branch remains:
 ```text
 feature/http-api-layer
 ```
+
+---
+
+## HTTP API Boundary — Service Document Closure — 2026-09-03
+
+The Service Document feature has now been migrated behind the Angular HTTP API boundary.
+
+Final application flow:
+
+```text
+Public Services / Admin Service Document
+        ↓
+ServiceDocumentService
+Signals + RxJS orchestration
+        ↓
+ServiceDocumentApiService
+HttpClient + Observable<T>
+        ↓
+Supabase Edge Function: service-document
+        ↓
+PostgreSQL + Supabase Storage
+```
+
+Angular no longer performs direct Database or Storage operations for the Service Document feature.
+
+### API client
+
+Current API client:
+
+```text
+src/app/features/service-document/api/service-document-api.service.ts
+```
+
+HTTP contracts:
+
+```text
+GET    /functions/v1/service-document
+→ get current document metadata
+
+GET    /functions/v1/service-document/download?path=<storagePath>
+→ create short-lived signed download URL
+
+POST   /functions/v1/service-document
+→ upload first PDF or replace the active PDF
+
+DELETE /functions/v1/service-document/:id
+→ delete active document metadata and Storage object
+```
+
+The API client exposes:
+
+```text
+getCurrentDocument()
+createDownloadSignedUrl(storagePath)
+uploadDocument(file)
+deleteDocument(id)
+```
+
+through cold Angular `Observable<T>` contracts.
+
+### Feature service
+
+`ServiceDocumentService` remains the owner of synchronous UI state:
+
+```text
+currentDocument
+isLoading
+hasError
+isUploading
+isDeleting
+```
+
+Current RxJS patterns:
+
+```text
+tap()
+→ synchronize Signals after successful API emissions
+
+map(() => undefined)
+→ adapt data-emitting HTTP operations to Observable<void>
+  when the service stores the result internally
+
+catchError()
+→ synchronize feature error state
+
+EMPTY
+→ complete a deliberately handled load error without rethrowing
+
+throwError()
+→ propagate mutation/download errors when the component must react
+
+finalize()
+→ restore pending state on success or error
+```
+
+The public Services page and the Admin Service Document page now subscribe to these Observable workflows.
+
+### Edge Function
+
+Current backend function:
+
+```text
+supabase/functions/service-document/
+```
+
+It handles:
+
+```text
+GET
+GET /download
+POST
+DELETE
+OPTIONS / CORS
+```
+
+Public metadata and signed-download access remain available without Admin login.
+
+Upload/replacement and deletion require the authenticated request context and continue to rely on Supabase authorization rules for Database and Storage access.
+
+The function maps Database `snake_case` rows to the Angular-facing `camelCase` API contract before responding.
+
+### Manual validation
+
+Validated end to end on 2026-09-03:
+
+```text
+public document detection
+signed PDF download
+Admin PDF upload / replacement
+Admin PDF deletion
+HTTP 200 for download and upload/replace
+HTTP 204 for deletion
+```
+
+### Tests
+
+Service Document coverage now includes:
+
+```text
+ServiceDocumentApiService
+→ GET current metadata
+→ null metadata response
+→ signed download URL
+→ multipart upload
+→ DELETE
+
+ServiceDocumentService
+→ Signal synchronization
+→ loading/error state
+→ upload
+→ delete
+→ signed URL
+→ Observable error propagation
+
+ServicesComponent
+→ Observable-based initial load
+→ download success/error
+→ duplicate-download prevention
+
+AdminServiceDocument
+→ Observable-based initial load
+→ PDF selection
+→ upload
+→ deletion
+→ error paths
+```
+
+`HttpTestingController` is used for the API client tests.
+
+No real Supabase request is performed by unit tests.
+
+### Current quality baseline — 2026-09-03
+
+```text
+Test files
+→ 26 passed
+
+Tests
+→ 161 passed
+
+Lint
+→ all files pass
+
+Production build
+→ completed successfully
+→ 5 public routes prerendered
+```
+
+Current non-blocking build warning:
+
+```text
+initial bundle warning budget
+→ 500.00 kB
+
+current initial bundle
+→ 547.41 kB
+
+warning excess
+→ 47.41 kB
+```
+
+The warning does not block the production build.
+
+### HTTP API migration status
+
+Completed behind the API boundary:
+
+```text
+Admin Quote Requests
+→ list
+→ detail
+→ status update
+→ deletion
+→ private attachment signed URL
+
+Public Quote Request
+→ submission through HttpClient
+→ optional attachment handled by backend API
+→ existing loading/success/error UX preserved
+
+Service Document
+→ current metadata
+→ signed public download
+→ upload / replacement
+→ deletion
+```
+
+The next major technical phase is:
+
+```text
+Auth decoupling
+```
+
+The Auth phase must preserve:
+
+```text
+login
+initial session recovery
+access token state
+auth-state changes / refresh behaviour
+authGuard
+auth interceptor integration
+logout
+client-rendered Admin routes
+unit tests
+```
+
+Active branch at this checkpoint:
+
+```text
+feature/http-api-layer
+```
+
