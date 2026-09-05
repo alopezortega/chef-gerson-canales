@@ -1,71 +1,92 @@
-import { computed, inject, Injectable, signal } from "@angular/core";
-import { SUPABASE_CLIENT } from "../config/supabase-client.token";
-import type { User } from "@supabase/supabase-js";
+import { inject, Injectable, signal } from "@angular/core";
+import { firstValueFrom } from "rxjs";
+
+import { AuthApiService } from "../api/auth-api.service";
+import { AuthSession } from "../models/auth-session.model";
+import { AuthSessionService } from "./auth-session.service";
+
+const SESSION_EXPIRATION_MARGIN_SECONDS = 60;
 
 @Injectable({
   providedIn: "root",
 })
 export class AuthService {
-  private readonly supabaseClient = inject(SUPABASE_CLIENT);
+  private readonly authApiService = inject(AuthApiService);
+  private readonly authSessionService = inject(AuthSessionService);
 
-  private readonly userState = signal<User | null>(null);
   private readonly loadingState = signal<boolean>(true);
 
-  readonly user = this.userState.asReadonly();
-  readonly isLoading = this.loadingState.asReadonly();
-  readonly isAuthenticated = computed(() => this.user() !== null);
+  readonly user = this.authSessionService.user;
+  readonly accessToken = this.authSessionService.accessToken;
+  readonly isAuthenticated = this.authSessionService.isAuthenticated;
 
-  private readonly accessTokenState = signal<string | null>(null);
-  readonly accessToken = this.accessTokenState.asReadonly();
+  readonly isLoading = this.loadingState.asReadonly();
 
   constructor() {
-    this.loadInitialSession();
-    this.listenToAuthChanges();
+    void this.loadInitialSession();
+  }
+
+  async signIn(email: string, password: string): Promise<void> {
+    const session = await firstValueFrom(
+      this.authApiService.signIn(email, password),
+    );
+
+    this.authSessionService.setSession(session);
+  }
+
+  async signOut(): Promise<void> {
+    const accessToken = this.authSessionService.accessToken();
+
+    if (!accessToken) {
+      this.authSessionService.clearSession();
+      return;
+    }
+
+    try {
+      await firstValueFrom(
+        this.authApiService.signOut(accessToken),
+      );
+    } finally {
+      this.authSessionService.clearSession();
+    }
+  }
+
+  async refreshSession(): Promise<AuthSession> {
+    return firstValueFrom(
+      this.authSessionService.refreshSession(),
+    );
   }
 
   private async loadInitialSession(): Promise<void> {
     try {
-      const { data, error } = await this.supabaseClient.auth.getSession();
+      const storedSession = this.authSessionService.restoreStoredSession();
 
-      if (error) {
-        throw error;
+      if (!storedSession) {
+        return;
       }
 
-      this.userState.set(data.session?.user ?? null);
-      this.accessTokenState.set(data.session?.access_token ?? null);
+      if (this.isSessionExpired(storedSession)) {
+        await this.refreshSession();
+      }
     } catch (error) {
-      console.error("Unable to recover the authentication session:", error);
+      console.error(
+        "Unable to recover the authentication session:",
+        error,
+      );
 
-      this.userState.set(null);
-      this.accessTokenState.set(null);
+      this.authSessionService.clearSession();
     } finally {
       this.loadingState.set(false);
     }
   }
 
-  private listenToAuthChanges(): void {
-    this.supabaseClient.auth.onAuthStateChange((_event, session) => {
-      this.userState.set(session?.user ?? null);
-      this.accessTokenState.set(session?.access_token ?? null);
-    });
-  }
+  private isSessionExpired(session: AuthSession): boolean {
+    const currentTimestamp = Math.floor(Date.now() / 1000);
 
-  async signIn(email: string, password: string): Promise<void> {
-    const { error } = await this.supabaseClient.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (error) {
-      throw error;
-    }
-  }
-
-  async signOut(): Promise<void> {
-    const { error } = await this.supabaseClient.auth.signOut();
-
-    if (error) {
-      throw error;
-    }
+    return (
+      session.expiresAt <=
+        currentTimestamp +
+          SESSION_EXPIRATION_MARGIN_SECONDS
+    );
   }
 }
