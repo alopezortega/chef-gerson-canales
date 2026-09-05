@@ -1,20 +1,65 @@
-import { HttpInterceptorFn } from "@angular/common/http";
+import { HttpErrorResponse, HttpInterceptorFn } from "@angular/common/http";
 import { inject } from "@angular/core";
-import { AuthService } from "../services/auth.service";
+import { catchError, switchMap, throwError } from "rxjs";
 
-export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const authService = inject(AuthService);
-  const token = authService.accessToken();
+import { environment } from "../../../environments/environment";
+import { AuthSessionService } from "../services/auth-session.service";
 
-  if (token) {
-    const modifiedRequest = req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+const API_BASE_URL = `${environment.supabase.url}/functions/v1`;
 
-    return next(modifiedRequest);
+const AUTH_API_URL = `${API_BASE_URL}/auth`;
+
+export const authInterceptor: HttpInterceptorFn = (
+  request,
+  next,
+) => {
+  const isApplicationApiRequest = request.url.startsWith(API_BASE_URL);
+
+  const isAuthRequest = request.url.startsWith(AUTH_API_URL);
+
+  if (!isApplicationApiRequest || isAuthRequest) {
+    return next(request);
   }
 
-  return next(req);
+  const authSessionService = inject(AuthSessionService);
+
+  const accessToken = authSessionService.accessToken();
+
+  const authenticatedRequest = accessToken
+    ? request.clone({
+      setHeaders: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    : request;
+
+  return next(authenticatedRequest).pipe(
+    catchError((error: HttpErrorResponse) => {
+      if (error.status !== 401) {
+        return throwError(() => error);
+      }
+
+      const currentSession = authSessionService.session();
+
+      if (!currentSession?.refreshToken) {
+        authSessionService.clearSession();
+
+        return throwError(() => error);
+      }
+
+      return authSessionService
+        .refreshSession()
+        .pipe(
+          switchMap((refreshedSession) => {
+            const retryRequest = request.clone({
+              setHeaders: {
+                Authorization: `Bearer ${refreshedSession.accessToken}`,
+              },
+            });
+
+            return next(retryRequest);
+          }),
+        );
+    }),
+  );
 };
