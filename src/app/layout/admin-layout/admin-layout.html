@@ -48,7 +48,7 @@
     <button
       class="admin-sidebar__sign-out"
       type="button"
-      (click)="signOut()"
+      (click)="requestSignOut()"
       [disabled]="isSigningOut()"
     >
       <span class="admin-sidebar__icon" aria-hidden="true">
@@ -78,7 +78,7 @@
       <button
         class="admin-mobile-header__sign-out"
         type="button"
-        (click)="signOut()"
+        (click)="requestSignOut()"
         [disabled]="isSigningOut()"
         [attr.aria-label]="'admin.layout.signOut' | translate"
       >
@@ -126,7 +126,7 @@
       <button
         class="admin-bottom-navigation__link admin-bottom-navigation__button"
         type="button"
-        (click)="signOut()"
+        (click)="requestSignOut()"
         [disabled]="isSigningOut()"
       >
         <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -139,4 +139,52 @@
 
     <app-scroll-to-top />
   </div>
+
+  @if (signOutConfirmationOpen()) {
+    <div class="admin-sign-out-dialog__backdrop">
+      <section
+        class="admin-sign-out-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="admin-sign-out-dialog-title"
+        aria-describedby="admin-sign-out-dialog-description"
+      >
+        <p class="admin-sign-out-dialog__eyebrow">
+          {{ 'admin.layout.signOutDialog.eyebrow' | translate }}
+        </p>
+
+        <h2 id="admin-sign-out-dialog-title" class="admin-sign-out-dialog__title">
+          {{ 'admin.layout.signOutDialog.title' | translate }}
+        </h2>
+
+        <p id="admin-sign-out-dialog-description" class="admin-sign-out-dialog__description">
+          {{ 'admin.layout.signOutDialog.description' | translate }}
+        </p>
+
+        <div class="admin-sign-out-dialog__actions">
+          <button
+            class="admin-sign-out-dialog__button admin-sign-out-dialog__button--secondary"
+            type="button"
+            (click)="cancelSignOut()"
+            [disabled]="isSigningOut()"
+          >
+            {{ 'admin.layout.signOutDialog.cancel' | translate }}
+          </button>
+
+          <button
+            class="admin-sign-out-dialog__button admin-sign-out-dialog__button--primary"
+            type="button"
+            (click)="confirmSignOut()"
+            [disabled]="isSigningOut()"
+          >
+            @if (isSigningOut()) {
+              {{ 'admin.layout.signingOut' | translate }}
+            } @else {
+              {{ 'admin.layout.signOutDialog.confirm' | translate }}
+            }
+          </button>
+        </div>
+      </section>
+    </div>
+  }
 </div>

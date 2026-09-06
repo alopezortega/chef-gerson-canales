@@ -15,7 +15,9 @@
 
   @if (isLoading()) {
     <div class="admin-service-document__state">
-      <p>{{ 'admin.serviceDocument.loading' | translate }}</p>
+      <p>
+        {{ 'admin.serviceDocument.loading' | translate }}
+      </p>
     </div>
   } @else {
     <div class="admin-service-document__layout">
@@ -55,7 +57,9 @@
                   {{ 'admin.serviceDocument.current.fileName' | translate }}
                 </span>
 
-                <strong>{{ document.originalName }}</strong>
+                <strong>
+                  {{ document.originalName }}
+                </strong>
               </div>
             </div>
 
@@ -73,7 +77,7 @@
               class="admin-service-document__delete-button"
               type="button"
               [disabled]="isDeleting()"
-              (click)="deleteDocument()"
+              (click)="requestDeleteDocument()"
             >
               @if (isDeleting()) {
                 {{ 'admin.serviceDocument.actions.deleting' | translate }}
@@ -91,7 +95,9 @@
               </svg>
             </span>
 
-            <p>{{ 'admin.serviceDocument.empty' | translate }}</p>
+            <p>
+              {{ 'admin.serviceDocument.empty' | translate }}
+            </p>
           </div>
         }
       </section>
@@ -205,6 +211,57 @@
           {{ 'admin.serviceDocument.feedback.error' | translate }}
         </p>
       }
+    </div>
+  }
+
+  @if (deleteConfirmationOpen()) {
+    <div class="admin-service-document-dialog__backdrop">
+      <section
+        class="admin-service-document-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="admin-service-document-dialog-title"
+        aria-describedby="admin-service-document-dialog-description"
+      >
+        <p class="admin-service-document-dialog__eyebrow">
+          {{ 'admin.serviceDocument.eyebrow' | translate }}
+        </p>
+
+        <h2 id="admin-service-document-dialog-title" class="admin-service-document-dialog__title">
+          {{ 'admin.serviceDocument.actions.delete' | translate }}
+        </h2>
+
+        <p
+          id="admin-service-document-dialog-description"
+          class="admin-service-document-dialog__description"
+        >
+          {{ 'admin.serviceDocument.deleteDialog.description' | translate }}
+        </p>
+
+        <div class="admin-service-document-dialog__actions">
+          <button
+            class="admin-service-document-dialog__button admin-service-document-dialog__button--secondary"
+            type="button"
+            (click)="cancelDeleteDocument()"
+            [disabled]="isDeleting()"
+          >
+            {{ 'admin.layout.signOutDialog.cancel' | translate }}
+          </button>
+
+          <button
+            class="admin-service-document-dialog__button admin-service-document-dialog__button--danger"
+            type="button"
+            (click)="confirmDeleteDocument()"
+            [disabled]="isDeleting()"
+          >
+            @if (isDeleting()) {
+              {{ 'admin.serviceDocument.actions.deleting' | translate }}
+            } @else {
+              {{ 'admin.serviceDocument.actions.delete' | translate }}
+            }
+          </button>
+        </div>
+      </section>
     </div>
   }
 </section>

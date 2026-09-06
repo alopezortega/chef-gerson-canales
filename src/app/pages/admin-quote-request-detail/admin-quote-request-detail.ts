@@ -1,11 +1,11 @@
 import { DatePipe } from "@angular/common";
 import { Component, effect, inject, OnInit, signal } from "@angular/core";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { TranslatePipe, TranslateService } from "@ngx-translate/core";
+import { TranslatePipe } from "@ngx-translate/core";
+import { finalize } from "rxjs";
 
 import type { QuoteRequestStatus } from "../../features/quote-request/models/admin-quote-request.model";
 import { AdminQuoteRequestService } from "../../features/quote-request/services/admin-quote-request.service";
-import { finalize } from "rxjs";
 
 @Component({
   selector: "admin-quote-request-detail",
@@ -17,7 +17,6 @@ export class AdminQuoteRequestDetail implements OnInit {
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly adminQuoteRequestService = inject(AdminQuoteRequestService);
   private readonly router = inject(Router);
-  private readonly translate = inject(TranslateService);
 
   private readonly idUrlState = signal<string | null>(null);
   protected readonly idUrl = this.idUrlState.asReadonly();
@@ -33,6 +32,10 @@ export class AdminQuoteRequestDetail implements OnInit {
 
   private readonly openingAttachmentState = signal(false);
   protected readonly isOpeningAttachment = this.openingAttachmentState
+    .asReadonly();
+
+  private readonly deleteConfirmationOpenState = signal(false);
+  protected readonly deleteConfirmationOpen = this.deleteConfirmationOpenState
     .asReadonly();
 
   protected readonly syncSelectedStatus = effect(() => {
@@ -69,10 +72,9 @@ export class AdminQuoteRequestDetail implements OnInit {
       return;
     }
 
-    this.adminQuoteRequestService.updateQuoteRequestStatus(
-      request.id,
-      this.selectedStatus(),
-    ).subscribe();
+    this.adminQuoteRequestService
+      .updateQuoteRequestStatus(request.id, this.selectedStatus())
+      .subscribe();
   }
 
   protected openAttachment(): void {
@@ -105,23 +107,34 @@ export class AdminQuoteRequestDetail implements OnInit {
       });
   }
 
-  protected deleteQuoteRequest(): void {
+  protected requestDeleteQuoteRequest(): void {
     const request = this.selectedRequest();
 
     if (!request || this.isDeleting()) {
       return;
     }
 
-    const confirmed = window.confirm(
-      this.translate.instant("admin.quoteRequestDetail.delete.confirm"),
-    );
+    this.deleteConfirmationOpenState.set(true);
+  }
 
-    if (!confirmed) {
+  protected cancelDeleteQuoteRequest(): void {
+    if (this.isDeleting()) {
+      return;
+    }
+
+    this.deleteConfirmationOpenState.set(false);
+  }
+
+  protected confirmDeleteQuoteRequest(): void {
+    const request = this.selectedRequest();
+
+    if (!request || this.isDeleting()) {
       return;
     }
 
     this.adminQuoteRequestService.deleteQuoteRequest(request.id).subscribe({
       next: () => {
+        this.deleteConfirmationOpenState.set(false);
         void this.router.navigateByUrl("/admin");
       },
       error: (error) => {

@@ -276,7 +276,7 @@
           <button
             class="admin-quote-request-detail__danger-button"
             type="button"
-            (click)="deleteQuoteRequest()"
+            (click)="requestDeleteQuoteRequest()"
             [disabled]="isDeleting()"
           >
             @if (isDeleting()) {
@@ -290,7 +290,57 @@
     </div>
   } @else {
     <div class="admin-quote-request-detail__state">
-      <p>{{ 'admin.quoteRequestDetail.notFound' | translate }}</p>
+      <p>
+        {{ 'admin.quoteRequestDetail.notFound' | translate }}
+      </p>
+    </div>
+  }
+
+  @if (deleteConfirmationOpen()) {
+    <div class="admin-delete-dialog__backdrop">
+      <section
+        class="admin-delete-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="admin-delete-dialog-title"
+        aria-describedby="admin-delete-dialog-description"
+      >
+        <p class="admin-delete-dialog__eyebrow">
+          {{ 'admin.dashboard.eyebrow' | translate }}
+        </p>
+
+        <h2 id="admin-delete-dialog-title" class="admin-delete-dialog__title">
+          {{ 'admin.quoteRequestDetail.delete.title' | translate }}
+        </h2>
+
+        <p id="admin-delete-dialog-description" class="admin-delete-dialog__description">
+          {{ 'admin.quoteRequestDetail.delete.confirm' | translate }}
+        </p>
+
+        <div class="admin-delete-dialog__actions">
+          <button
+            class="admin-delete-dialog__button admin-delete-dialog__button--secondary"
+            type="button"
+            (click)="cancelDeleteQuoteRequest()"
+            [disabled]="isDeleting()"
+          >
+            {{ 'admin.layout.signOutDialog.cancel' | translate }}
+          </button>
+
+          <button
+            class="admin-delete-dialog__button admin-delete-dialog__button--danger"
+            type="button"
+            (click)="confirmDeleteQuoteRequest()"
+            [disabled]="isDeleting()"
+          >
+            @if (isDeleting()) {
+              {{ 'admin.quoteRequestDetail.delete.deleting' | translate }}
+            } @else {
+              {{ 'admin.quoteRequestDetail.delete.action' | translate }}
+            }
+          </button>
+        </div>
+      </section>
     </div>
   }
 </section>

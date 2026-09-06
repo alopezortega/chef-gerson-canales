@@ -385,38 +385,87 @@ preferred-language
 
 ## Authentication and Admin Access
 
-Supabase Auth provides email-and-password authentication for the private Admin area.
+The private Admin area uses an explicit HTTP authentication boundary.
 
-`AuthService` is responsible for:
-
-- Recovering the initial Supabase session.
-- Listening to authentication-state changes.
-- Exposing the current user through a readonly Signal.
-- Exposing session-loading state through a readonly Signal.
-- Deriving authenticated state through `computed`.
-- Signing in with email and password.
-- Signing out.
-- Propagating Supabase errors to the consuming UI.
-
-State flow:
+Current flow:
 
 ```text
-private writable Signals
-→ public readonly Signals
-→ computed authenticated state
+Admin Login / Guard / Interceptor / Admin Layout
+        ↓
+AuthService
+        ↓
+AuthSessionService
+        ↓
+AuthApiService
+        ↓
+Angular HttpClient
+        ↓
+Supabase Edge Function: auth
+        ↓
+Supabase Auth
 ```
 
-The functional `authGuard` waits until the initial session check finishes before deciding whether to:
+Angular no longer calls Supabase Auth directly.
+
+`AuthService` owns the application-facing authentication workflow:
+
+- Initial session recovery.
+- Login.
+- Logout.
+- Delegating refresh to the session layer.
+- Exposing loading state while the initial session is being resolved.
+
+`AuthSessionService` owns the current authentication session through Signals:
 
 ```text
-return true
+session
+user
+accessToken
+isAuthenticated
+```
+
+It also coordinates refresh requests so concurrent consumers share one in-flight refresh operation.
+
+`AuthStorageService` persists the application session with SSR-safe browser access.
+
+`AuthApiService` exposes HttpClient contracts for:
+
+```text
+POST /functions/v1/auth/login
+POST /functions/v1/auth/refresh
+POST /functions/v1/auth/logout
+```
+
+The functional `authGuard` waits until initial session recovery finishes before returning either:
+
+```text
+true
 or
-return a UrlTree to /admin/login
+UrlTree → /admin/login
 ```
+
+The functional auth interceptor is scoped to application API requests and adds:
+
+```text
+Authorization: Bearer <access-token>
+```
+
+Authentication endpoints are excluded from normal bearer injection.
+
+When a protected API request returns `401`:
+
+```text
+refresh session
+→ reuse the shared in-flight refresh when necessary
+→ persist the refreshed session
+→ retry the original request with the new access token
+```
+
+If refresh fails, the local session is cleared and the error is propagated.
 
 The Admin login page uses a typed Reactive Form, translated validation messages, submitting state, authentication-error state and successful navigation to `/admin`.
 
-The Admin layout owns the sign-out interaction and redirects to `/admin/login` after Supabase removes the session.
+The Admin layout owns sign-out and redirects to `/admin/login` after the local session is cleared.
 
 Admin access is not linked from the public interface.
 
@@ -1452,11 +1501,11 @@ admin/** → RenderMode.Client
 **       → RenderMode.Prerender
 ```
 
-This is required because the current Supabase browser session is persisted in `localStorage`.
+This is required because the current application session is restored from browser storage.
 
-Rendering `/admin/**` in the browser allows `AuthService` to recover the saved session before `authGuard` decides whether access is allowed.
+Rendering `/admin/**` in the browser allows the authentication services to recover the stored session before `authGuard` decides whether access is allowed.
 
-A cookie-based Supabase SSR authentication architecture is not part of the current MVP.
+A cookie-based SSR authentication architecture is not part of the current MVP.
 
 ---
 
@@ -3335,29 +3384,186 @@ Service Document
 → deletion
 ```
 
-The next major technical phase is:
+The business HTTP API migration is complete.
+
+Authentication has also been decoupled behind its own HTTP boundary.
+
+Current end-to-end application architecture:
 
 ```text
-Auth decoupling
+Angular page / component
+        ↓
+feature state service
+        ↓
+API client service
+        ↓
+HttpClient + Observable<T>
+        ↓
+auth interceptor when required
+        ↓
+Supabase Edge Functions
+        ↓
+PostgreSQL / Storage / Supabase Auth
 ```
 
-The Auth phase must preserve:
+The repository is now in final QA and visual-polish mode rather than active architecture expansion.
+
+
+
+---
+
+## Authentication HTTP Boundary — Current State
+
+Authentication is fully behind Angular HttpClient.
+
+Current files:
+
+```text
+src/app/core/api/auth-api.service.ts
+src/app/core/interceptors/auth.interceptor.ts
+src/app/core/models/auth-session.model.ts
+src/app/core/models/auth-user.model.ts
+src/app/core/services/auth-session.service.ts
+src/app/core/services/auth-storage.service.ts
+src/app/core/services/auth.service.ts
+supabase/functions/auth/index.ts
+```
+
+Current Auth API:
+
+```text
+POST /functions/v1/auth/login
+POST /functions/v1/auth/refresh
+POST /functions/v1/auth/logout
+```
+
+Session strategy:
 
 ```text
 login
-initial session recovery
-access token state
-auth-state changes / refresh behaviour
-authGuard
-auth interceptor integration
-logout
-client-rendered Admin routes
-unit tests
+→ receive AuthSession
+→ persist session
+→ expose Signals
+
+application reload
+→ restore stored session
+→ refresh only when near expiry
+
+protected API returns 401
+→ refresh session
+→ retry original request
+
+concurrent 401 responses
+→ share one refresh request
 ```
 
-Active branch at this checkpoint:
+The Edge Function delegates identity operations to Supabase Auth.
+
+Angular consumes only the application-facing Auth API contract.
+
+### Final authentication validation
 
 ```text
-feature/http-api-layer
+30 test files passed
+192 tests passed
+lint passed
+production build passed
+5 public routes prerendered
 ```
+
+Manual validation completed for login, `/admin` refresh, Admin Dashboard, Admin Quote Request Detail, Admin Service Document and logout.
+
+The authentication architecture is complete for the current repository scope.
+
+Remaining work is final responsive / visual QA and repository presentation.
+
+---
+
+## Final Responsive QA Checkpoint — 2026-09-06
+
+Active branch:
+
+```text
+fix/responsive-qa
+```
+
+The repository is in final QA and presentation polish. No new architecture should be introduced unless a real defect requires it.
+
+### Completed QA fixes
+
+```text
+Admin logout
+→ custom confirmation dialog
+
+Admin Quote Request deletion
+→ custom confirmation dialog
+→ native window.confirm removed
+
+Admin Service Document deletion
+→ custom confirmation dialog
+
+Public 404
+→ new NotFound standalone page
+→ public-layout Header/Footer reused
+→ ES/EN copy
+→ dedicated desktop and mobile hero assets
+→ global wildcard redirects to /404
+
+Browser branding
+→ custom GC favicon replaces the default Angular favicon
+```
+
+The destructive Admin dialogs keep the existing service/API workflows unchanged.
+
+### Routing addition
+
+Public route:
+
+```text
+/404
+→ NotFound
+```
+
+Global fallback:
+
+```text
+**
+→ redirectTo: 404
+```
+
+The 404 remains inside `PublicLayout`.
+
+### New assets
+
+```text
+public/images/not-found/not-found-hero.png
+public/images/not-found/not-found-hero-mobile.png
+public/favicon.png
+```
+
+### Remaining QA
+
+```text
+Netlify deployed responsive smoke test
+Footer width / outer-spacing issue on affected public views
+mobile landscape review
+iPad portrait / landscape review
+final copy / translation sweep
+```
+
+A bilingual Service Document issue was also identified:
+
+```text
+current architecture
+→ one active PDF only
+
+problem
+→ English UI can currently expose a Spanish PDF
+
+decision
+→ do not add a public-folder workaround
+→ resolve properly through the existing Service Document backend/API model
+```
+
+This is intentionally deferred from the current short QA pass because it requires a justified extension of the single-document contract rather than a visual-only fix.
 

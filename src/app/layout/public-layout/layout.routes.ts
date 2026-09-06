@@ -44,6 +44,13 @@ export const LAYOUT_ROUTES: Routes = [
             (component) => component.AboutComponent,
           ),
       },
+      {
+        path: "404",
+        loadComponent: () =>
+          import("../../pages/not-found/not-found").then(
+            (component) => component.NotFound,
+          ),
+      },
     ],
   },
 ];

@@ -512,7 +512,14 @@
     },
     "layout": {
       "signOut": "Cerrar sesión",
-      "signingOut": "Cerrando sesión..."
+      "signingOut": "Cerrando sesión...",
+      "signOutDialog": {
+        "eyebrow": "Área privada",
+        "title": "¿Quieres cerrar sesión?",
+        "description": "Tendrás que volver a iniciar sesión para acceder al área de administración.",
+        "cancel": "Cancelar",
+        "confirm": "Cerrar sesión"
+      }
     },
     "status": {
       "pending": "Pendiente",
@@ -615,7 +622,15 @@
         "uploadSuccess": "El documento se ha guardado correctamente.",
         "deleteSuccess": "El documento se ha eliminado correctamente.",
         "error": "No se ha podido completar la operación. Inténtalo de nuevo."
+      },
+      "deleteDialog": {
+        "description": "¿Seguro que quieres eliminar el documento actual? Dejará de estar disponible para los visitantes."
       }
     }
+  },
+  "notFound": {
+    "eyebrow": "Página no encontrada",
+    "title": "Esta página no existe",
+    "action": "Volver al inicio"
   }
 }
