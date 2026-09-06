@@ -822,7 +822,7 @@ app-final-cta {
 
     justify-content: center;
 
-    padding: 0 54% 0 3rem;
+    padding: 0 50% 0 3rem;
   }
 
   .services-hero__label {
@@ -837,7 +837,8 @@ app-final-cta {
   }
 
   .services-hero__description {
-    max-width: 17rem;
+    width: 100%;
+    max-width: 25rem;
     margin-top: 1.2rem;
 
     font-size: 0.88rem;
@@ -1376,10 +1377,6 @@ app-final-cta {
     font-family: 'Montserrat', Arial, sans-serif;
     font-size: 0.55rem;
     line-height: 1.4;
-  }
-
-  app-final-cta {
-    margin-bottom: 0.35rem;
   }
 }
 
