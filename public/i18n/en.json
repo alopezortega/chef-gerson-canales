@@ -516,7 +516,14 @@
     },
     "layout": {
       "signOut": "Sign out",
-      "signingOut": "Signing out..."
+      "signingOut": "Signing out...",
+      "signOutDialog": {
+        "eyebrow": "Private area",
+        "title": "Do you want to sign out?",
+        "description": "You will need to sign in again to access the administration area.",
+        "cancel": "Cancel",
+        "confirm": "Sign out"
+      }
     },
     "status": {
       "pending": "Pending",
@@ -619,7 +626,15 @@
         "uploadSuccess": "The document was saved successfully.",
         "deleteSuccess": "The document was deleted successfully.",
         "error": "The operation could not be completed. Please try again."
+      },
+      "deleteDialog": {
+        "description": "Are you sure you want to delete the current document? It will no longer be available to visitors."
       }
     }
+  },
+  "notFound": {
+    "eyebrow": "Page not found",
+    "title": "This page does not exist",
+    "action": "Back to home"
   }
 }
