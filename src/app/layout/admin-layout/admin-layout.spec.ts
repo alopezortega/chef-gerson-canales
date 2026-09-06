@@ -1,12 +1,12 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter, Router } from '@angular/router';
-import { provideTranslateService } from '@ngx-translate/core';
-import { vi } from 'vitest';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { provideRouter, Router } from "@angular/router";
+import { provideTranslateService } from "@ngx-translate/core";
+import { vi } from "vitest";
 
-import { AuthService } from '../../core/services/auth.service';
-import { AdminLayout } from './admin-layout';
+import { AuthService } from "../../core/services/auth.service";
+import { AdminLayout } from "./admin-layout";
 
-describe('AdminLayout', () => {
+describe("AdminLayout", () => {
   let component: AdminLayout;
   let fixture: ComponentFixture<AdminLayout>;
 
@@ -24,8 +24,8 @@ describe('AdminLayout', () => {
       providers: [
         provideRouter([]),
         provideTranslateService({
-          lang: 'es',
-          fallbackLang: 'es',
+          lang: "es",
+          fallbackLang: "es",
         }),
         {
           provide: AuthService,
@@ -38,21 +38,39 @@ describe('AdminLayout', () => {
 
     const router = TestBed.inject(Router);
 
-    vi.spyOn(router, 'navigateByUrl').mockImplementation(navigateByUrlMock);
+    vi.spyOn(router, "navigateByUrl").mockImplementation(navigateByUrlMock);
 
     fixture = TestBed.createComponent(AdminLayout);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 
-  it('should sign out and navigate to the admin login page', async () => {
-    await component['signOut']();
+  it("should open the sign out confirmation", () => {
+    component["requestSignOut"]();
+
+    expect(component["signOutConfirmationOpen"]()).toBe(true);
+  });
+
+  it("should cancel sign out without calling the auth service", () => {
+    component["requestSignOut"]();
+    component["cancelSignOut"]();
+
+    expect(component["signOutConfirmationOpen"]()).toBe(false);
+    expect(signOutMock).not.toHaveBeenCalled();
+    expect(navigateByUrlMock).not.toHaveBeenCalled();
+  });
+
+  it("should sign out and navigate to the admin login page after confirmation", async () => {
+    component["requestSignOut"]();
+
+    await component["confirmSignOut"]();
 
     expect(signOutMock).toHaveBeenCalledOnce();
-    expect(navigateByUrlMock).toHaveBeenCalledWith('/admin/login');
+    expect(navigateByUrlMock).toHaveBeenCalledWith("/admin/login");
+    expect(component["signOutConfirmationOpen"]()).toBe(false);
   });
 });

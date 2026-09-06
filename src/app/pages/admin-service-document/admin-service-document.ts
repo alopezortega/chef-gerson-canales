@@ -45,6 +45,11 @@ export class AdminServiceDocument implements OnInit {
 
   protected readonly invalidFile = signal(false);
 
+  private readonly deleteConfirmationOpenState = signal(false);
+
+  protected readonly deleteConfirmationOpen = this.deleteConfirmationOpenState
+    .asReadonly();
+
   ngOnInit(): void {
     this.serviceDocumentService
       .loadCurrentDocument()
@@ -96,7 +101,23 @@ export class AdminServiceDocument implements OnInit {
       });
   }
 
-  protected deleteDocument(): void {
+  protected requestDeleteDocument(): void {
+    if (!this.currentDocument() || this.isDeleting()) {
+      return;
+    }
+
+    this.deleteConfirmationOpenState.set(true);
+  }
+
+  protected cancelDeleteDocument(): void {
+    if (this.isDeleting()) {
+      return;
+    }
+
+    this.deleteConfirmationOpenState.set(false);
+  }
+
+  protected confirmDeleteDocument(): void {
     if (!this.currentDocument() || this.isDeleting()) {
       return;
     }
@@ -108,6 +129,7 @@ export class AdminServiceDocument implements OnInit {
       .deleteCurrentDocument()
       .subscribe({
         next: () => {
+          this.deleteConfirmationOpenState.set(false);
           this.resetFileInput();
           this.deleteSuccess.set(true);
         },

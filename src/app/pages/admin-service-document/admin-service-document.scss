@@ -421,6 +421,137 @@
   color: #8b3838;
 }
 
+.admin-service-document-dialog__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+
+  display: grid;
+
+  padding: 1.25rem;
+
+  place-items: center;
+
+  background: rgb(20 22 17 / 58%);
+
+  backdrop-filter: blur(3px);
+}
+
+.admin-service-document-dialog {
+  width: min(100%, 27rem);
+  padding: 1.75rem;
+
+  border: 1px solid rgb(139 56 56 / 20%);
+  border-radius: 1.125rem;
+
+  background: #faf9f6;
+
+  box-shadow: 0 1.5rem 4.4rem rgb(20 22 17 / 25%);
+}
+
+.admin-service-document-dialog__eyebrow {
+  margin: 0 0 0.625rem;
+
+  color: #8b3838;
+
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+
+  text-transform: uppercase;
+}
+
+.admin-service-document-dialog__title {
+  margin: 0;
+
+  color: #252720;
+
+  font-family: var(--font-family-display, Georgia, serif);
+  font-size: clamp(1.7rem, 6vw, 2.15rem);
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.admin-service-document-dialog__description {
+  margin: 0.875rem 0 0;
+
+  color: #686b62;
+
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+
+.admin-service-document-dialog__actions {
+  display: grid;
+
+  margin-top: 1.5rem;
+
+  gap: 0.625rem;
+}
+
+.admin-service-document-dialog__button {
+  min-height: 2.75rem;
+  padding: 0.625rem 1.125rem;
+
+  border-radius: 0.5625rem;
+
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
+
+  &:disabled {
+    cursor: wait;
+    opacity: 0.55;
+  }
+}
+
+.admin-service-document-dialog__button--secondary {
+  border: 1px solid rgb(32 33 29 / 16%);
+
+  background: #fff;
+  color: #4d5047;
+
+  &:hover:not(:disabled) {
+    background: #f1f0eb;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #6c7d35;
+    outline-offset: 2px;
+  }
+}
+
+.admin-service-document-dialog__button--danger {
+  border: 1px solid #8b3838;
+
+  background: #8b3838;
+  color: #fff;
+
+  &:hover:not(:disabled) {
+    border-color: #762e2e;
+
+    background: #762e2e;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #9a4646;
+    outline-offset: 2px;
+  }
+}
+
+@media (min-width: 480px) {
+  .admin-service-document-dialog__actions {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 @media (min-width: 700px) {
   .admin-service-document {
     gap: 2rem;

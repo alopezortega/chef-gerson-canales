@@ -183,14 +183,48 @@ describe("AdminServiceDocument", () => {
     expect(component["selectedFile"]()).toBe(file);
   });
 
-  it("should delete the current document", () => {
+  it("should open the delete confirmation dialog", () => {
     currentDocument.set(document);
 
-    component["deleteDocument"]();
+    component["requestDeleteDocument"]();
+
+    expect(
+      component["deleteConfirmationOpen"](),
+    ).toBe(true);
+
+    expect(
+      serviceDocumentServiceMock.deleteCurrentDocument,
+    ).not.toHaveBeenCalled();
+  });
+
+  it("should cancel deletion without calling the service", () => {
+    currentDocument.set(document);
+
+    component["requestDeleteDocument"]();
+    component["cancelDeleteDocument"]();
+
+    expect(
+      component["deleteConfirmationOpen"](),
+    ).toBe(false);
+
+    expect(
+      serviceDocumentServiceMock.deleteCurrentDocument,
+    ).not.toHaveBeenCalled();
+  });
+
+  it("should delete the current document after confirmation", () => {
+    currentDocument.set(document);
+
+    component["requestDeleteDocument"]();
+    component["confirmDeleteDocument"]();
 
     expect(
       serviceDocumentServiceMock.deleteCurrentDocument,
     ).toHaveBeenCalledTimes(1);
+
+    expect(
+      component["deleteConfirmationOpen"](),
+    ).toBe(false);
 
     expect(component["selectedFile"]()).toBeNull();
     expect(component["deleteSuccess"]()).toBe(true);
@@ -209,7 +243,8 @@ describe("AdminServiceDocument", () => {
         ),
       );
 
-    component["deleteDocument"]();
+    component["requestDeleteDocument"]();
+    component["confirmDeleteDocument"]();
 
     expect(component["deleteSuccess"]()).toBe(false);
   });

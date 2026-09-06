@@ -29,11 +29,36 @@ export class AdminLayout {
   private readonly isSigningOutState = signal<boolean>(false);
   protected readonly isSigningOut = this.isSigningOutState.asReadonly();
 
-  protected async signOut(): Promise<void> {
+  private readonly signOutConfirmationOpenState = signal<boolean>(false);
+  protected readonly signOutConfirmationOpen = this.signOutConfirmationOpenState
+    .asReadonly();
+
+  protected requestSignOut(): void {
+    if (this.isSigningOut()) {
+      return;
+    }
+
+    this.signOutConfirmationOpenState.set(true);
+  }
+
+  protected cancelSignOut(): void {
+    if (this.isSigningOut()) {
+      return;
+    }
+
+    this.signOutConfirmationOpenState.set(false);
+  }
+
+  protected async confirmSignOut(): Promise<void> {
+    if (this.isSigningOut()) {
+      return;
+    }
+
     this.isSigningOutState.set(true);
 
     try {
       await this.authService.signOut();
+      this.signOutConfirmationOpenState.set(false);
       await this.router.navigateByUrl("/admin/login");
     } catch (error) {
       console.error("Unable to sign out:", error);

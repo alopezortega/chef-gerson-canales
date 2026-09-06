@@ -4,6 +4,7 @@ import {
   ActivatedRoute,
   convertToParamMap,
   provideRouter,
+  Router,
 } from "@angular/router";
 import { provideTranslateService } from "@ngx-translate/core";
 import { of, Subject, throwError } from "rxjs";
@@ -43,6 +44,7 @@ describe("AdminQuoteRequestDetail", () => {
   const updateQuoteRequestStatusMock = vi.fn();
   const createAttachmentSignedUrlMock = vi.fn();
   const deleteQuoteRequestMock = vi.fn();
+  const navigateByUrlMock = vi.fn();
 
   const selectedRequestState = signal<AdminQuoteRequest | null>(null);
   const isLoadingState = signal(false);
@@ -94,9 +96,17 @@ describe("AdminQuoteRequestDetail", () => {
       ],
     }).compileComponents();
 
+    const router = TestBed.inject(Router);
+
+    vi.spyOn(
+      router,
+      "navigateByUrl",
+    ).mockImplementation(navigateByUrlMock);
+
     fixture = TestBed.createComponent(
       AdminQuoteRequestDetail,
     );
+
     component = fixture.componentInstance;
   }
 
@@ -108,6 +118,8 @@ describe("AdminQuoteRequestDetail", () => {
     hasErrorState.set(false);
     isUpdatingStatusState.set(false);
     isDeletingState.set(false);
+
+    navigateByUrlMock.mockResolvedValue(true);
 
     loadQuoteRequestByIdMock.mockReturnValue(
       of(quoteRequest),
@@ -175,9 +187,9 @@ describe("AdminQuoteRequestDetail", () => {
 
     component["onStatusChange"](event);
 
-    expect(component["selectedStatus"]()).toBe(
-      "closed",
-    );
+    expect(
+      component["selectedStatus"](),
+    ).toBe("closed");
   });
 
   it("should call the service with the request id and selected status", async () => {
@@ -223,9 +235,9 @@ describe("AdminQuoteRequestDetail", () => {
 
     fixture.detectChanges();
 
-    expect(component["selectedStatus"]()).toBe(
-      "closed",
-    );
+    expect(
+      component["selectedStatus"](),
+    ).toBe("closed");
   });
 
   it("should request a signed URL and open the attachment", async () => {
@@ -289,7 +301,9 @@ describe("AdminQuoteRequestDetail", () => {
       createAttachmentSignedUrlMock,
     ).not.toHaveBeenCalled();
 
-    expect(windowOpenSpy).not.toHaveBeenCalled();
+    expect(
+      windowOpenSpy,
+    ).not.toHaveBeenCalled();
 
     expect(
       component["isOpeningAttachment"](),
@@ -324,6 +338,7 @@ describe("AdminQuoteRequestDetail", () => {
     signedUrlSubject.next(
       "https://example.com/signed/menu.pdf",
     );
+
     signedUrlSubject.complete();
 
     expect(
@@ -358,12 +373,16 @@ describe("AdminQuoteRequestDetail", () => {
 
     component["openAttachment"]();
 
-    expect(consoleErrorSpy).toHaveBeenCalledWith(
+    expect(
+      consoleErrorSpy,
+    ).toHaveBeenCalledWith(
       "Unable to open attachment:",
       error,
     );
 
-    expect(windowOpenSpy).not.toHaveBeenCalled();
+    expect(
+      windowOpenSpy,
+    ).not.toHaveBeenCalled();
 
     expect(
       component["isOpeningAttachment"](),
@@ -371,5 +390,67 @@ describe("AdminQuoteRequestDetail", () => {
 
     consoleErrorSpy.mockRestore();
     windowOpenSpy.mockRestore();
+  });
+
+  it("should open the delete confirmation dialog", async () => {
+    selectedRequestState.set(quoteRequest);
+
+    await configureTest(requestId);
+
+    fixture.detectChanges();
+
+    component["requestDeleteQuoteRequest"]();
+
+    expect(
+      component["deleteConfirmationOpen"](),
+    ).toBe(true);
+
+    expect(
+      deleteQuoteRequestMock,
+    ).not.toHaveBeenCalled();
+  });
+
+  it("should cancel deletion without calling the service", async () => {
+    selectedRequestState.set(quoteRequest);
+
+    await configureTest(requestId);
+
+    fixture.detectChanges();
+
+    component["requestDeleteQuoteRequest"]();
+    component["cancelDeleteQuoteRequest"]();
+
+    expect(
+      component["deleteConfirmationOpen"](),
+    ).toBe(false);
+
+    expect(
+      deleteQuoteRequestMock,
+    ).not.toHaveBeenCalled();
+  });
+
+  it("should delete the request and navigate to admin after confirmation", async () => {
+    selectedRequestState.set(quoteRequest);
+
+    await configureTest(requestId);
+
+    fixture.detectChanges();
+
+    component["requestDeleteQuoteRequest"]();
+    component["confirmDeleteQuoteRequest"]();
+
+    expect(
+      deleteQuoteRequestMock,
+    ).toHaveBeenCalledWith(
+      quoteRequest.id,
+    );
+
+    expect(
+      navigateByUrlMock,
+    ).toHaveBeenCalledWith("/admin");
+
+    expect(
+      component["deleteConfirmationOpen"](),
+    ).toBe(false);
   });
 });
