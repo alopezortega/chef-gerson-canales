@@ -1,0 +1,34 @@
+<main class="not-found">
+  <section class="not-found__hero" aria-labelledby="not-found-title">
+    <picture class="not-found__visual">
+      <source media="(max-width: 767px)" srcset="/images/not-found/not-found-hero-mobile.png" />
+
+      <img
+        class="not-found__image"
+        src="/images/not-found/not-found-hero.png"
+        alt=""
+        aria-hidden="true"
+      />
+    </picture>
+
+    <div class="not-found__content">
+      <p class="not-found__eyebrow">
+        {{ 'notFound.eyebrow' | translate }}
+      </p>
+
+      <p class="not-found__code" aria-hidden="true">404</p>
+
+      <h1 id="not-found-title" class="not-found__title">
+        {{ 'notFound.title' | translate }}
+      </h1>
+
+      <a class="not-found__action" routerLink="/">
+        <span>
+          {{ 'notFound.action' | translate }}
+        </span>
+
+        <span class="not-found__action-arrow" aria-hidden="true"> → </span>
+      </a>
+    </div>
+  </section>
+</main>

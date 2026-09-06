@@ -15,4 +15,8 @@ export const routes: Routes = [
         (routes) => routes.ADMIN_LAYOUT_ROUTES,
       ),
   },
+  {
+    path: "**",
+    redirectTo: "404",
+  },
 ];
