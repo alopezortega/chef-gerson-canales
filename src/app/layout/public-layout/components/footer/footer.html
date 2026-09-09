@@ -83,6 +83,20 @@
       <span class="footer__ornament-line"></span>
     </div>
 
+    <nav class="footer__legal" [attr.aria-label]="'footer.legal.ariaLabel' | translate">
+      <a routerLink="/aviso-legal">
+        {{ 'footer.legal.notice' | translate }}
+      </a>
+
+      <a routerLink="/privacidad">
+        {{ 'footer.legal.privacy' | translate }}
+      </a>
+
+      <a routerLink="/cookies">
+        {{ 'footer.legal.cookies' | translate }}
+      </a>
+    </nav>
+
     <p class="footer__copyright">© {{ currentYear }} Gerson Canales</p>
   </div>
 </footer>
