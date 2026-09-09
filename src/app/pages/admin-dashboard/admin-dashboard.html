@@ -9,10 +9,6 @@
         {{ 'admin.dashboard.title' | translate }}
       </h1>
     </div>
-
-    <a class="admin-dashboard__document-link" routerLink="/admin/service-document">
-      {{ 'admin.dashboard.manageServiceDocument' | translate }}
-    </a>
   </header>
 
   @if (isLoading()) {
@@ -44,6 +40,7 @@
 
         <strong>
           @let pendingRequests = requests().filter((request) => request.status === 'pending');
+
           {{ pendingRequests.length }}
         </strong>
       </article>
@@ -55,6 +52,7 @@
 
         <strong>
           @let contactedRequests = requests().filter((request) => request.status === 'contacted');
+
           {{ contactedRequests.length }}
         </strong>
       </article>
@@ -66,6 +64,7 @@
 
         <strong>
           @let closedRequests = requests().filter((request) => request.status === 'closed');
+
           {{ closedRequests.length }}
         </strong>
       </article>
@@ -90,9 +89,11 @@
                 @case ('pending') {
                   {{ 'admin.status.pending' | translate }}
                 }
+
                 @case ('contacted') {
                   {{ 'admin.status.contacted' | translate }}
                 }
+
                 @case ('closed') {
                   {{ 'admin.status.closed' | translate }}
                 }
@@ -103,20 +104,25 @@
           <dl class="admin-request-card__details">
             <div>
               <dt>{{ 'admin.dashboard.table.eventType' | translate }}</dt>
+
               <dd>
                 @switch (request.eventType) {
                   @case ('private-dinner') {
                     {{ 'admin.eventTypes.privateDinner' | translate }}
                   }
+
                   @case ('family-celebration') {
                     {{ 'admin.eventTypes.familyCelebration' | translate }}
                   }
+
                   @case ('corporate-event') {
                     {{ 'admin.eventTypes.corporateEvent' | translate }}
                   }
+
                   @case ('meeting-catering') {
                     {{ 'admin.eventTypes.meetingCatering' | translate }}
                   }
+
                   @default {
                     {{ 'admin.eventTypes.other' | translate }}
                   }

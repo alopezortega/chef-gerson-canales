@@ -2,7 +2,7 @@
   "home": {
     "hero": {
       "titleLine1": "Una experiencia",
-      "titleLine2": "alrededor de la mesa.",
+      "titleLine2": "alrededor de la mesa",
       "description": "Chef privado y catering personalizado para momentos que merecen ser extraordinarios.",
       "primaryAction": "Reservar una experiencia"
     },
@@ -53,13 +53,13 @@
     },
     "aboutPreview": {
       "label": "Sobre mí",
-      "title": "Pasión, técnica y dedicación en cada detalle.",
+      "title": "Pasión, técnica y dedicación en cada detalle",
       "description": "Mi cocina es de origen, honesta y contemporánea.",
       "action": "Conoce mi historia"
     },
     "quoteCta": {
       "label": "Cuéntame tu idea",
-      "title": "Hablemos de tu próxima experiencia.",
+      "title": "Hablemos de tu próxima experiencia",
       "description": "Creamos juntos momentos inolvidables.",
       "action": "Contactar"
     }
@@ -94,7 +94,13 @@
     "social": {
       "instagramAriaLabel": "Visitar el Instagram de Gerson Canales; se abre en una pestaña nueva"
     },
-    "copyright": "© {{ year }} Gerson Canales. Todos los derechos reservados."
+    "copyright": "© {{ year }} Gerson Canales. Todos los derechos reservados.",
+    "legal": {
+      "ariaLabel": "Información legal",
+      "notice": "Aviso legal",
+      "privacy": "Política de privacidad",
+      "cookies": "Cookies"
+    }
   },
   "gallery": {
     "label": "Galería",
@@ -322,7 +328,7 @@
     },
     "experiences": {
       "label": "Cocina que conecta",
-      "title": "Creamos experiencias íntimas alrededor de la mesa.",
+      "title": "Creamos experiencias íntimas alrededor de la mesa",
       "description": "Cocina de autor, ingredientes de temporada y un servicio cuidado en cada detalle para que tú solo te ocupes de disfrutar.",
       "empty": "Todavía no hay experiencias disponibles.",
       "items": [
@@ -472,8 +478,10 @@
         "maxSize": "El archivo no puede superar los 10 MB."
       },
       "privacy": {
-        "label": "Acepto el tratamiento de mis datos para gestionar esta solicitud de presupuesto.",
-        "required": "Debes aceptar el tratamiento de datos."
+        "basicInfo": "Responsable: Gerson Gustavo Gonzalez Canales. Finalidad: gestionar y responder tu consulta o solicitud de presupuesto. Tus datos no se utilizarán con fines publicitarios sin un consentimiento independiente.",
+        "label": "He leído la Política de privacidad y consiento expresamente el tratamiento de la información que facilito, incluidos, en su caso, datos sobre alergias, intolerancias o necesidades alimentarias, para gestionar mi solicitud.",
+        "policyLink": "Consultar la Política de privacidad",
+        "required": "Debes aceptar las condiciones de privacidad antes de enviar la solicitud."
       },
       "submit": "Enviar solicitud",
       "requiredFields": "Los campos marcados con * son obligatorios.",
@@ -550,9 +558,7 @@
         "status": "Estado",
         "actions": "Acciones"
       },
-      "viewDetails": "Ver detalle",
-      "actionsAriaLabel": "Acciones de administración",
-      "manageServiceDocument": "Gestionar documento de servicios"
+      "viewDetails": "Ver detalle"
     },
     "quoteRequestDetail": {
       "back": "Volver a las solicitudes",
@@ -632,5 +638,112 @@
     "eyebrow": "Página no encontrada",
     "title": "Esta página no existe",
     "action": "Volver al inicio"
+  },
+  "legal": {
+    "updated": "Última actualización: septiembre de 2026",
+    "privacy": {
+      "eyebrow": "Información legal",
+      "title": "Política de privacidad",
+      "intro": "Esta política explica cómo se tratan los datos personales enviados a través de esta web y qué derechos puedes ejercer.",
+      "controller": {
+        "title": "1. Responsable del tratamiento",
+        "text": "El responsable del tratamiento es Gerson Gustavo Gonzalez Canales. Para cualquier cuestión relacionada con privacidad puedes contactar en:"
+      },
+      "data": {
+        "title": "2. Datos personales que tratamos",
+        "text": "La web solicita únicamente la información razonablemente necesaria para responder consultas y preparar propuestas de catering o chef privado.",
+        "items": {
+          "identification": "Datos identificativos y de contacto, como nombre, correo electrónico y teléfono.",
+          "event": "Información relativa al evento, como fecha, lugar, tipo de evento, número de comensales e información adicional.",
+          "dietary": "Información alimentaria que facilites voluntariamente, que puede incluir alergias, intolerancias u otros datos relacionados con la salud.",
+          "attachments": "Documentos o imágenes que adjuntes voluntariamente a tu solicitud."
+        }
+      },
+      "purpose": {
+        "title": "3. Finalidad del tratamiento",
+        "text": "Los datos personales se tratan para recibir, valorar, gestionar y responder consultas o solicitudes de presupuesto, comunicarse con la persona interesada y, cuando proceda, preparar una propuesta relacionada con el servicio solicitado."
+      },
+      "legalBasis": {
+        "title": "4. Base jurídica",
+        "text": "La base jurídica principal es el tratamiento necesario para aplicar, a petición de la persona interesada, medidas previas a una posible relación de prestación de servicios, junto con el consentimiento cuando resulte aplicable.",
+        "health": "Si facilitas voluntariamente información sobre alergias, intolerancias o necesidades alimentarias que pueda revelar datos de salud, se tratará sobre la base de tu consentimiento explícito y únicamente para adaptar la propuesta o el servicio solicitado."
+      },
+      "retention": {
+        "title": "5. Plazo de conservación",
+        "text": "Si no llega a establecerse una relación de prestación de servicios, la información asociada a una consulta o solicitud de presupuesto se eliminará normalmente en un plazo máximo de 12 meses desde el cierre de la solicitud, salvo que deba conservarse durante más tiempo para cumplir una obligación legal o atender posibles reclamaciones. Si se establece una relación de servicios, los datos podrán conservarse durante los plazos exigidos por la normativa aplicable."
+      },
+      "recipients": {
+        "title": "6. Proveedores y destinatarios",
+        "text": "Los datos personales no se venden. Podrán ser tratados por proveedores tecnológicos necesarios para hacer funcionar la web, almacenar solicitudes, enviar notificaciones o alojar el servicio, conforme a sus condiciones contractuales y de protección de datos aplicables. Entre los proveedores actuales se encuentran:",
+        "transfers": "Algunos proveedores tecnológicos pueden tratar datos desde países situados fuera del Espacio Económico Europeo. Cuando ocurra, deberán aplicarse las garantías jurídicas correspondientes, como decisiones de adecuación o cláusulas contractuales tipo."
+      },
+      "rights": {
+        "title": "7. Tus derechos",
+        "text": "Puedes solicitar el acceso, rectificación, supresión, oposición, limitación del tratamiento y portabilidad de tus datos, y retirar el consentimiento en cualquier momento cuando el tratamiento se base en él. Para ejercer estos derechos, escribe a chefgersoncanales@gmail.com indicando el derecho que deseas ejercer.",
+        "authority": "También puedes presentar una reclamación ante la Agencia Española de Protección de Datos (AEPD) si consideras que tus datos personales no han sido tratados conforme a la normativa aplicable."
+      },
+      "security": {
+        "title": "8. Seguridad",
+        "text": "Se aplican medidas técnicas y organizativas razonables para reducir el riesgo de acceso no autorizado, pérdida, alteración o divulgación de datos personales. El acceso al área de administración y a los archivos adjuntos privados está restringido."
+      }
+    },
+    "notice": {
+      "eyebrow": "Información legal",
+      "title": "Aviso legal",
+      "intro": "Este aviso regula el acceso y uso de la web e identifica a la persona responsable de sus contenidos.",
+      "owner": {
+        "title": "1. Titular de la web",
+        "text": "Titular de la web y persona de contacto: Gerson Gustavo Gonzalez Canales."
+      },
+      "purpose": {
+        "title": "2. Finalidad de la web",
+        "text": "La web presenta servicios de chef privado y catering y ofrece un canal para que las personas usuarias puedan solicitar información o una propuesta personalizada."
+      },
+      "use": {
+        "title": "3. Condiciones de uso",
+        "text": "La persona usuaria se compromete a utilizar la web de forma lícita y de buena fe, evitando cualquier uso fraudulento, ilícito, perjudicial o que interfiera con su funcionamiento normal."
+      },
+      "intellectualProperty": {
+        "title": "4. Propiedad intelectual e industrial",
+        "text": "Salvo indicación en contrario, el diseño, textos, fotografías, elementos gráficos, recursos de marca y demás contenidos originales de esta web están protegidos por la normativa aplicable de propiedad intelectual e industrial. Queda prohibida su reproducción o explotación comercial sin la autorización correspondiente."
+      },
+      "liability": {
+        "title": "5. Responsabilidad",
+        "text": "Se realizan esfuerzos razonables para mantener la información de la web actualizada y el servicio disponible. No obstante, no puede garantizarse una disponibilidad ininterrumpida ni asumirse responsabilidad por interrupciones debidas a servicios de terceros, mantenimiento, incidencias técnicas o circunstancias fuera de un control razonable."
+      },
+      "links": {
+        "title": "6. Enlaces de terceros",
+        "text": "La web puede incluir enlaces a páginas o servicios de terceros. El titular no se responsabiliza de sus contenidos, prácticas de privacidad o disponibilidad."
+      },
+      "law": {
+        "title": "7. Legislación aplicable",
+        "text": "Esta web se rige por la legislación española y por la normativa de la Unión Europea que resulte directamente aplicable. Cualquier controversia se resolverá ante los órganos competentes conforme a las normas de consumo y procedimiento que correspondan."
+      }
+    },
+    "cookies": {
+      "eyebrow": "Información legal",
+      "title": "Política de cookies",
+      "intro": "Esta página explica el uso actual de cookies y tecnologías similares de almacenamiento en el navegador.",
+      "whatAre": {
+        "title": "1. Qué son las cookies",
+        "text": "Las cookies son pequeños archivos o mecanismos de almacenamiento del navegador que pueden utilizarse para recordar información técnica, mantener sesiones o recopilar datos sobre el uso de una web."
+      },
+      "currentUse": {
+        "title": "2. Uso actual en esta web",
+        "text": "En el momento de publicación, la parte pública de esta web no utiliza cookies publicitarias, de elaboración de perfiles ni de medición de audiencia, y no se ha integrado de forma intencionada ninguna plataforma de analítica o publicidad."
+      },
+      "technical": {
+        "title": "3. Tecnologías estrictamente necesarias",
+        "text": "Podrá utilizarse almacenamiento técnico estrictamente necesario cuando sea imprescindible para la seguridad, el funcionamiento básico o la autenticación en el área privada de administración. Estas tecnologías no se utilizan para crear perfiles publicitarios."
+      },
+      "noTracking": {
+        "title": "4. Sin banner de consentimiento publicitario o analítico",
+        "text": "Al no utilizarse actualmente cookies no esenciales de publicidad o analítica en la parte pública de la web, no se muestra un banner de consentimiento para esas finalidades."
+      },
+      "changes": {
+        "title": "5. Cambios futuros",
+        "text": "Si en el futuro se incorporan herramientas de analítica, publicidad, seguimiento de redes sociales u otras tecnologías no esenciales, esta política y el mecanismo de consentimiento deberán revisarse antes de activar dichas tecnologías."
+      }
+    }
   }
 }

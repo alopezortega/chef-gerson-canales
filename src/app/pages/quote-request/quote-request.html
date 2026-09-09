@@ -302,6 +302,10 @@
           </div>
 
           <div class="quote-form__field quote-form__field--full quote-form__privacy">
+            <p class="quote-form__privacy-info">
+              {{ 'quoteRequest.form.privacy.basicInfo' | translate }}
+            </p>
+
             <label class="quote-form__checkbox" for="privacyAccepted">
               <input id="privacyAccepted" type="checkbox" formControlName="privacyAccepted" />
 
@@ -310,6 +314,15 @@
                 <span aria-hidden="true">*</span>
               </span>
             </label>
+
+            <a
+              class="quote-form__privacy-link"
+              href="/privacidad"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {{ 'quoteRequest.form.privacy.policyLink' | translate }}
+            </a>
 
             @if (
               quoteForm.controls.privacyAccepted.touched &&
@@ -393,7 +406,6 @@
       <button
         class="quote-leave-dialog__button quote-leave-dialog__button--secondary"
         type="button"
-        autofocus
         (click)="keepEditing()"
       >
         {{ 'quoteRequest.leaveDialog.stay' | translate }}

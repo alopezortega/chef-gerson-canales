@@ -18,12 +18,13 @@ describe("ServiceDocumentApiService", () => {
 
   const serviceDocument: ServiceDocument = {
     id: "document-id",
-    storagePath: "documents/services.pdf",
-    originalName: "services.pdf",
+    storagePath: "documents/services-es.pdf",
+    originalName: "services-es.pdf",
     mimeType: "application/pdf",
     size: 1000,
     createdAt: "2026-08-06T10:00:00.000Z",
     updatedAt: "2026-08-06T10:00:00.000Z",
+    language: "es",
   };
 
   beforeEach(() => {
@@ -49,17 +50,19 @@ describe("ServiceDocumentApiService", () => {
     expect(service).toBeTruthy();
   });
 
-  it("should get the current document", () => {
+  it("should get the current document for the selected language", () => {
     let result: ServiceDocument | null | undefined;
 
     service
-      .getCurrentDocument()
+      .getCurrentDocument("es")
       .subscribe((document) => {
         result = document;
       });
 
     const request = httpTestingController.expectOne(
-      `${apiUrl}/service-document`,
+      (req) =>
+        req.url === `${apiUrl}/service-document` &&
+        req.params.get("language") === "es",
     );
 
     expect(request.request.method).toBe("GET");
@@ -69,18 +72,22 @@ describe("ServiceDocumentApiService", () => {
     expect(result).toEqual(serviceDocument);
   });
 
-  it("should return null when there is no current document", () => {
+  it("should return null when there is no current document for the selected language", () => {
     let result: ServiceDocument | null | undefined;
 
     service
-      .getCurrentDocument()
+      .getCurrentDocument("en")
       .subscribe((document) => {
         result = document;
       });
 
     const request = httpTestingController.expectOne(
-      `${apiUrl}/service-document`,
+      (req) =>
+        req.url === `${apiUrl}/service-document` &&
+        req.params.get("language") === "en",
     );
+
+    expect(request.request.method).toBe("GET");
 
     request.flush(null);
 
@@ -117,10 +124,10 @@ describe("ServiceDocumentApiService", () => {
     );
   });
 
-  it("should upload a service document", () => {
+  it("should upload a service document for the selected language", () => {
     const file = new File(
       ["document content"],
-      "services.pdf",
+      "services-es.pdf",
       {
         type: "application/pdf",
       },
@@ -128,9 +135,11 @@ describe("ServiceDocumentApiService", () => {
 
     let result: ServiceDocument | undefined;
 
-    service.uploadDocument(file).subscribe((document) => {
-      result = document;
-    });
+    service
+      .uploadDocument(file, "es")
+      .subscribe((document) => {
+        result = document;
+      });
 
     const request = httpTestingController.expectOne(
       `${apiUrl}/service-document`,
@@ -142,6 +151,7 @@ describe("ServiceDocumentApiService", () => {
     const formData = request.request.body as FormData;
 
     expect(formData.get("file")).toBe(file);
+    expect(formData.get("language")).toBe("es");
 
     request.flush(serviceDocument);
 

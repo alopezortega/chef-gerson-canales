@@ -1,6 +1,7 @@
 import { DatePipe } from "@angular/common";
 import {
   Component,
+  computed,
   ElementRef,
   inject,
   OnInit,
@@ -9,6 +10,7 @@ import {
 } from "@angular/core";
 import { TranslatePipe } from "@ngx-translate/core";
 
+import { SupportedLanguage } from "../../core/models/supported-language.type";
 import { ServiceDocumentService } from "../../features/service-document/services/service-document.service";
 
 @Component({
@@ -26,8 +28,13 @@ export class AdminServiceDocument implements OnInit {
     "serviceDocumentInput",
   );
 
-  protected readonly currentDocument =
-    this.serviceDocumentService.currentDocument;
+  protected readonly selectedLanguage = signal<SupportedLanguage>("es");
+
+  protected readonly currentDocument = computed(() =>
+    this.serviceDocumentService.getDocument(
+      this.selectedLanguage(),
+    )
+  );
 
   protected readonly isLoading = this.serviceDocumentService.isLoading;
 
@@ -51,9 +58,29 @@ export class AdminServiceDocument implements OnInit {
     .asReadonly();
 
   ngOnInit(): void {
-    this.serviceDocumentService
-      .loadCurrentDocument()
-      .subscribe();
+    this.loadSelectedLanguageDocument();
+  }
+
+  protected selectLanguage(
+    language: SupportedLanguage,
+  ): void {
+    if (
+      language === this.selectedLanguage() ||
+      this.isUploading() ||
+      this.isDeleting()
+    ) {
+      return;
+    }
+
+    this.selectedLanguage.set(language);
+
+    this.uploadSuccess.set(false);
+    this.deleteSuccess.set(false);
+    this.invalidFile.set(false);
+    this.deleteConfirmationOpenState.set(false);
+
+    this.resetFileInput();
+    this.loadSelectedLanguageDocument();
   }
 
   protected onFileSelected(event: Event): void {
@@ -89,7 +116,10 @@ export class AdminServiceDocument implements OnInit {
     this.deleteSuccess.set(false);
 
     this.serviceDocumentService
-      .uploadDocument(file)
+      .uploadDocument(
+        file,
+        this.selectedLanguage(),
+      )
       .subscribe({
         next: () => {
           this.resetFileInput();
@@ -126,7 +156,9 @@ export class AdminServiceDocument implements OnInit {
     this.deleteSuccess.set(false);
 
     this.serviceDocumentService
-      .deleteCurrentDocument()
+      .deleteCurrentDocument(
+        this.selectedLanguage(),
+      )
       .subscribe({
         next: () => {
           this.deleteConfirmationOpenState.set(false);
@@ -137,6 +169,14 @@ export class AdminServiceDocument implements OnInit {
           this.deleteSuccess.set(false);
         },
       });
+  }
+
+  private loadSelectedLanguageDocument(): void {
+    this.serviceDocumentService
+      .loadCurrentDocument(
+        this.selectedLanguage(),
+      )
+      .subscribe();
   }
 
   private resetFileInput(): void {

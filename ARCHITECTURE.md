@@ -3567,3 +3567,196 @@ decision
 
 This is intentionally deferred from the current short QA pass because it requires a justified extension of the single-document contract rather than a visual-only fix.
 
+
+
+---
+
+## Deployment QA and Legal Closure — 2026-09-09
+
+Active branch:
+
+```text
+fix/deployment-qa
+```
+
+The repository is in final deployment QA and presentation polish. The current branch closes real responsive, routing, legal-content and public-shell issues found during local and device-oriented smoke testing.
+
+### Public legal routes
+
+The public route group now includes:
+
+```text
+/privacidad
+→ Privacy
+
+/aviso-legal
+→ Legal Notice
+
+/cookies
+→ Cookies
+```
+
+All three pages:
+
+```text
+render inside PublicLayout
+reuse the shared Header / Footer
+support Spanish and English
+use the existing public design system
+```
+
+The Footer exposes the three legal routes as Angular Router links.
+
+The Quote Request form includes a first-layer privacy summary and explicit consent copy. The privacy-policy link opens in a new tab so the form's unsaved-changes guard does not interfere with reading the policy.
+
+### Router scroll restoration
+
+Public navigation now restores the new route to the top of the document.
+
+Angular Router configuration uses:
+
+```text
+withInMemoryScrolling
+→ scrollPositionRestoration: 'top'
+→ anchorScrolling: 'enabled'
+```
+
+Global CSS no longer forces smooth scrolling for every navigation:
+
+```text
+html
+→ scroll-behavior: auto
+```
+
+The reusable `ScrollToTop` control keeps its own explicit smooth behaviour:
+
+```ts
+window.scrollTo({
+  top: 0,
+  behavior: 'smooth',
+});
+```
+
+This separates:
+
+```text
+route navigation
+→ immediate top position
+
+manual ScrollToTop action
+→ smooth animated scroll
+```
+
+### Mobile-landscape responsive QA
+
+Short-height landscape devices were treated as a dedicated responsive case instead of inheriting tablet/desktop navigation purely from viewport width.
+
+The shared public shell now preserves:
+
+```text
+mobile hamburger navigation
+compact language control
+usable mobile menu height
+full-width closing CTA
+full-width Footer
+compact ScrollToTop placement
+```
+
+on phone-landscape viewports.
+
+The strategy uses orientation plus short-height constraints so normal tablet and desktop layouts remain unchanged.
+
+### Header / Footer QA
+
+The mobile landscape Header keeps the hamburger menu instead of switching prematurely to the desktop navigation.
+
+The mobile menu retains:
+
+```text
+internal Angular navigation
+language selection
+Instagram access
+Escape-key handling
+NavigationEnd cleanup
+```
+
+The Footer keeps a full-width dark closing surface on phone landscape.
+
+The shared FinalCta intentionally aligns with the Footer as a full-width closing block on short landscape viewports, while the preceding editorial page content preserves its normal inner gutters.
+
+### Admin QA
+
+The Admin Dashboard no longer duplicates the Service Document management action in the page header when the same destination is already available from the Admin navigation shell.
+
+The existing Admin workflows remain unchanged:
+
+```text
+Quote Request management
+status updates
+request deletion
+private attachment access
+Service Document management
+logout
+```
+
+### Service Document bilingual contract
+
+The Service Document feature now exposes dedicated Spanish and English downloadable PDFs instead of requiring one manually replaced active document for both languages.
+
+The public Services route resolves the appropriate document according to the active language.
+
+The Admin workflow manages the bilingual document set through the existing HTTP / Edge Function boundary.
+
+### Browser-console QA
+
+Console review identified Angular `NG0913` warnings for image assets whose intrinsic dimensions were much larger than their rendered size.
+
+The first confirmed asset was:
+
+```text
+public/images/ui/olive-sprig.png
+```
+
+It was reduced to a size appropriate for its rendered usage without changing the visual layout.
+
+Additional image optimization is intentionally moved to a dedicated performance branch so the deployment-QA branch remains focused.
+
+Browser messages originating from dynamically injected `VM...` scripts and Chrome extension/message-channel code were separated from application errors and are not treated as Angular application defects.
+
+### Current branch closure
+
+The deployment-QA branch should be closed before beginning the image-performance refactor.
+
+Documentation split:
+
+```text
+ARCHITECTURE.md
+→ commit with the current deployment-QA branch
+
+PROJECT_CONTEXT.md
+→ keep local/private as usual
+```
+
+The next focused branch is:
+
+```text
+perf/image-optimization
+```
+
+Planned scope:
+
+```text
+audit public/images
+optimize intrinsic asset dimensions
+compress photographic assets
+review WebP / AVIF opportunities
+apply NgOptimizedImage where justified
+define eager / priority policy for above-the-fold imagery
+define lazy-loading policy for below-the-fold imagery
+review Gallery delivery
+remove remaining NG0913 warnings
+validate Network / Lighthouse / build
+document the final image-delivery strategy
+```
+
+Do not document the final `NgOptimizedImage` / image-delivery architecture until that branch is implemented and validated.

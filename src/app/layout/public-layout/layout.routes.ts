@@ -45,6 +45,27 @@ export const LAYOUT_ROUTES: Routes = [
           ),
       },
       {
+        path: "privacidad",
+        loadComponent: () =>
+          import("../../pages/privacy/privacy").then(
+            (component) => component.PrivacyComponent,
+          ),
+      },
+      {
+        path: "aviso-legal",
+        loadComponent: () =>
+          import("../../pages/legal-notice/legal-notice").then(
+            (component) => component.LegalNoticeComponent,
+          ),
+      },
+      {
+        path: "cookies",
+        loadComponent: () =>
+          import("../../pages/cookies/cookies").then(
+            (component) => component.CookiesComponent,
+          ),
+      },
+      {
         path: "404",
         loadComponent: () =>
           import("../../pages/not-found/not-found").then(

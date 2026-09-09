@@ -1,7 +1,16 @@
-import { Component, inject, OnInit, signal } from "@angular/core";
+import {
+  Component,
+  computed,
+  DestroyRef,
+  inject,
+  OnInit,
+  signal,
+} from "@angular/core";
+import { takeUntilDestroyed, toObservable } from "@angular/core/rxjs-interop";
 import { TranslatePipe } from "@ngx-translate/core";
-import { finalize } from "rxjs";
+import { finalize, switchMap } from "rxjs";
 
+import { LanguageService } from "../../core/services/language.service";
 import { ServiceDocumentService } from "../../features/service-document/services/service-document.service";
 import { FinalCta } from "../../shared/components/final-cta/final-cta";
 
@@ -16,8 +25,16 @@ export class ServicesComponent implements OnInit {
     ServiceDocumentService,
   );
 
-  protected readonly currentDocument =
-    this.serviceDocumentService.currentDocument;
+  private readonly languageService = inject(LanguageService);
+  private readonly destroyRef = inject(DestroyRef);
+
+  protected readonly currentLanguage = this.languageService.currentLanguage;
+
+  protected readonly currentDocument = computed(() =>
+    this.serviceDocumentService.getDocument(
+      this.currentLanguage(),
+    )
+  );
 
   protected readonly isDocumentLoading = this.serviceDocumentService.isLoading;
 
@@ -25,9 +42,20 @@ export class ServicesComponent implements OnInit {
 
   protected readonly downloadError = signal(false);
 
+  private readonly currentLanguage$ = toObservable(
+    this.currentLanguage,
+  );
+
   ngOnInit(): void {
-    this.serviceDocumentService
-      .loadCurrentDocument()
+    this.currentLanguage$
+      .pipe(
+        switchMap((language) =>
+          this.serviceDocumentService.loadCurrentDocument(
+            language,
+          )
+        ),
+        takeUntilDestroyed(this.destroyRef),
+      )
       .subscribe();
   }
 

@@ -10,8 +10,14 @@ import {
   throwError,
 } from "rxjs";
 
+import { SupportedLanguage } from "../../../core/models/supported-language.type";
 import { ServiceDocumentApiService } from "../api/service-document-api.service";
 import { ServiceDocument } from "../models/service-document.model";
+
+type ServiceDocumentsByLanguage = Record<
+  SupportedLanguage,
+  ServiceDocument | null
+>;
 
 @Injectable({
   providedIn: "root",
@@ -21,44 +27,51 @@ export class ServiceDocumentService {
     ServiceDocumentApiService,
   );
 
-  private readonly currentDocumentState = signal<ServiceDocument | null>(null);
+  private readonly documentsState = signal<ServiceDocumentsByLanguage>({
+    es: null,
+    en: null,
+  });
 
-  readonly currentDocument = this.currentDocumentState.asReadonly();
+  readonly documents = this.documentsState.asReadonly();
 
   private readonly loadingState = signal(false);
-
   readonly isLoading = this.loadingState.asReadonly();
 
   private readonly errorState = signal(false);
-
   readonly hasError = this.errorState.asReadonly();
 
   private readonly uploadingState = signal(false);
-
   readonly isUploading = this.uploadingState.asReadonly();
 
   private readonly deletingState = signal(false);
-
   readonly isDeleting = this.deletingState.asReadonly();
 
-  loadCurrentDocument(): Observable<void> {
+  getDocument(
+    language: SupportedLanguage,
+  ): ServiceDocument | null {
+    return this.documentsState()[language];
+  }
+
+  loadCurrentDocument(
+    language: SupportedLanguage,
+  ): Observable<void> {
     this.loadingState.set(true);
     this.errorState.set(false);
 
     return this.serviceDocumentApiService
-      .getCurrentDocument()
+      .getCurrentDocument(language)
       .pipe(
         tap((document) => {
-          this.currentDocumentState.set(document);
+          this.setDocument(language, document);
         }),
         map(() => undefined),
         catchError((error) => {
           console.error(
-            "Unable to load service document:",
+            `Unable to load ${language} service document:`,
             error,
           );
 
-          this.currentDocumentState.set(null);
+          this.setDocument(language, null);
           this.errorState.set(true);
 
           return EMPTY;
@@ -69,20 +82,23 @@ export class ServiceDocumentService {
       );
   }
 
-  uploadDocument(file: File): Observable<void> {
+  uploadDocument(
+    file: File,
+    language: SupportedLanguage,
+  ): Observable<void> {
     this.uploadingState.set(true);
     this.errorState.set(false);
 
     return this.serviceDocumentApiService
-      .uploadDocument(file)
+      .uploadDocument(file, language)
       .pipe(
         tap((document) => {
-          this.currentDocumentState.set(document);
+          this.setDocument(language, document);
         }),
         map(() => undefined),
         catchError((error) => {
           console.error(
-            "Unable to upload service document:",
+            `Unable to upload ${language} service document:`,
             error,
           );
 
@@ -96,8 +112,10 @@ export class ServiceDocumentService {
       );
   }
 
-  deleteCurrentDocument(): Observable<void> {
-    const currentDocument = this.currentDocumentState();
+  deleteCurrentDocument(
+    language: SupportedLanguage,
+  ): Observable<void> {
+    const currentDocument = this.documentsState()[language];
 
     if (!currentDocument) {
       return of(undefined);
@@ -110,11 +128,11 @@ export class ServiceDocumentService {
       .deleteDocument(currentDocument.id)
       .pipe(
         tap(() => {
-          this.currentDocumentState.set(null);
+          this.setDocument(language, null);
         }),
         catchError((error) => {
           console.error(
-            "Unable to delete service document:",
+            `Unable to delete ${language} service document:`,
             error,
           );
 
@@ -147,5 +165,15 @@ export class ServiceDocumentService {
           return throwError(() => error);
         }),
       );
+  }
+
+  private setDocument(
+    language: SupportedLanguage,
+    document: ServiceDocument | null,
+  ): void {
+    this.documentsState.update((documents) => ({
+      ...documents,
+      [language]: document,
+    }));
   }
 }

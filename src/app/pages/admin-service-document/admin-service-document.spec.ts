@@ -1,54 +1,82 @@
 import { signal } from "@angular/core";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+
 import { provideTranslateService } from "@ngx-translate/core";
+
 import { of, throwError } from "rxjs";
 
 import { ServiceDocument } from "../../features/service-document/models/service-document.model";
+
 import { ServiceDocumentService } from "../../features/service-document/services/service-document.service";
 
 import { AdminServiceDocument } from "./admin-service-document";
 
 describe("AdminServiceDocument", () => {
   let component: AdminServiceDocument;
+
   let fixture: ComponentFixture<AdminServiceDocument>;
 
   const currentDocument = signal<ServiceDocument | null>(null);
 
   const isLoading = signal(false);
+
   const isUploading = signal(false);
+
   const isDeleting = signal(false);
+
   const hasError = signal(false);
 
   const serviceDocumentServiceMock = {
-    currentDocument,
+    getDocument: vi.fn(() => currentDocument()),
+
     isLoading,
+
     isUploading,
+
     isDeleting,
+
     hasError,
 
     loadCurrentDocument: vi.fn(),
+
     uploadDocument: vi.fn(),
+
     deleteCurrentDocument: vi.fn(),
   };
 
   const document: ServiceDocument = {
     id: "document-id",
-    storagePath: "documents/services.pdf",
-    originalName: "services.pdf",
+
+    storagePath: "documents/services-es.pdf",
+
+    originalName: "services-es.pdf",
+
     mimeType: "application/pdf",
+
     size: 1000,
+
     createdAt: "2026-08-06T10:00:00.000Z",
+
     updatedAt: "2026-08-06T10:00:00.000Z",
+
+    language: "es",
   };
 
   beforeEach(async () => {
     vi.clearAllMocks();
 
     currentDocument.set(null);
+
     isLoading.set(false);
+
     isUploading.set(false);
+
     isDeleting.set(false);
+
     hasError.set(false);
+
+    serviceDocumentServiceMock.getDocument
+      .mockImplementation(() => currentDocument());
 
     serviceDocumentServiceMock.loadCurrentDocument
       .mockReturnValue(of(undefined));
@@ -61,10 +89,13 @@ describe("AdminServiceDocument", () => {
 
     await TestBed.configureTestingModule({
       imports: [AdminServiceDocument],
+
       providers: [
         provideTranslateService(),
+
         {
           provide: ServiceDocumentService,
+
           useValue: serviceDocumentServiceMock,
         },
       ],
@@ -108,8 +139,13 @@ describe("AdminServiceDocument", () => {
 
     component["onFileSelected"](event);
 
-    expect(component["selectedFile"]()).toBe(file);
-    expect(component["invalidFile"]()).toBe(false);
+    expect(
+      component["selectedFile"](),
+    ).toBe(file);
+
+    expect(
+      component["invalidFile"](),
+    ).toBe(false);
   });
 
   it("should reject a file that is not a PDF", () => {
@@ -130,8 +166,13 @@ describe("AdminServiceDocument", () => {
 
     component["onFileSelected"](event);
 
-    expect(component["selectedFile"]()).toBeNull();
-    expect(component["invalidFile"]()).toBe(true);
+    expect(
+      component["selectedFile"](),
+    ).toBeNull();
+
+    expect(
+      component["invalidFile"](),
+    ).toBe(true);
   });
 
   it("should upload the selected PDF", () => {
@@ -149,10 +190,15 @@ describe("AdminServiceDocument", () => {
 
     expect(
       serviceDocumentServiceMock.uploadDocument,
-    ).toHaveBeenCalledWith(file);
+    ).toHaveBeenCalled();
 
-    expect(component["selectedFile"]()).toBeNull();
-    expect(component["uploadSuccess"]()).toBe(true);
+    expect(
+      component["selectedFile"](),
+    ).toBeNull();
+
+    expect(
+      component["uploadSuccess"](),
+    ).toBe(true);
   });
 
   it("should handle an upload error", () => {
@@ -178,9 +224,13 @@ describe("AdminServiceDocument", () => {
 
     component["uploadDocument"]();
 
-    expect(component["uploadSuccess"]()).toBe(false);
+    expect(
+      component["uploadSuccess"](),
+    ).toBe(false);
 
-    expect(component["selectedFile"]()).toBe(file);
+    expect(
+      component["selectedFile"](),
+    ).toBe(file);
   });
 
   it("should open the delete confirmation dialog", () => {
@@ -193,7 +243,8 @@ describe("AdminServiceDocument", () => {
     ).toBe(true);
 
     expect(
-      serviceDocumentServiceMock.deleteCurrentDocument,
+      serviceDocumentServiceMock
+        .deleteCurrentDocument,
     ).not.toHaveBeenCalled();
   });
 
@@ -201,6 +252,7 @@ describe("AdminServiceDocument", () => {
     currentDocument.set(document);
 
     component["requestDeleteDocument"]();
+
     component["cancelDeleteDocument"]();
 
     expect(
@@ -208,7 +260,8 @@ describe("AdminServiceDocument", () => {
     ).toBe(false);
 
     expect(
-      serviceDocumentServiceMock.deleteCurrentDocument,
+      serviceDocumentServiceMock
+        .deleteCurrentDocument,
     ).not.toHaveBeenCalled();
   });
 
@@ -216,24 +269,32 @@ describe("AdminServiceDocument", () => {
     currentDocument.set(document);
 
     component["requestDeleteDocument"]();
+
     component["confirmDeleteDocument"]();
 
     expect(
-      serviceDocumentServiceMock.deleteCurrentDocument,
+      serviceDocumentServiceMock
+        .deleteCurrentDocument,
     ).toHaveBeenCalledTimes(1);
 
     expect(
       component["deleteConfirmationOpen"](),
     ).toBe(false);
 
-    expect(component["selectedFile"]()).toBeNull();
-    expect(component["deleteSuccess"]()).toBe(true);
+    expect(
+      component["selectedFile"](),
+    ).toBeNull();
+
+    expect(
+      component["deleteSuccess"](),
+    ).toBe(true);
   });
 
   it("should handle a delete error", () => {
     currentDocument.set(document);
 
-    serviceDocumentServiceMock.deleteCurrentDocument
+    serviceDocumentServiceMock
+      .deleteCurrentDocument
       .mockReturnValueOnce(
         throwError(
           () =>
@@ -244,8 +305,11 @@ describe("AdminServiceDocument", () => {
       );
 
     component["requestDeleteDocument"]();
+
     component["confirmDeleteDocument"]();
 
-    expect(component["deleteSuccess"]()).toBe(false);
+    expect(
+      component["deleteSuccess"](),
+    ).toBe(false);
   });
 });

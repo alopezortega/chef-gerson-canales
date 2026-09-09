@@ -11,18 +11,19 @@ describe("ServiceDocumentService", () => {
 
   const serviceDocument: ServiceDocument = {
     id: "document-id",
-    storagePath: "documents/services.pdf",
-    originalName: "services.pdf",
+    storagePath: "documents/services-es.pdf",
+    originalName: "services-es.pdf",
     mimeType: "application/pdf",
     size: 1000,
     createdAt: "2026-08-06T10:00:00.000Z",
     updatedAt: "2026-08-06T10:00:00.000Z",
+    language: "es",
   };
 
   const updatedServiceDocument: ServiceDocument = {
     ...serviceDocument,
-    storagePath: "documents/new-services.pdf",
-    originalName: "new-services.pdf",
+    storagePath: "documents/new-services-es.pdf",
+    originalName: "new-services-es.pdf",
     size: 2000,
     updatedAt: "2026-09-03T18:22:00.000Z",
   };
@@ -70,14 +71,14 @@ describe("ServiceDocumentService", () => {
     expect(service).toBeTruthy();
   });
 
-  it("should load the current document", () => {
-    service.loadCurrentDocument().subscribe();
+  it("should load the current document for the selected language", () => {
+    service.loadCurrentDocument("es").subscribe();
 
     expect(
       serviceDocumentApiServiceMock.getCurrentDocument,
-    ).toHaveBeenCalledTimes(1);
+    ).toHaveBeenCalledWith("es");
 
-    expect(service.currentDocument()).toEqual(
+    expect(service.getDocument("es")).toEqual(
       serviceDocument,
     );
 
@@ -85,18 +86,18 @@ describe("ServiceDocumentService", () => {
     expect(service.hasError()).toBe(false);
   });
 
-  it("should set the current document to null when none exists", () => {
+  it("should set the selected language document to null when none exists", () => {
     serviceDocumentApiServiceMock.getCurrentDocument
       .mockReturnValueOnce(of(null));
 
-    service.loadCurrentDocument().subscribe();
+    service.loadCurrentDocument("es").subscribe();
 
-    expect(service.currentDocument()).toBeNull();
+    expect(service.getDocument("es")).toBeNull();
     expect(service.isLoading()).toBe(false);
     expect(service.hasError()).toBe(false);
   });
 
-  it("should handle an error while loading the document", () => {
+  it("should handle an error while loading a document", () => {
     const error = new Error(
       "Unable to load service document",
     );
@@ -110,31 +111,59 @@ describe("ServiceDocumentService", () => {
       () => undefined,
     );
 
-    service.loadCurrentDocument().subscribe();
+    service.loadCurrentDocument("es").subscribe();
 
-    expect(service.currentDocument()).toBeNull();
+    expect(service.getDocument("es")).toBeNull();
     expect(service.hasError()).toBe(true);
     expect(service.isLoading()).toBe(false);
   });
 
-  it("should upload a service document and update currentDocument", async () => {
+  it("should keep documents separated by language", () => {
+    const englishDocument: ServiceDocument = {
+      ...serviceDocument,
+      id: "english-document-id",
+      storagePath: "documents/services-en.pdf",
+      originalName: "services-en.pdf",
+      language: "en",
+    };
+
+    serviceDocumentApiServiceMock.getCurrentDocument
+      .mockReturnValueOnce(of(serviceDocument));
+
+    service.loadCurrentDocument("es").subscribe();
+
+    serviceDocumentApiServiceMock.getCurrentDocument
+      .mockReturnValueOnce(of(englishDocument));
+
+    service.loadCurrentDocument("en").subscribe();
+
+    expect(service.getDocument("es")).toEqual(
+      serviceDocument,
+    );
+
+    expect(service.getDocument("en")).toEqual(
+      englishDocument,
+    );
+  });
+
+  it("should upload a service document for the selected language", async () => {
     const file = new File(
       ["document content"],
-      "new-services.pdf",
+      "new-services-es.pdf",
       {
         type: "application/pdf",
       },
     );
 
     await firstValueFrom(
-      service.uploadDocument(file),
+      service.uploadDocument(file, "es"),
     );
 
     expect(
       serviceDocumentApiServiceMock.uploadDocument,
-    ).toHaveBeenCalledWith(file);
+    ).toHaveBeenCalledWith(file, "es");
 
-    expect(service.currentDocument()).toEqual(
+    expect(service.getDocument("es")).toEqual(
       updatedServiceDocument,
     );
 
@@ -149,7 +178,7 @@ describe("ServiceDocumentService", () => {
 
     const file = new File(
       ["document content"],
-      "services.pdf",
+      "services-es.pdf",
       {
         type: "application/pdf",
       },
@@ -165,7 +194,9 @@ describe("ServiceDocumentService", () => {
     );
 
     await expect(
-      firstValueFrom(service.uploadDocument(file)),
+      firstValueFrom(
+        service.uploadDocument(file, "es"),
+      ),
     ).rejects.toThrow(
       "Unable to upload service document",
     );
@@ -174,28 +205,28 @@ describe("ServiceDocumentService", () => {
     expect(service.isUploading()).toBe(false);
   });
 
-  it("should delete the current document", async () => {
+  it("should delete the current document for the selected language", async () => {
     serviceDocumentApiServiceMock.getCurrentDocument
       .mockReturnValueOnce(of(serviceDocument));
 
-    service.loadCurrentDocument().subscribe();
+    service.loadCurrentDocument("es").subscribe();
 
     await firstValueFrom(
-      service.deleteCurrentDocument(),
+      service.deleteCurrentDocument("es"),
     );
 
     expect(
       serviceDocumentApiServiceMock.deleteDocument,
     ).toHaveBeenCalledWith(serviceDocument.id);
 
-    expect(service.currentDocument()).toBeNull();
+    expect(service.getDocument("es")).toBeNull();
     expect(service.isDeleting()).toBe(false);
     expect(service.hasError()).toBe(false);
   });
 
-  it("should do nothing when deleting without a current document", async () => {
+  it("should do nothing when deleting without a document for the selected language", async () => {
     await firstValueFrom(
-      service.deleteCurrentDocument(),
+      service.deleteCurrentDocument("es"),
     );
 
     expect(
@@ -213,7 +244,7 @@ describe("ServiceDocumentService", () => {
     serviceDocumentApiServiceMock.getCurrentDocument
       .mockReturnValueOnce(of(serviceDocument));
 
-    service.loadCurrentDocument().subscribe();
+    service.loadCurrentDocument("es").subscribe();
 
     serviceDocumentApiServiceMock.deleteDocument
       .mockReturnValueOnce(
@@ -226,7 +257,7 @@ describe("ServiceDocumentService", () => {
 
     await expect(
       firstValueFrom(
-        service.deleteCurrentDocument(),
+        service.deleteCurrentDocument("es"),
       ),
     ).rejects.toThrow(
       "Unable to delete service document",
@@ -235,7 +266,7 @@ describe("ServiceDocumentService", () => {
     expect(service.hasError()).toBe(true);
     expect(service.isDeleting()).toBe(false);
 
-    expect(service.currentDocument()).toEqual(
+    expect(service.getDocument("es")).toEqual(
       serviceDocument,
     );
   });
@@ -243,7 +274,7 @@ describe("ServiceDocumentService", () => {
   it("should create a signed document URL", async () => {
     const signedUrl = await firstValueFrom(
       service.createDownloadSignedUrl(
-        "documents/services.pdf",
+        "documents/services-es.pdf",
       ),
     );
 
@@ -251,7 +282,7 @@ describe("ServiceDocumentService", () => {
       serviceDocumentApiServiceMock
         .createDownloadSignedUrl,
     ).toHaveBeenCalledWith(
-      "documents/services.pdf",
+      "documents/services-es.pdf",
     );
 
     expect(signedUrl).toBe(
@@ -278,7 +309,7 @@ describe("ServiceDocumentService", () => {
     await expect(
       firstValueFrom(
         service.createDownloadSignedUrl(
-          "documents/services.pdf",
+          "documents/services-es.pdf",
         ),
       ),
     ).rejects.toThrow(

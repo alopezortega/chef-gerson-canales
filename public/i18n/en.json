@@ -2,7 +2,7 @@
   "home": {
     "hero": {
       "titleLine1": "An experience",
-      "titleLine2": "around the table.",
+      "titleLine2": "around the table",
       "description": "Private chef and tailored catering for moments that deserve to be extraordinary.",
       "primaryAction": "Book an experience"
     },
@@ -57,13 +57,13 @@
     },
     "aboutPreview": {
       "label": "About me",
-      "title": "Passion, technique and dedication in every detail.",
+      "title": "Passion, technique and dedication in every detail",
       "description": "My cooking is rooted in origin, honesty and a contemporary approach.",
       "action": "Discover my story"
     },
     "quoteCta": {
       "label": "Tell me your idea",
-      "title": "Let's talk about your next experience.",
+      "title": "Let's talk about your next experience",
       "description": "Let's create unforgettable moments together.",
       "action": "Contact"
     }
@@ -98,7 +98,13 @@
     "social": {
       "instagramAriaLabel": "Visit Gerson Canales on Instagram; opens in a new tab"
     },
-    "copyright": "© {{ year }} Gerson Canales. All rights reserved."
+    "copyright": "© {{ year }} Gerson Canales. All rights reserved.",
+    "legal": {
+      "ariaLabel": "Legal information",
+      "notice": "Legal notice",
+      "privacy": "Privacy policy",
+      "cookies": "Cookies"
+    }
   },
   "gallery": {
     "label": "Gallery",
@@ -326,7 +332,7 @@
     },
     "experiences": {
       "label": "Cuisine that connects",
-      "title": "We create intimate experiences around the table.",
+      "title": "We create intimate experiences around the table",
       "description": "Creative cuisine, seasonal ingredients and thoughtful service in every detail, so all you need to do is enjoy.",
       "empty": "There are no experiences available yet.",
       "items": [
@@ -476,8 +482,10 @@
         "maxSize": "The file must not be larger than 10 MB."
       },
       "privacy": {
-        "label": "I agree to the processing of my data to manage this quote request.",
-        "required": "You must accept the data processing terms."
+        "basicInfo": "Data controller: Gerson Gustavo Gonzalez Canales. Purpose: to manage and respond to your enquiry or quote request. Your data will not be used for advertising without separate consent.",
+        "label": "I have read the Privacy Policy and expressly consent to the processing of the information I provide, including, where applicable, information about allergies, intolerances or dietary requirements, in order to manage my request.",
+        "policyLink": "Read the Privacy Policy",
+        "required": "You must accept the privacy terms before sending the request."
       },
       "submit": "Send request",
       "requiredFields": "Fields marked with * are required.",
@@ -554,9 +562,7 @@
         "status": "Status",
         "actions": "Actions"
       },
-      "viewDetails": "View details",
-      "actionsAriaLabel": "Administration actions",
-      "manageServiceDocument": "Manage service document"
+      "viewDetails": "View details"
     },
     "quoteRequestDetail": {
       "back": "Back to quote requests",
@@ -636,5 +642,112 @@
     "eyebrow": "Page not found",
     "title": "This page does not exist",
     "action": "Back to home"
+  },
+  "legal": {
+    "updated": "Last updated: September 2026",
+    "privacy": {
+      "eyebrow": "Legal information",
+      "title": "Privacy policy",
+      "intro": "This policy explains how personal data submitted through this website is processed and what rights you have.",
+      "controller": {
+        "title": "1. Data controller",
+        "text": "The data controller is Gerson Gustavo Gonzalez Canales. You may contact the controller regarding privacy matters at:"
+      },
+      "data": {
+        "title": "2. Personal data we process",
+        "text": "The website only requests information that is reasonably necessary to respond to enquiries and prepare catering or private-chef proposals.",
+        "items": {
+          "identification": "Identification and contact details, such as name, email address and telephone number.",
+          "event": "Information about the event, such as date, location, type of event, number of guests and additional information.",
+          "dietary": "Dietary information voluntarily supplied by you, which may include allergies, intolerances or other health-related information.",
+          "attachments": "Documents or images that you voluntarily attach to your request."
+        }
+      },
+      "purpose": {
+        "title": "3. Purpose of processing",
+        "text": "Personal data is processed to receive, assess, manage and respond to enquiries or quote requests, communicate with the interested person and, where appropriate, prepare a proposal related to the requested service."
+      },
+      "legalBasis": {
+        "title": "4. Legal basis",
+        "text": "The main legal basis is the processing necessary to take steps at your request before entering into a possible service relationship, together with your consent where applicable.",
+        "health": "If you voluntarily provide information about allergies, intolerances or dietary requirements that may reveal health information, it is processed on the basis of your explicit consent for the sole purpose of adapting the requested proposal or service."
+      },
+      "retention": {
+        "title": "5. Retention period",
+        "text": "If no service relationship is established, the information associated with an enquiry or quote request will normally be deleted within 12 months after the request is closed, unless it must be retained for a longer period to comply with a legal obligation or to deal with possible claims. If a service relationship is established, the data may be retained for the periods required by applicable law."
+      },
+      "recipients": {
+        "title": "6. Service providers and recipients",
+        "text": "Personal data is not sold. It may be processed by technology providers that are necessary to operate the website, store requests, send notifications or host the service, acting under their applicable contractual and data-protection terms. Current providers include:",
+        "transfers": "Some technology providers may process data from countries outside the European Economic Area. Where this occurs, the applicable legal safeguards, such as adequacy decisions or standard contractual clauses, must be used."
+      },
+      "rights": {
+        "title": "7. Your rights",
+        "text": "You may request access, rectification, erasure, objection, restriction of processing and data portability, and you may withdraw consent at any time where processing is based on consent. To exercise these rights, write to chefgersoncanales@gmail.com and identify the right you wish to exercise.",
+        "authority": "You also have the right to lodge a complaint with the Spanish Data Protection Agency (AEPD) if you believe that your personal data has not been processed in accordance with applicable law."
+      },
+      "security": {
+        "title": "8. Security",
+        "text": "Reasonable technical and organisational measures are applied to reduce the risk of unauthorised access, loss, alteration or disclosure of personal data. Access to the administration area and private attachments is restricted."
+      }
+    },
+    "notice": {
+      "eyebrow": "Legal information",
+      "title": "Legal notice",
+      "intro": "This notice regulates access to and use of this website and identifies the person responsible for its content.",
+      "owner": {
+        "title": "1. Website owner",
+        "text": "Website owner and contact person: Gerson Gustavo Gonzalez Canales."
+      },
+      "purpose": {
+        "title": "2. Purpose of the website",
+        "text": "The website presents private-chef and catering services and provides a channel through which users may request information or a personalised proposal."
+      },
+      "use": {
+        "title": "3. Conditions of use",
+        "text": "Users agree to use the website lawfully and in good faith, and not to use it for fraudulent, unlawful or harmful purposes or in a way that interferes with its normal operation."
+      },
+      "intellectualProperty": {
+        "title": "4. Intellectual and industrial property",
+        "text": "Unless otherwise indicated, the design, texts, photographs, graphic elements, brand assets and other original content of this website are protected by the applicable intellectual and industrial property rules. Their reproduction or commercial use without the corresponding authorisation is prohibited."
+      },
+      "liability": {
+        "title": "5. Liability",
+        "text": "Reasonable efforts are made to keep the information on the website accurate and the service available. However, continuous availability cannot be guaranteed, nor can responsibility be assumed for interruptions caused by third-party services, maintenance, technical incidents or circumstances beyond reasonable control."
+      },
+      "links": {
+        "title": "6. Third-party links",
+        "text": "The website may contain links to third-party websites or services. The owner is not responsible for the content, privacy practices or availability of external websites."
+      },
+      "law": {
+        "title": "7. Applicable law",
+        "text": "This website is governed by Spanish law and by any directly applicable European Union rules. Any dispute will be dealt with by the competent courts in accordance with the applicable consumer and procedural rules."
+      }
+    },
+    "cookies": {
+      "eyebrow": "Legal information",
+      "title": "Cookies policy",
+      "intro": "This page explains the current use of cookies and similar browser storage technologies on the website.",
+      "whatAre": {
+        "title": "1. What cookies are",
+        "text": "Cookies are small files or browser storage mechanisms that may be used to remember technical information, maintain sessions or collect information about how a website is used."
+      },
+      "currentUse": {
+        "title": "2. Current use on this website",
+        "text": "At the time of publication, the public website does not use advertising, behavioural profiling or audience-measurement cookies and no analytics or advertising platform has been intentionally integrated."
+      },
+      "technical": {
+        "title": "3. Strictly necessary technologies",
+        "text": "Strictly necessary technical storage may be used where required for security, basic operation or authentication in the restricted administration area. These technologies are not used to create advertising profiles."
+      },
+      "noTracking": {
+        "title": "4. No advertising or analytics consent banner",
+        "text": "Because no non-essential advertising or analytics cookies are currently used on the public website, no consent banner is displayed for those purposes."
+      },
+      "changes": {
+        "title": "5. Future changes",
+        "text": "If analytics, advertising, social-media tracking or other non-essential technologies are added in the future, this policy and the consent mechanism must be reviewed before those technologies are activated."
+      }
+    }
   }
 }
