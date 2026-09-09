@@ -236,6 +236,31 @@
     padding-top: 0.35rem;
   }
 
+  &__privacy-info {
+    margin: 0 0 0.3rem;
+    padding: 0.85rem 1rem;
+    border-left: 2px solid rgb(89 97 47 / 42%);
+    font-size: 0.72rem;
+    line-height: 1.6;
+    color: var(--color-text-muted, #686861);
+    background: rgb(89 97 47 / 5%);
+  }
+
+  &__privacy-link {
+    width: fit-content;
+    margin-left: 1.85rem;
+    font-size: 0.74rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--color-primary, #59612f);
+    text-underline-offset: 0.2em;
+
+    &:hover,
+    &:focus-visible {
+      text-decoration-thickness: 2px;
+    }
+  }
+
   &__checkbox {
     display: flex;
     align-items: flex-start;

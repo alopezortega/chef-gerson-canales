@@ -13,6 +13,34 @@
     </p>
   </header>
 
+  <div
+    class="admin-service-document__language-selector"
+    role="group"
+    aria-label="Document language"
+  >
+    <button
+      class="admin-service-document__language-button"
+      type="button"
+      [class.admin-service-document__language-button--active]="selectedLanguage() === 'es'"
+      [attr.aria-pressed]="selectedLanguage() === 'es'"
+      [disabled]="isUploading() || isDeleting()"
+      (click)="selectLanguage('es')"
+    >
+      ES
+    </button>
+
+    <button
+      class="admin-service-document__language-button"
+      type="button"
+      [class.admin-service-document__language-button--active]="selectedLanguage() === 'en'"
+      [attr.aria-pressed]="selectedLanguage() === 'en'"
+      [disabled]="isUploading() || isDeleting()"
+      (click)="selectLanguage('en')"
+    >
+      EN
+    </button>
+  </div>
+
   @if (isLoading()) {
     <div class="admin-service-document__state">
       <p>
@@ -27,7 +55,9 @@
       >
         <div class="admin-service-document__card-header">
           <div>
-            <p class="admin-service-document__card-label">PDF</p>
+            <p class="admin-service-document__card-label">
+              PDF · {{ selectedLanguage().toUpperCase() }}
+            </p>
 
             <h2 id="current-service-document-title">
               {{ 'admin.serviceDocument.current.title' | translate }}
@@ -105,7 +135,9 @@
       <section class="admin-service-document__card" aria-labelledby="upload-service-document-title">
         <div class="admin-service-document__card-header">
           <div>
-            <p class="admin-service-document__card-label">PDF</p>
+            <p class="admin-service-document__card-label">
+              PDF · {{ selectedLanguage().toUpperCase() }}
+            </p>
 
             <h2 id="upload-service-document-title">
               @if (currentDocument()) {
@@ -242,8 +274,8 @@
           <button
             class="admin-service-document-dialog__button admin-service-document-dialog__button--secondary"
             type="button"
-            (click)="cancelDeleteDocument()"
             [disabled]="isDeleting()"
+            (click)="cancelDeleteDocument()"
           >
             {{ 'admin.layout.signOutDialog.cancel' | translate }}
           </button>
@@ -251,8 +283,8 @@
           <button
             class="admin-service-document-dialog__button admin-service-document-dialog__button--danger"
             type="button"
-            (click)="confirmDeleteDocument()"
             [disabled]="isDeleting()"
+            (click)="confirmDeleteDocument()"
           >
             @if (isDeleting()) {
               {{ 'admin.serviceDocument.actions.deleting' | translate }}

@@ -4,12 +4,15 @@ import { corsHeaders } from "@supabase/supabase-js/cors";
 const SERVICE_DOCUMENTS_BUCKET = "service-documents";
 const SIGNED_URL_EXPIRATION_SECONDS = 60;
 
+type SupportedLanguage = "es" | "en";
+
 interface ServiceDocumentRow {
   id: string;
   storage_path: string;
   original_name: string;
   mime_type: string;
   size: number;
+  language: SupportedLanguage;
   created_at: string;
   updated_at: string;
 }
@@ -69,10 +72,13 @@ Deno.serve(async (req: Request) => {
         );
       }
 
-      const { data: currentDocument, error } = await supabase
+      const {
+        data: currentDocument,
+        error,
+      } = await supabase
         .from("service_documents")
         .select("storage_path")
-        .limit(1)
+        .eq("storage_path", storagePath)
         .maybeSingle();
 
       if (error) {
@@ -89,10 +95,7 @@ Deno.serve(async (req: Request) => {
         );
       }
 
-      if (
-        !currentDocument ||
-        currentDocument.storage_path !== storagePath
-      ) {
+      if (!currentDocument) {
         return jsonResponse(
           {
             error: "Service document not found",
@@ -134,16 +137,30 @@ Deno.serve(async (req: Request) => {
         );
       }
 
-      return Response.json(signedUrlData.signedUrl, {
-        headers: corsHeaders,
-      });
+      return Response.json(
+        signedUrlData.signedUrl,
+        {
+          headers: corsHeaders,
+        },
+      );
     }
 
     if (req.method === "GET") {
+      const language = getLanguage(url.searchParams.get("language"));
+
+      if (!language) {
+        return jsonResponse(
+          {
+            error: "Invalid document language",
+          },
+          400,
+        );
+      }
+
       const { data, error } = await supabase
         .from("service_documents")
         .select("*")
-        .limit(1)
+        .eq("language", language)
         .maybeSingle();
 
       if (error) {
@@ -187,7 +204,9 @@ Deno.serve(async (req: Request) => {
       }
 
       const formData = await req.formData();
+
       const fileValue = formData.get("file");
+      const languageValue = formData.get("language");
 
       if (!(fileValue instanceof File)) {
         return jsonResponse(
@@ -207,10 +226,26 @@ Deno.serve(async (req: Request) => {
         );
       }
 
-      const { data: previousDocument, error: loadError } = await supabase
+      const language = typeof languageValue === "string"
+        ? getLanguage(languageValue)
+        : null;
+
+      if (!language) {
+        return jsonResponse(
+          {
+            error: "Invalid document language",
+          },
+          400,
+        );
+      }
+
+      const {
+        data: previousDocument,
+        error: loadError,
+      } = await supabase
         .from("service_documents")
         .select("*")
-        .limit(1)
+        .eq("language", language)
         .maybeSingle();
 
       if (loadError) {
@@ -231,7 +266,8 @@ Deno.serve(async (req: Request) => {
         fileValue.name,
       );
 
-      const newStoragePath = `${crypto.randomUUID()}-${safeFileName}`;
+      const newStoragePath =
+        `${language}/${crypto.randomUUID()}-${safeFileName}`;
 
       const { error: uploadError } = await supabase.storage
         .from(SERVICE_DOCUMENTS_BUCKET)
@@ -259,6 +295,7 @@ Deno.serve(async (req: Request) => {
         original_name: fileValue.name,
         mime_type: fileValue.type,
         size: fileValue.size,
+        language,
         updated_at: new Date().toISOString(),
       };
 
@@ -302,7 +339,8 @@ Deno.serve(async (req: Request) => {
 
       if (
         previousDocument &&
-        previousDocument.storage_path !== newStoragePath
+        previousDocument.storage_path !==
+          newStoragePath
       ) {
         const { error: previousDeleteError } = await supabase.storage
           .from(SERVICE_DOCUMENTS_BUCKET)
@@ -356,7 +394,10 @@ Deno.serve(async (req: Request) => {
         );
       }
 
-      const { data: document, error: loadError } = await supabase
+      const {
+        data: document,
+        error: loadError,
+      } = await supabase
         .from("service_documents")
         .select("*")
         .eq("id", documentId)
@@ -451,9 +492,20 @@ function mapServiceDocumentRow(
     originalName: row.original_name,
     mimeType: row.mime_type,
     size: row.size,
+    language: row.language,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
+}
+
+function getLanguage(
+  value: string | null,
+): SupportedLanguage | null {
+  if (value === "es" || value === "en") {
+    return value;
+  }
+
+  return null;
 }
 
 function sanitizeFileName(
