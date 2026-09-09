@@ -319,10 +319,6 @@ a:focus-visible {
     transition: color var(--transition-fast);
   }
 
-  /*
-   * Animated underline for normal links.
-   * CTA and Instagram are excluded.
-   */
   .desktop-navigation a:not(.cta):not(.desktop-navigation__instagram)::after {
     content: '';
 
@@ -417,10 +413,6 @@ a:focus-visible {
   }
 
   .desktop-navigation a {
-    /*
-     * Same font family as before.
-     * Only increasing the visual scale.
-     */
     font-family: var(--font-family-body);
     font-size: clamp(0.86rem, 0.82vw, 0.98rem);
   }
@@ -466,6 +458,87 @@ a:focus-visible {
   .language__icon {
     width: 1.4rem;
     height: 1.4rem;
+  }
+}
+
+/* Mobile landscape */
+@media (orientation: landscape) and (max-height: 37.5rem) and (max-width: 63.999rem) {
+  :host {
+    flex: 1;
+
+    justify-content: flex-end;
+
+    gap: 0;
+  }
+
+  .desktop-navigation {
+    display: none;
+  }
+
+  .header-actions {
+    display: flex;
+
+    order: initial;
+
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.1rem;
+  }
+
+  .menu-toggle {
+    display: flex;
+
+    width: 2.45rem;
+    height: 2.45rem;
+  }
+
+  .language__toggle {
+    width: 2.45rem;
+    height: 2.45rem;
+  }
+
+  .language__icon {
+    width: 1.15rem;
+    height: 1.15rem;
+  }
+
+  .menu-toggle__line {
+    width: 1.2rem;
+  }
+
+  .mobile-navigation {
+    display: block;
+
+    max-height: calc(100dvh - 4rem);
+    padding: 0.85rem 1.25rem 1rem;
+
+    overflow-y: auto;
+  }
+
+  .mobile-navigation ul {
+    gap: 0;
+  }
+
+  .mobile-navigation a {
+    padding: 0.45rem 0;
+
+    font-size: 0.85rem;
+  }
+
+  .mobile-navigation .cta {
+    margin-block: 0.1rem;
+    padding: 0.48rem 0.85rem;
+
+    font-size: 0.7rem;
+  }
+
+  .mobile-navigation__social {
+    margin-top: 0.55rem;
+    padding-top: 0.55rem;
+  }
+
+  .instagram-link {
+    font-size: 0.8rem;
   }
 }
 

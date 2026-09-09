@@ -557,11 +557,6 @@
     min-height: 23rem;
   }
 
-  /*
-   * Teaching row:
-   * keeps the exact 50/50 editorial axis,
-   * but uses a shorter image to avoid excessive vertical space.
-   */
   .about-story__row:nth-child(3) {
     min-height: 26rem;
     align-items: center;
@@ -580,5 +575,172 @@
 
     object-fit: cover;
     object-position: center;
+  }
+}
+
+/* Mobile landscape */
+@media (orientation: landscape) and (max-height: 37.5rem) and (max-width: 63.999rem) {
+  .about-page {
+    gap: 1.5rem;
+    padding-block: 1rem 0;
+  }
+
+  .about-hero,
+  .about-origins,
+  .about-journey,
+  .about-story {
+    width: calc(100% - 2rem);
+    max-width: none;
+  }
+
+  .about-hero {
+    min-height: 22rem;
+    border-radius: 0.9rem;
+  }
+
+  .about-hero__image {
+    object-position: 72% center;
+  }
+
+  .about-hero__content {
+    width: min(38%, 17rem);
+    min-height: 22rem;
+
+    padding: 1.25rem 1rem 1.25rem 1.5rem;
+  }
+
+  .about-hero__label {
+    margin-bottom: 0.45rem;
+    font-size: 0.58rem;
+  }
+
+  .about-hero__title {
+    font-size: clamp(2.8rem, 6vw, 3.8rem);
+  }
+
+  .about-hero__description {
+    max-width: 12rem;
+    margin-top: 0.75rem;
+
+    font-size: 0.78rem;
+    line-height: 1.45;
+  }
+
+  .about-hero__accent {
+    margin-top: 0.65rem;
+  }
+
+  .about-origins {
+    padding-top: 0.2rem;
+  }
+
+  .about-origins__layout {
+    grid-template-columns: minmax(12rem, 0.78fr) minmax(0, 1.4fr);
+    gap: 1.25rem;
+    align-items: center;
+
+    padding-top: 1rem;
+  }
+
+  .about-origins__image {
+    max-height: 17rem;
+    aspect-ratio: 4 / 5;
+  }
+
+  .about-origins__content {
+    gap: 0.45rem;
+  }
+
+  .about-origins__label {
+    font-size: 0.55rem;
+  }
+
+  .about-origins__title {
+    font-size: 1.65rem;
+  }
+
+  .about-origins__description {
+    max-width: 34rem;
+
+    font-size: 0.72rem;
+    line-height: 1.5;
+  }
+
+  .about-journey {
+    gap: 0.9rem;
+    padding-top: 0.9rem;
+  }
+
+  .about-journey__intro {
+    gap: 0.4rem;
+  }
+
+  .about-journey__label {
+    font-size: 0.55rem;
+  }
+
+  .about-journey__title {
+    max-width: 15ch;
+    font-size: 1.65rem;
+  }
+
+  .about-journey__description {
+    max-width: 38rem;
+
+    font-size: 0.72rem;
+    line-height: 1.45;
+  }
+
+  .about-journey__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.9rem;
+  }
+
+  .about-journey__card:last-child {
+    grid-column: 1 / -1;
+
+    width: calc(50% - 0.45rem);
+    justify-self: center;
+  }
+
+  .about-journey__card-image {
+    aspect-ratio: 1.45 / 1;
+  }
+
+  .about-journey__card-title {
+    font-size: 0.62rem;
+  }
+
+  .about-journey__card-description {
+    font-size: 0.6rem;
+  }
+
+  .about-story__row {
+    min-height: 16rem;
+  }
+
+  .about-story__content {
+    padding: 1.3rem 1.5rem;
+  }
+
+  .about-story__label {
+    margin-bottom: 0.4rem;
+    font-size: 0.55rem;
+  }
+
+  .about-story__title {
+    max-width: 13ch;
+    font-size: 1.65rem;
+  }
+
+  .about-story__description {
+    margin-top: 0.55rem;
+
+    font-size: 0.72rem;
+    line-height: 1.5;
+  }
+
+  .about-story__image {
+    min-height: 16rem;
   }
 }
