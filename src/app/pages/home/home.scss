@@ -454,17 +454,16 @@
 }
 
 .home-service-card__media {
+  position: relative;
+
+  aspect-ratio: 4 / 3;
+
   overflow: hidden;
 
   border-radius: var(--border-radius-sm);
 }
 
 .home-service-card__media img {
-  display: block;
-
-  width: 100%;
-  aspect-ratio: 4 / 3;
-
   object-fit: cover;
 }
 
@@ -765,11 +764,9 @@
 
     width: 100%;
 
-    border-radius: 0;
-  }
-
-  .home-service-card__media img {
     aspect-ratio: 16 / 9;
+
+    border-radius: 0;
   }
 
   .home-service-card__text {
@@ -813,7 +810,6 @@
   }
 }
 
-/* Mobile landscape */
 @media (orientation: landscape) and (max-height: 37.5rem) and (max-width: 63.999rem) {
   .home-hero,
   .home-intro__content,
@@ -946,7 +942,7 @@
     line-height: 1.45;
   }
 
-  .home-service-card__media img {
+  .home-service-card__media {
     aspect-ratio: 16 / 10;
   }
 

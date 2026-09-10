@@ -1381,7 +1381,23 @@ app-final-cta {
 }
 
 @media (min-width: 90rem) {
-  .services-hero__content,
+  .services-hero__content {
+    width: min(84rem, calc(100% - 8rem));
+
+    align-items: flex-start;
+
+    padding: 0 0 0 3rem;
+  }
+
+  .services-hero__content > * {
+    max-width: 30rem;
+  }
+
+  .services-hero__description {
+    width: 30rem;
+    max-width: 30rem;
+  }
+
   .services-experiences {
     width: min(84rem, calc(100% - 8rem));
   }

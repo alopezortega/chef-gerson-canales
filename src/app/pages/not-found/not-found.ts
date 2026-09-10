@@ -8,5 +8,4 @@ import { TranslatePipe } from "@ngx-translate/core";
   templateUrl: "./not-found.html",
   styleUrl: "./not-found.scss",
 })
-export class NotFound {
-}
+export class NotFound {}

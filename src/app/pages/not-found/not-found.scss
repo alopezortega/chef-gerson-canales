@@ -62,7 +62,7 @@
 
   color: #72743f;
 
-  font-family: 'Montserrat', Arial, sans-serif;
+  font-family: "Montserrat", Arial, sans-serif;
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.18em;
@@ -75,7 +75,7 @@
 
   color: #25282a;
 
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: "Playfair Display", Georgia, serif;
   font-size: clamp(7rem, 10vw, 10rem);
   font-weight: 400;
   line-height: 0.9;
@@ -87,33 +87,11 @@
 
   color: #25282a;
 
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: "Playfair Display", Georgia, serif;
   font-size: clamp(2rem, 3vw, 2.8rem);
   font-weight: 400;
   line-height: 1.08;
   letter-spacing: -0.025em;
-}
-
-.not-found__description,
-.not-found__closing {
-  color: #696b66;
-
-  font-family: 'Montserrat', Arial, sans-serif;
-}
-
-.not-found__description {
-  max-width: 25rem;
-  margin: 1.1rem 0 0;
-
-  font-size: 0.83rem;
-  line-height: 1.6;
-}
-
-.not-found__closing {
-  margin: 0.55rem 0 0;
-
-  font-size: 0.83rem;
-  line-height: 1.5;
 }
 
 .not-found__action {
@@ -135,7 +113,7 @@
   background: #72743f;
   color: #fff;
 
-  font-family: 'Montserrat', Arial, sans-serif;
+  font-family: "Montserrat", Arial, sans-serif;
   font-size: 0.75rem;
   font-weight: 600;
 
@@ -171,8 +149,6 @@
 
 @media (max-width: 767px) {
   .not-found__hero {
-    display: block;
-
     min-height: auto;
   }
 
@@ -209,17 +185,6 @@
     font-size: clamp(1.65rem, 8vw, 2.2rem);
   }
 
-  .not-found__description {
-    max-width: 22rem;
-    margin-top: 1rem;
-
-    font-size: 0.78rem;
-  }
-
-  .not-found__closing {
-    font-size: 0.78rem;
-  }
-
   .not-found__action {
     min-width: 12.5rem;
     min-height: 3rem;
@@ -254,10 +219,6 @@
     font-size: clamp(1.4rem, 4vw, 1.8rem);
   }
 
-  .not-found__description {
-    margin-top: 0.7rem;
-  }
-
   .not-found__action {
     margin-top: 1rem;
   }
@@ -275,14 +236,27 @@
 }
 
 @media (min-width: 1600px) {
+  .not-found {
+    width: min(90rem, calc(100% - 8rem));
+    margin-inline: auto;
+  }
+
   .not-found__hero,
   .not-found__content {
-    min-height: 48rem;
+    min-height: 42rem;
   }
 
   .not-found__content {
-    width: 42%;
-    padding-inline: 5rem;
+    width: 40%;
+    padding-inline: 4rem;
+  }
+
+  .not-found__code {
+    font-size: 8.75rem;
+  }
+
+  .not-found__title {
+    font-size: 2.5rem;
   }
 }
 

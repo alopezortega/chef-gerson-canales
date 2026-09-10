@@ -39,19 +39,19 @@
           "id": "private-dinners",
           "title": "Private dining",
           "description": "Intimate, personalized experiences in the comfort of your home.",
-          "image": "/images/home/private-dining.png"
+          "image": "/images/home/private-dining.webp"
         },
         {
           "id": "events-celebrations",
           "title": "Events & celebrations",
           "description": "Tailored menus designed for social and corporate events.",
-          "image": "/images/home/events-celebrations.png"
+          "image": "/images/home/events-celebrations.webp"
         },
         {
           "id": "custom-catering",
           "title": "Tailored catering",
           "description": "Bespoke proposals combining savoury cuisine, pastry and thoughtful sweet details to create a complete dining experience.",
-          "image": "/images/home/custom-catering.png"
+          "image": "/images/home/custom-catering.webp"
         }
       ]
     },
@@ -236,21 +236,21 @@
           "id": "sicily",
           "title": "Sicily",
           "description": "Tradition, ingredients and the Mediterranean.",
-          "image": "/images/about/gerson-sicily-coast.png",
+          "image": "/images/about/gerson-sicily-coast.webp",
           "alt": "Gerson Canales during a trip through Sicily"
         },
         {
           "id": "iceland",
           "title": "Iceland",
           "description": "Nature, experience and new perspectives.",
-          "image": "/images/about/gerson-iceland-harbor.png",
+          "image": "/images/about/gerson-iceland-harbor.webp",
           "alt": "Gerson Canales at a harbour in Iceland"
         },
         {
           "id": "mozambique",
           "title": "Mozambique",
           "description": "People, ingredients and cooperation.",
-          "image": "/images/about/gerson-mozambique-community.png",
+          "image": "/images/about/gerson-mozambique-community.webp",
           "alt": "Gerson Canales sharing a moment with children in Mozambique"
         }
       ]
@@ -340,25 +340,25 @@
           "id": "private-dining",
           "title": "Private chef at home",
           "description": "Enjoy a unique dining experience in the comfort of your home.",
-          "image": "/images/services/services-private-dining.png",
+          "image": "/images/services/services-private-dining.webp",
           "imageAlt": "Private dining table with a gourmet dish served by candlelight",
-          "icon": "/images/services/services-private-dining-icon.png"
+          "icon": "/images/services/services-private-dining-icon.webp"
         },
         {
           "id": "celebrations",
           "title": "Celebrations",
           "description": "We create memorable moments for special occasions.",
-          "image": "/images/services/services-celebration.png",
+          "image": "/images/services/services-celebration.webp",
           "imageAlt": "Guests raising their glasses during an intimate candlelit celebration",
-          "icon": "/images/services/services-celebration-icon.png"
+          "icon": "/images/services/services-celebration-icon.webp"
         },
         {
           "id": "custom-catering",
           "title": "Tailored catering",
           "description": "Personalized proposals for private and corporate events.",
-          "image": "/images/services/services-custom-catering.png",
+          "image": "/images/services/services-custom-catering.webp",
           "imageAlt": "Selection of small bites prepared for a catering service",
-          "icon": "/images/services/services-custom-catering-icon.png"
+          "icon": "/images/services/services-custom-catering-icon.webp"
         }
       ]
     },
@@ -394,25 +394,25 @@
           "id": "ideas",
           "title": "We get to know your ideas",
           "description": "We listen, understand and define the experience.",
-          "icon": "/images/services/services-process-ideas-icon.png"
+          "icon": "/images/services/services-process-ideas-icon.webp"
         },
         {
           "id": "menu",
           "title": "We design the menu",
           "description": "A personalized proposal using seasonal ingredients.",
-          "icon": "/images/services/services-process-menu-icon.png"
+          "icon": "/images/services/services-process-menu-icon.webp"
         },
         {
           "id": "service",
           "title": "We take care of everything",
           "description": "Shopping, mise en place, service and presentation.",
-          "icon": "/images/services/services-process-service-icon.png"
+          "icon": "/images/services/services-process-service-icon.webp"
         },
         {
           "id": "enjoy",
           "title": "You simply enjoy",
           "description": "We take care of every detail.",
-          "icon": "/images/services/services-process-enjoy-icon.png"
+          "icon": "/images/services/services-process-enjoy-icon.webp"
         }
       ]
     }
@@ -562,7 +562,8 @@
         "status": "Status",
         "actions": "Actions"
       },
-      "viewDetails": "View details"
+      "viewDetails": "View details",
+      "manageServiceDocument": "Manage service document"
     },
     "quoteRequestDetail": {
       "back": "Back to quote requests",

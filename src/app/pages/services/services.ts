@@ -1,3 +1,4 @@
+import { NgOptimizedImage } from "@angular/common";
 import {
   Component,
   computed,
@@ -16,7 +17,7 @@ import { FinalCta } from "../../shared/components/final-cta/final-cta";
 
 @Component({
   selector: "app-services",
-  imports: [TranslatePipe, FinalCta],
+  imports: [TranslatePipe, FinalCta, NgOptimizedImage],
   templateUrl: "./services.html",
   styleUrl: "./services.scss",
 })

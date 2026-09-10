@@ -35,19 +35,19 @@
           "id": "private-dinners",
           "title": "Cenas privadas",
           "description": "Experiencias íntimas y personalizadas en la comodidad de tu hogar.",
-          "image": "/images/home/private-dining.png"
+          "image": "/images/home/private-dining.webp"
         },
         {
           "id": "events-celebrations",
           "title": "Eventos & celebraciones",
           "description": "Diseñamos menús a la medida para eventos sociales y corporativos.",
-          "image": "/images/home/events-celebrations.png"
+          "image": "/images/home/events-celebrations.webp"
         },
         {
           "id": "custom-catering",
           "title": "Catering personalizado",
           "description": "Propuestas a medida que combinan cocina salada, repostería y pequeños detalles dulces para crear una experiencia completa.",
-          "image": "/images/home/custom-catering.png"
+          "image": "/images/home/custom-catering.webp"
         }
       ]
     },
@@ -232,21 +232,21 @@
           "id": "sicily",
           "title": "Sicilia",
           "description": "Tradición, producto y Mediterráneo.",
-          "image": "/images/about/gerson-sicily-coast.png",
+          "image": "/images/about/gerson-sicily-coast.webp",
           "alt": "Gerson Canales durante un viaje por Sicilia"
         },
         {
           "id": "iceland",
           "title": "Islandia",
           "description": "Naturaleza, experiencia y nuevas perspectivas.",
-          "image": "/images/about/gerson-iceland-harbor.png",
+          "image": "/images/about/gerson-iceland-harbor.webp",
           "alt": "Gerson Canales en un puerto de Islandia"
         },
         {
           "id": "mozambique",
           "title": "Mozambique",
           "description": "Personas, producto y cooperación.",
-          "image": "/images/about/gerson-mozambique-community.png",
+          "image": "/images/about/gerson-mozambique-community.webp",
           "alt": "Gerson Canales compartiendo un momento con niños en Mozambique"
         }
       ]
@@ -336,25 +336,25 @@
           "id": "private-dining",
           "title": "Chef privado en casa",
           "description": "Vive una experiencia única en la comodidad de tu hogar.",
-          "image": "/images/services/services-private-dining.png",
+          "image": "/images/services/services-private-dining.webp",
           "imageAlt": "Cena privada con plato gastronómico servido en una mesa iluminada con velas",
-          "icon": "/images/services/services-private-dining-icon.png"
+          "icon": "/images/services/services-private-dining-icon.webp"
         },
         {
           "id": "celebrations",
           "title": "Celebraciones",
           "description": "Creamos momentos inolvidables para ocasiones especiales.",
-          "image": "/images/services/services-celebration.png",
+          "image": "/images/services/services-celebration.webp",
           "imageAlt": "Invitados brindando durante una celebración íntima a la luz de las velas",
-          "icon": "/images/services/services-celebration-icon.png"
+          "icon": "/images/services/services-celebration-icon.webp"
         },
         {
           "id": "custom-catering",
           "title": "Catering a medida",
           "description": "Propuestas personalizadas para eventos corporativos y privados.",
-          "image": "/images/services/services-custom-catering.png",
+          "image": "/images/services/services-custom-catering.webp",
           "imageAlt": "Selección de pequeños bocados preparados para un servicio de catering",
-          "icon": "/images/services/services-custom-catering-icon.png"
+          "icon": "/images/services/services-custom-catering-icon.webp"
         }
       ]
     },
@@ -390,25 +390,25 @@
           "id": "ideas",
           "title": "Conocemos tus ideas",
           "description": "Escuchamos, entendemos y definimos la experiencia.",
-          "icon": "/images/services/services-process-ideas-icon.png"
+          "icon": "/images/services/services-process-ideas-icon.webp"
         },
         {
           "id": "menu",
           "title": "Diseñamos el menú",
           "description": "Propuesta personalizada con ingredientes de temporada.",
-          "icon": "/images/services/services-process-menu-icon.png"
+          "icon": "/images/services/services-process-menu-icon.webp"
         },
         {
           "id": "service",
           "title": "Nos encargamos de todo",
           "description": "Compras, mise en place, servicio y presentación.",
-          "icon": "/images/services/services-process-service-icon.png"
+          "icon": "/images/services/services-process-service-icon.webp"
         },
         {
           "id": "enjoy",
           "title": "Tú solo disfrutas",
           "description": "Nosotros cuidamos cada detalle.",
-          "icon": "/images/services/services-process-enjoy-icon.png"
+          "icon": "/images/services/services-process-enjoy-icon.webp"
         }
       ]
     }
@@ -558,7 +558,8 @@
         "status": "Estado",
         "actions": "Acciones"
       },
-      "viewDetails": "Ver detalle"
+      "viewDetails": "Ver detalle",
+      "manageServiceDocument": "Gestionar documento de servicios"
     },
     "quoteRequestDetail": {
       "back": "Volver a las solicitudes",

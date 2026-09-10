@@ -1,3 +1,4 @@
+import { NgOptimizedImage } from "@angular/common";
 import { Component, inject } from "@angular/core";
 import { TranslatePipe } from "@ngx-translate/core";
 
@@ -6,7 +7,7 @@ import { FinalCta } from "../../shared/components/final-cta/final-cta";
 
 @Component({
   selector: "app-gallery",
-  imports: [TranslatePipe, FinalCta],
+  imports: [TranslatePipe, FinalCta, NgOptimizedImage],
   templateUrl: "./gallery.html",
   styleUrl: "./gallery.scss",
 })

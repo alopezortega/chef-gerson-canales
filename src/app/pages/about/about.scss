@@ -147,13 +147,16 @@
 }
 
 .about-origins__media {
+  position: relative;
+
   margin: 0;
+
+  aspect-ratio: 4 / 5;
+
+  overflow: hidden;
 }
 
 .about-origins__image {
-  display: block;
-  width: 100%;
-  aspect-ratio: 4 / 5;
   object-fit: cover;
   object-position: center;
 }
@@ -228,16 +231,17 @@
 }
 
 .about-journey__card-media {
+  position: relative;
+
   margin: 0;
+
+  aspect-ratio: 1.25 / 1;
+
   overflow: hidden;
   border-radius: 0.55rem;
 }
 
 .about-journey__card-image {
-  display: block;
-  width: 100%;
-  aspect-ratio: 1.25 / 1;
-
   border-radius: 0.55rem;
 
   object-fit: cover;
@@ -324,6 +328,8 @@
 }
 
 .about-story__media {
+  position: relative;
+
   min-width: 0;
   margin: 0;
 
@@ -331,12 +337,6 @@
 }
 
 .about-story__image {
-  display: block;
-
-  width: 100%;
-  height: 100%;
-  min-height: 13rem;
-
   object-fit: cover;
   object-position: center;
 }
@@ -433,7 +433,7 @@
     gap: 1rem;
   }
 
-  .about-journey__card-image {
+  .about-journey__card-media {
     aspect-ratio: 1.35 / 1;
   }
 
@@ -466,10 +466,7 @@
     line-height: 1.6;
   }
 
-  .about-story__image {
-    min-height: 20rem;
   }
-}
 
 @media (min-width: 70rem) {
   .about-page {
@@ -553,10 +550,7 @@
     font-size: 2.35rem;
   }
 
-  .about-story__image {
-    min-height: 23rem;
-  }
-
+  
   .about-story__row:nth-child(3) {
     min-height: 26rem;
     align-items: center;
@@ -569,10 +563,6 @@
   }
 
   .about-story__row:nth-child(3) .about-story__image {
-    width: 100%;
-    height: 100%;
-    min-height: 0;
-
     object-fit: cover;
     object-position: center;
   }
@@ -642,7 +632,7 @@
     padding-top: 1rem;
   }
 
-  .about-origins__image {
+  .about-origins__media {
     max-height: 17rem;
     aspect-ratio: 4 / 5;
   }
@@ -703,7 +693,7 @@
     justify-self: center;
   }
 
-  .about-journey__card-image {
+  .about-journey__card-media {
     aspect-ratio: 1.45 / 1;
   }
 
@@ -740,7 +730,4 @@
     line-height: 1.5;
   }
 
-  .about-story__image {
-    min-height: 16rem;
   }
-}
