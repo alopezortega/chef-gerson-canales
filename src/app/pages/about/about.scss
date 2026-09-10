@@ -1,0 +1,733 @@
+:host {
+  display: block;
+}
+
+.about-page {
+  display: grid;
+  gap: 1.5rem;
+  padding-block: 1rem 0;
+  color: #171511;
+  overflow: hidden;
+}
+
+.about-hero,
+.about-origins,
+.about-journey,
+.about-story {
+  width: min(100% - 1.5rem, 26.5rem);
+  margin-inline: auto;
+}
+
+.about-hero__label,
+.about-origins__label,
+.about-journey__label {
+  margin: 0;
+  color: #7d7743;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.about-hero__title,
+.about-origins__title,
+.about-journey__title {
+  margin: 0;
+  font-family: 'Playfair Display', serif;
+  font-weight: 500;
+  line-height: 0.96;
+  letter-spacing: -0.02em;
+}
+
+.about-origins__description,
+.about-journey__description {
+  margin: 0;
+  color: #666057;
+  line-height: 1.7;
+}
+
+.about-hero {
+  position: relative;
+  isolation: isolate;
+  min-height: 21rem;
+  overflow: hidden;
+}
+
+.about-hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  margin: 0;
+}
+
+.about-hero__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 68% center;
+}
+
+.about-hero__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+
+  background: linear-gradient(
+    90deg,
+    rgb(8 8 8 / 0.96) 0%,
+    rgb(8 8 8 / 0.9) 24%,
+    rgb(8 8 8 / 0.76) 36%,
+    rgb(8 8 8 / 0.36) 48%,
+    rgb(8 8 8 / 0.08) 59%,
+    rgb(8 8 8 / 0) 68%
+  );
+}
+
+.about-hero__content {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  width: min(42%, 9.8rem);
+  min-height: 21rem;
+
+  padding: 1.1rem 0.65rem 1.1rem 0.9rem;
+}
+
+.about-hero__label {
+  margin-bottom: 0.65rem;
+  color: #8e8a44;
+  font-size: 0.66rem;
+}
+
+.about-hero__title {
+  max-width: 7ch;
+  color: #fff;
+  font-size: clamp(2.15rem, 7.5vw, 3.15rem);
+  line-height: 0.92;
+}
+
+.about-hero__description {
+  max-width: 10rem;
+  margin: 0.95rem 0 0;
+  color: rgb(255 255 255 / 0.92);
+  font-size: 0.78rem;
+  line-height: 1.62;
+}
+
+.about-hero__accent,
+.about-origins__accent {
+  display: block;
+  width: 1.9rem;
+  height: 2px;
+  background: #8e8a44;
+}
+
+.about-hero__accent {
+  margin-top: 1rem;
+}
+
+.about-origins {
+  padding-top: 0.3rem;
+  border-top: 1px solid rgb(23 21 17 / 0.08);
+}
+
+.about-origins__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.38fr);
+  gap: 0.9rem;
+  align-items: start;
+
+  padding-top: 1rem;
+}
+
+.about-origins__media {
+  position: relative;
+
+  margin: 0;
+
+  aspect-ratio: 4 / 5;
+
+  overflow: hidden;
+}
+
+.about-origins__image {
+  object-fit: cover;
+  object-position: center;
+}
+
+.about-origins__content {
+  display: grid;
+  align-content: start;
+  gap: 0.5rem;
+  padding-top: 0.05rem;
+}
+
+.about-origins__label {
+  font-size: 0.52rem;
+}
+
+.about-origins__title {
+  max-width: 12ch;
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.about-origins__description {
+  font-size: 0.68rem;
+  line-height: 1.5;
+}
+
+.about-origins__accent {
+  margin-top: 0.1rem;
+}
+
+.about-journey {
+  display: grid;
+  gap: 0.8rem;
+
+  padding-top: 0.7rem;
+
+  border-top: 1px solid rgb(23 21 17 / 0.08);
+}
+
+.about-journey__intro {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.about-journey__label {
+  font-size: 0.52rem;
+}
+
+.about-journey__title {
+  max-width: 17ch;
+  font-size: 1.35rem;
+  line-height: 1.05;
+}
+
+.about-journey__description {
+  max-width: 25rem;
+  font-size: 0.68rem;
+  line-height: 1.5;
+}
+
+.about-journey__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+  align-items: start;
+}
+
+.about-journey__card {
+  display: grid;
+  gap: 0.35rem;
+  text-align: center;
+}
+
+.about-journey__card-media {
+  position: relative;
+
+  margin: 0;
+
+  aspect-ratio: 1.25 / 1;
+
+  overflow: hidden;
+  border-radius: 0.55rem;
+}
+
+.about-journey__card-image {
+  border-radius: 0.55rem;
+
+  object-fit: cover;
+  object-position: center;
+}
+
+.about-journey__card-title {
+  margin: 0;
+
+  color: #5d5850;
+
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+
+  text-transform: uppercase;
+}
+
+.about-journey__card-description {
+  margin: 0;
+
+  color: #6e675d;
+
+  font-size: 0.56rem;
+  line-height: 1.4;
+}
+
+.about-story {
+  border-top: 1px solid rgb(23 21 17 / 0.08);
+  border-bottom: 1px solid rgb(23 21 17 / 0.08);
+}
+
+.about-story__row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+
+  min-height: 13rem;
+
+  border-bottom: 1px solid rgb(23 21 17 / 0.08);
+}
+
+.about-story__row:last-child {
+  border-bottom: 0;
+}
+
+.about-story__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  padding: 1rem 0.9rem;
+}
+
+.about-story__label {
+  margin: 0 0 0.55rem;
+
+  color: #7d7743;
+
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+
+  text-transform: uppercase;
+}
+
+.about-story__title {
+  margin: 0;
+
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+
+.about-story__description {
+  margin: 0.7rem 0 0;
+
+  color: #666057;
+
+  font-size: 0.64rem;
+  line-height: 1.5;
+}
+
+.about-story__media {
+  position: relative;
+
+  min-width: 0;
+  margin: 0;
+
+  overflow: hidden;
+}
+
+.about-story__image {
+  object-fit: cover;
+  object-position: center;
+}
+
+@media (min-width: 48rem) {
+  .about-page {
+    gap: 2.4rem;
+    padding-block: 1.5rem 0;
+  }
+
+  .about-hero,
+  .about-origins,
+  .about-journey,
+  .about-story {
+    width: min(100% - 3rem, 70rem);
+  }
+
+  .about-hero {
+    min-height: 31rem;
+    border-radius: 1.75rem;
+  }
+
+  .about-hero__image {
+    object-position: 72% center;
+  }
+
+  .about-hero__content {
+    width: min(37%, 20rem);
+    min-height: 31rem;
+
+    padding: 2.15rem 1.5rem 2.15rem 2rem;
+  }
+
+  .about-hero__title {
+    font-size: clamp(3.5rem, 4.8vw, 5rem);
+  }
+
+  .about-hero__description {
+    max-width: 13rem;
+    font-size: 0.95rem;
+  }
+
+  .about-origins__layout {
+    grid-template-columns: minmax(14rem, 0.82fr) minmax(0, 1.38fr);
+    gap: 1.4rem;
+
+    padding-top: 1.35rem;
+  }
+
+  .about-origins__label {
+    font-size: 0.6rem;
+  }
+
+  .about-origins__title {
+    max-width: 12ch;
+    font-size: 1.8rem;
+    line-height: 1;
+  }
+
+  .about-origins__description {
+    max-width: 32rem;
+
+    font-size: 0.78rem;
+    line-height: 1.55;
+  }
+
+  .about-journey {
+    gap: 1.15rem;
+
+    padding-top: 1.15rem;
+  }
+
+  .about-journey__intro {
+    gap: 0.55rem;
+  }
+
+  .about-journey__label {
+    font-size: 0.6rem;
+  }
+
+  .about-journey__title {
+    max-width: 18ch;
+    font-size: 1.8rem;
+  }
+
+  .about-journey__description {
+    max-width: 32rem;
+
+    font-size: 0.78rem;
+    line-height: 1.55;
+  }
+
+  .about-journey__grid {
+    gap: 1rem;
+  }
+
+  .about-journey__card-media {
+    aspect-ratio: 1.35 / 1;
+  }
+
+  .about-journey__card-title,
+  .about-journey__card-description {
+    font-size: 0.62rem;
+  }
+
+  .about-story__row {
+    min-height: 20rem;
+  }
+
+  .about-story__content {
+    padding: 2rem;
+  }
+
+  .about-story__label {
+    font-size: 0.62rem;
+  }
+
+  .about-story__title {
+    max-width: 12ch;
+    font-size: 2rem;
+  }
+
+  .about-story__description {
+    max-width: 28rem;
+
+    font-size: 0.82rem;
+    line-height: 1.6;
+  }
+
+  }
+
+@media (min-width: 70rem) {
+  .about-page {
+    gap: 3rem;
+  }
+
+  .about-hero {
+    min-height: 35rem;
+  }
+
+  .about-hero__image {
+    object-position: 72% 38%;
+  }
+
+  .about-hero__content {
+    width: min(34%, 21rem);
+    min-height: 35rem;
+
+    padding-left: 2.5rem;
+  }
+
+  .about-origins__layout {
+    grid-template-columns: minmax(18rem, 24rem) minmax(0, 1fr);
+    gap: 2.75rem;
+    align-items: center;
+  }
+
+  .about-origins__content {
+    align-content: center;
+    gap: 0.7rem;
+    padding-top: 0;
+  }
+
+  .about-origins__label {
+    font-size: 0.64rem;
+  }
+
+  .about-origins__title {
+    max-width: 12ch;
+    font-size: 2.25rem;
+  }
+
+  .about-origins__description {
+    max-width: 38rem;
+
+    font-size: 0.9rem;
+    line-height: 1.65;
+  }
+
+  .about-origins__accent {
+    margin-top: 0.25rem;
+  }
+
+  .about-journey {
+    grid-template-columns: 1fr;
+    gap: 1.4rem;
+  }
+
+  .about-journey__title {
+    font-size: 2rem;
+  }
+
+  .about-journey__description {
+    max-width: 36rem;
+    font-size: 0.82rem;
+  }
+
+  .about-story__row {
+    min-height: 23rem;
+  }
+
+  .about-story__content {
+    padding: 2.75rem 3rem;
+  }
+
+  .about-story__label {
+    font-size: 0.62rem;
+  }
+
+  .about-story__title {
+    font-size: 2.35rem;
+  }
+
+  
+  .about-story__row:nth-child(3) {
+    min-height: 26rem;
+    align-items: center;
+  }
+
+  .about-story__row:nth-child(3) .about-story__media {
+    width: 100%;
+    height: 26rem;
+    align-self: center;
+  }
+
+  .about-story__row:nth-child(3) .about-story__image {
+    object-fit: cover;
+    object-position: center;
+  }
+}
+
+/* Mobile landscape */
+@media (orientation: landscape) and (max-height: 37.5rem) and (max-width: 63.999rem) {
+  .about-page {
+    gap: 1.5rem;
+    padding-block: 1rem 0;
+  }
+
+  .about-hero,
+  .about-origins,
+  .about-journey,
+  .about-story {
+    width: calc(100% - 2rem);
+    max-width: none;
+  }
+
+  .about-hero {
+    min-height: 22rem;
+    border-radius: 0.9rem;
+  }
+
+  .about-hero__image {
+    object-position: 72% center;
+  }
+
+  .about-hero__content {
+    width: min(38%, 17rem);
+    min-height: 22rem;
+
+    padding: 1.25rem 1rem 1.25rem 1.5rem;
+  }
+
+  .about-hero__label {
+    margin-bottom: 0.45rem;
+    font-size: 0.58rem;
+  }
+
+  .about-hero__title {
+    font-size: clamp(2.8rem, 6vw, 3.8rem);
+  }
+
+  .about-hero__description {
+    max-width: 12rem;
+    margin-top: 0.75rem;
+
+    font-size: 0.78rem;
+    line-height: 1.45;
+  }
+
+  .about-hero__accent {
+    margin-top: 0.65rem;
+  }
+
+  .about-origins {
+    padding-top: 0.2rem;
+  }
+
+  .about-origins__layout {
+    grid-template-columns: minmax(12rem, 0.78fr) minmax(0, 1.4fr);
+    gap: 1.25rem;
+    align-items: center;
+
+    padding-top: 1rem;
+  }
+
+  .about-origins__media {
+    max-height: 17rem;
+    aspect-ratio: 4 / 5;
+  }
+
+  .about-origins__content {
+    gap: 0.45rem;
+  }
+
+  .about-origins__label {
+    font-size: 0.55rem;
+  }
+
+  .about-origins__title {
+    font-size: 1.65rem;
+  }
+
+  .about-origins__description {
+    max-width: 34rem;
+
+    font-size: 0.72rem;
+    line-height: 1.5;
+  }
+
+  .about-journey {
+    gap: 0.9rem;
+    padding-top: 0.9rem;
+  }
+
+  .about-journey__intro {
+    gap: 0.4rem;
+  }
+
+  .about-journey__label {
+    font-size: 0.55rem;
+  }
+
+  .about-journey__title {
+    max-width: 15ch;
+    font-size: 1.65rem;
+  }
+
+  .about-journey__description {
+    max-width: 38rem;
+
+    font-size: 0.72rem;
+    line-height: 1.45;
+  }
+
+  .about-journey__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.9rem;
+  }
+
+  .about-journey__card:last-child {
+    grid-column: 1 / -1;
+
+    width: calc(50% - 0.45rem);
+    justify-self: center;
+  }
+
+  .about-journey__card-media {
+    aspect-ratio: 1.45 / 1;
+  }
+
+  .about-journey__card-title {
+    font-size: 0.62rem;
+  }
+
+  .about-journey__card-description {
+    font-size: 0.6rem;
+  }
+
+  .about-story__row {
+    min-height: 16rem;
+  }
+
+  .about-story__content {
+    padding: 1.3rem 1.5rem;
+  }
+
+  .about-story__label {
+    margin-bottom: 0.4rem;
+    font-size: 0.55rem;
+  }
+
+  .about-story__title {
+    max-width: 13ch;
+    font-size: 1.65rem;
+  }
+
+  .about-story__description {
+    margin-top: 0.55rem;
+
+    font-size: 0.72rem;
+    line-height: 1.5;
+  }
+
+  }

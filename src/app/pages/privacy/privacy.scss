@@ -1,0 +1,104 @@
+:host {
+  display: block;
+}
+
+.legal-page {
+  padding: clamp(3rem, 7vw, 6rem) 1rem clamp(4rem, 8vw, 7rem);
+  background:
+    radial-gradient(circle at 50% 0%, rgb(255 255 255 / 72%) 0%, transparent 32rem),
+    var(--color-background, #f7f3eb);
+  color: var(--color-text, #272725);
+
+  &__container {
+    width: min(100%, 52rem);
+    margin: 0 auto;
+  }
+
+  &__header {
+    margin-bottom: clamp(2.5rem, 6vw, 4rem);
+    text-align: center;
+  }
+
+  &__eyebrow {
+    margin: 0 0 0.8rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-primary, #59612f);
+  }
+
+  &__title {
+    margin: 0;
+    font-family: var(--font-family-display, "Playfair Display", Georgia, serif);
+    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  &__intro {
+    max-width: 42rem;
+    margin: 1.35rem auto 0;
+    font-size: 0.95rem;
+    line-height: 1.75;
+    color: var(--color-text-muted, #686861);
+  }
+
+  &__content {
+    display: grid;
+    gap: 2rem;
+  }
+
+  &__section {
+    padding-top: 1.75rem;
+    border-top: 1px solid rgb(89 97 47 / 18%);
+
+    h2 {
+      margin: 0 0 0.9rem;
+      font-family: var(--font-family-display, "Playfair Display", Georgia, serif);
+      font-size: clamp(1.55rem, 4vw, 2rem);
+      font-weight: 400;
+      line-height: 1.2;
+      color: var(--color-primary, #59612f);
+    }
+
+    p,
+    li {
+      font-size: 0.92rem;
+      line-height: 1.75;
+      color: var(--color-text-muted, #5f5e59);
+    }
+
+    p {
+      margin: 0.7rem 0 0;
+    }
+
+    ul {
+      margin: 0.85rem 0 0;
+      padding-left: 1.25rem;
+    }
+
+    li + li {
+      margin-top: 0.45rem;
+    }
+
+    a {
+      color: var(--color-primary, #59612f);
+      text-underline-offset: 0.2em;
+    }
+  }
+
+  &__updated {
+    margin: 2.5rem 0 0;
+    font-size: 0.75rem;
+    color: var(--color-text-muted, #74736e);
+    text-align: center;
+  }
+}
+
+@media (min-width: 48rem) {
+  .legal-page {
+    padding-inline: var(--page-padding);
+  }
+}

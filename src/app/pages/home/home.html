@@ -1,0 +1,175 @@
+@if (showBrandIntro()) {
+  <div class="home-brand-intro" aria-hidden="true" (animationend)="finishBrandIntro()">
+    <div class="home-brand-intro__stage">
+      <svg
+        class="home-brand-intro__botanical"
+        viewBox="0 0 390 700"
+        xmlns="http://www.w3.org/2000/svg"
+        role="presentation"
+      >
+        <path
+          class="home-brand-intro__line"
+          pathLength="1"
+          d="
+            M -38 575
+            C 16 558, 54 523, 74 476
+            C 95 427, 87 380, 92 333
+            C 98 278, 116 232, 151 199
+            C 190 162, 242 151, 285 128
+            C 327 106, 357 78, 414 68
+          "
+        />
+
+        <g class="home-brand-intro__leaves home-brand-intro__leaves--left">
+          <path d="M43 526 C15 503, 9 473, 19 442 C47 460, 56 489, 43 526Z" />
+          <path d="M59 495 C73 459, 97 441, 125 439 C120 471, 95 493, 59 495Z" />
+          <path d="M73 452 C44 430, 39 400, 49 371 C77 389, 87 418, 73 452Z" />
+          <path d="M88 411 C105 378, 130 363, 158 365 C151 396, 125 416, 88 411Z" />
+        </g>
+
+        <g class="home-brand-intro__leaves home-brand-intro__leaves--right">
+          <path d="M285 128 C260 103, 260 76, 273 52 C296 72, 301 99, 285 128Z" />
+          <path d="M302 105 C321 77, 348 67, 375 72 C364 100, 337 114, 302 105Z" />
+          <path d="M325 82 C307 58, 311 33, 326 13 C344 33, 346 58, 325 82Z" />
+          <path d="M343 58 C362 35, 385 29, 408 37 C397 59, 374 69, 343 58Z" />
+        </g>
+
+        <g class="home-brand-intro__olives">
+          <ellipse cx="31" cy="476" rx="7" ry="9" transform="rotate(-28 31 476)" />
+          <ellipse cx="69" cy="416" rx="7" ry="9" transform="rotate(-25 69 416)" />
+          <ellipse cx="300" cy="87" rx="7" ry="9" transform="rotate(22 300 87)" />
+        </g>
+      </svg>
+
+      <div class="home-brand-intro__brand">
+        <img
+          src="/images/brand/gerson-canales-logo.webp"
+          width="640"
+          height="384"
+          alt=""
+          draggable="false"
+        />
+      </div>
+    </div>
+  </div>
+}
+
+<section class="home-hero" aria-labelledby="home-hero-title">
+  <div class="home-hero__media">
+    <img
+      ngSrc="/images/home/hero-gastronomy.webp"
+      fill
+      priority
+      alt="Plato gastronómico preparado para una experiencia privada"
+    />
+  </div>
+
+  <div class="home-hero__content">
+    <h1 id="home-hero-title">
+      <span>{{ 'home.hero.titleLine1' | translate }}</span>
+      <span>{{ 'home.hero.titleLine2' | translate }}</span>
+    </h1>
+
+    <p class="home-hero__description">
+      {{ 'home.hero.description' | translate }}
+    </p>
+
+    <a class="home-hero__action" routerLink="/solicitar-presupuesto">
+      {{ 'home.hero.primaryAction' | translate }}
+    </a>
+  </div>
+</section>
+
+<section class="home-intro" aria-labelledby="home-intro-title">
+  <div class="home-intro__content">
+    <div class="home-intro__ornament-wrapper" aria-hidden="true">
+      <img
+        class="home-intro__ornament"
+        ngSrc="/images/home/olivo-home.webp"
+        width="800"
+        height="533"
+        alt=""
+      />
+    </div>
+
+    <div class="home-intro__copy">
+      <h2 id="home-intro-title">
+        {{ 'home.intro.title' | translate }}
+      </h2>
+
+      <p>
+        {{ 'home.intro.description' | translate }}
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="home-services" aria-labelledby="home-services-title">
+  <h2 id="home-services-title" class="sr-only">
+    {{ 'home.featuredServices.sectionTitle' | translate }}
+  </h2>
+
+  @let services = 'home.featuredServices.items' | translate;
+
+  @if (services && services !== 'home.featuredServices.items') {
+    <div class="home-services__list">
+      @for (service of services.slice(0, 3); track service.id) {
+        <article class="home-service-card">
+          <div class="home-service-card__text">
+            <h3>{{ service.title }}</h3>
+
+            <p>{{ service.description }}</p>
+          </div>
+
+          <div class="home-service-card__media">
+            <img [ngSrc]="service.image" fill [alt]="service.title" />
+          </div>
+        </article>
+      }
+    </div>
+  }
+</section>
+
+<section class="home-about-preview" aria-labelledby="home-about-preview-title">
+  <div class="home-about-preview__media">
+    <img
+      ngSrc="/images/about/chef-gerson-portrait.webp"
+      width="900"
+      height="1125"
+      [alt]="'about.hero.imageAlt' | translate"
+    />
+  </div>
+
+  <div class="home-about-preview__content">
+    <div class="home-about-preview__eyebrow">
+      <span>
+        {{ 'home.aboutPreview.label' | translate }}
+      </span>
+
+      <img
+        class="home-about-preview__ornament"
+        ngSrc="/images/ui/olive-sprig.png"
+        width="64"
+        height="43"
+        alt=""
+        aria-hidden="true"
+      />
+    </div>
+
+    <h2 id="home-about-preview-title">
+      {{ 'home.aboutPreview.title' | translate }}
+    </h2>
+
+    <p>
+      {{ 'home.aboutPreview.description' | translate }}
+    </p>
+
+    <a class="home-about-preview__action" routerLink="/sobre-el-chef">
+      {{ 'home.aboutPreview.action' | translate }}
+
+      <span aria-hidden="true">→</span>
+    </a>
+  </div>
+</section>
+
+<app-final-cta />

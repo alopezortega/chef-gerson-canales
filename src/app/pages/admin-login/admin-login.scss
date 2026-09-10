@@ -1,0 +1,136 @@
+:host {
+  display: block;
+  min-height: 100dvh;
+}
+
+.admin-login {
+  display: grid;
+  min-height: 100dvh;
+  place-items: center;
+  padding: var(--spacing-lg);
+  background: linear-gradient(135deg, rgb(31 31 31 / 98%), rgb(37 86 62 / 88%));
+}
+
+.admin-login__card {
+  width: min(100%, 30rem);
+  padding: var(--spacing-lg);
+  border: 1px solid rgb(31 31 31 / 12%);
+  border-radius: 1rem;
+  background: var(--color-background-primary);
+  box-shadow: 0 1.5rem 4rem rgb(0 0 0 / 30%);
+}
+
+.admin-login__header {
+  margin-bottom: var(--spacing-lg);
+}
+
+.admin-login__eyebrow {
+  margin: 0 0 var(--spacing-sm);
+  color: var(--color-accent);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.admin-login__title {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: clamp(1.75rem, 6vw, 2.5rem);
+  line-height: 1.1;
+}
+
+.admin-login__description {
+  margin: var(--spacing-sm) 0 0;
+  color: rgb(31 31 31 / 72%);
+  line-height: 1.6;
+}
+
+.admin-login__form {
+  display: grid;
+  gap: var(--spacing-md);
+}
+
+.admin-login__field {
+  display: grid;
+  gap: var(--spacing-sm);
+}
+
+.admin-login__label {
+  color: var(--color-text-primary);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.admin-login__input {
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.75rem 0.875rem;
+  border: 1px solid rgb(31 31 31 / 24%);
+  border-radius: 0.625rem;
+  background: var(--color-background-primary);
+  color: var(--color-text-primary);
+  font: inherit;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.admin-login__input::placeholder {
+  color: rgb(31 31 31 / 48%);
+}
+
+.admin-login__input:focus-visible {
+  border-color: var(--color-accent);
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgb(37 86 62 / 18%);
+}
+
+.admin-login__input.ng-invalid.ng-touched {
+  border-color: #a82929;
+}
+
+.admin-login__error {
+  margin: 0;
+  color: #a82929;
+  font-size: 0.82rem;
+}
+
+.admin-login__submit {
+  min-height: 3rem;
+  margin-top: var(--spacing-sm);
+  padding: 0.75rem var(--spacing-md);
+  border: 0;
+  border-radius: 0.625rem;
+  background: var(--color-accent);
+  color: var(--color-background-primary);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    transform 160ms ease;
+}
+
+.admin-login__submit:hover {
+  background: var(--color-accent-hover);
+}
+
+.admin-login__submit:active {
+  transform: translateY(1px);
+}
+
+.admin-login__submit:focus-visible {
+  outline: 0.2rem solid rgb(37 86 62 / 28%);
+  outline-offset: 0.2rem;
+}
+
+@media (min-width: 48rem) {
+  .admin-login {
+    padding: 3rem;
+  }
+
+  .admin-login__card {
+    padding: 3rem;
+  }
+}

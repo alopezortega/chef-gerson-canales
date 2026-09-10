@@ -1,0 +1,754 @@
+{
+  "home": {
+    "hero": {
+      "titleLine1": "An experience",
+      "titleLine2": "around the table",
+      "description": "Private chef and tailored catering for moments that deserve to be extraordinary.",
+      "primaryAction": "Book an experience"
+    },
+    "intro": {
+      "title": "Cooking with purpose",
+      "description": "Every menu tells a story. We work with thoughtful ingredients, technique and sensitivity to create authentic, elegant and memorable experiences."
+    },
+    "valueProposition": {
+      "label": "An experience designed for you",
+      "title": "Professional, approachable cuisine tailored to every event",
+      "items": {
+        "personalized": {
+          "title": "Personalized service",
+          "description": "Each event is designed according to the type of celebration, the number of guests and each client's individual needs."
+        },
+        "professionalExperience": {
+          "title": "Professional experience",
+          "description": "Careful planning, quality ingredients and professional execution from beginning to end."
+        },
+        "privateAndCorporate": {
+          "title": "Private and corporate events",
+          "description": "Dining solutions for family celebrations, private gatherings and corporate events."
+        }
+      }
+    },
+    "featuredServices": {
+      "label": "Featured experiences",
+      "title": "A tailored proposal for every type of gathering",
+      "sectionTitle": "Featured experiences",
+      "action": "View experience",
+      "viewAll": "View all experiences",
+      "items": [
+        {
+          "id": "private-dinners",
+          "title": "Private dining",
+          "description": "Intimate, personalized experiences in the comfort of your home.",
+          "image": "/images/home/private-dining.webp"
+        },
+        {
+          "id": "events-celebrations",
+          "title": "Events & celebrations",
+          "description": "Tailored menus designed for social and corporate events.",
+          "image": "/images/home/events-celebrations.webp"
+        },
+        {
+          "id": "custom-catering",
+          "title": "Tailored catering",
+          "description": "Bespoke proposals combining savoury cuisine, pastry and thoughtful sweet details to create a complete dining experience.",
+          "image": "/images/home/custom-catering.webp"
+        }
+      ]
+    },
+    "aboutPreview": {
+      "label": "About me",
+      "title": "Passion, technique and dedication in every detail",
+      "description": "My cooking is rooted in origin, honesty and a contemporary approach.",
+      "action": "Discover my story"
+    },
+    "quoteCta": {
+      "label": "Tell me your idea",
+      "title": "Let's talk about your next experience",
+      "description": "Let's create unforgettable moments together.",
+      "action": "Contact"
+    }
+  },
+  "navigation": {
+    "mainAriaLabel": "Main navigation",
+    "socialAriaLabel": "Social media",
+    "instagramAriaLabel": "Visit Gerson Canales on Instagram",
+    "menu": {
+      "open": "Open menu",
+      "close": "Close menu"
+    },
+    "links": {
+      "services": "Private chef & catering",
+      "gallery": "Gallery",
+      "quoteRequest": "Contact",
+      "about": "About the chef"
+    }
+  },
+  "footer": {
+    "brand": {
+      "homeAriaLabel": "Go to the home page",
+      "description": "Dining experiences for private and corporate events."
+    },
+    "navigation": {
+      "ariaLabel": "Footer navigation",
+      "services": "Private chef & catering",
+      "gallery": "Gallery",
+      "quoteRequest": "Contact",
+      "about": "About the chef"
+    },
+    "social": {
+      "instagramAriaLabel": "Visit Gerson Canales on Instagram; opens in a new tab"
+    },
+    "copyright": "© {{ year }} Gerson Canales. All rights reserved.",
+    "legal": {
+      "ariaLabel": "Legal information",
+      "notice": "Legal notice",
+      "privacy": "Privacy policy",
+      "cookies": "Cookies"
+    }
+  },
+  "gallery": {
+    "label": "Gallery",
+    "title": "Moments to savour",
+    "description": "Every experience is unique. Thoughtful ingredients, technique, sensitivity and hospitality come together to create memories that last beyond the table.",
+    "empty": "There are no images available yet.",
+    "stories": {
+      "label": "Around the table",
+      "title": "Cuisine that tells stories",
+      "description": "From intimate dinners to special celebrations, every detail is designed to surprise, connect and turn the table into a memorable experience."
+    },
+    "details": {
+      "label": "The finishing touch",
+      "title": "Details that make the difference",
+      "description": "Careful presentation, seasonal ingredients and a refined aesthetic that celebrates the beauty of simplicity."
+    },
+    "craft": {
+      "label": "Behind every dish",
+      "title": "The craft in motion",
+      "description": "Fire, technique, ingredients and precision come together in the kitchen before each plate reaches the table."
+    },
+    "items": {
+      "searedFish": {
+        "title": "Seared fish",
+        "alt": "Seared fish dish with seasonal garnish in a warm candlelit setting"
+      },
+      "ravioliPlate": {
+        "title": "Ravioli",
+        "alt": "Ravioli served with a creamy sauce and fresh herbs"
+      },
+      "candlelitTable": {
+        "title": "Candlelit table",
+        "alt": "Elegant table prepared for an intimate candlelit dinner"
+      },
+      "chefPlating": {
+        "title": "Plating",
+        "alt": "Chef carefully finishing the presentation of a dish"
+      },
+      "candlelitDinner": {
+        "title": "Private dining",
+        "alt": "Warm private dining table prepared with candles and floral details"
+      },
+      "meringueDessert": {
+        "title": "Meringue dessert",
+        "alt": "Toasted meringue dessert presented on an elegant ceramic plate"
+      },
+      "chocolateCaramelDessert": {
+        "title": "Chocolate dessert",
+        "alt": "Chocolate dessert with golden caramel presented on an elegant plate"
+      },
+      "chocolateSphereDessert": {
+        "title": "Chocolate sphere",
+        "alt": "Chocolate sphere dessert with cocoa crumble and delicate gold detail"
+      },
+      "chefFlambe": {
+        "title": "Cooking with fire",
+        "alt": "Gerson Canales cooking over an open flame in a professional kitchen"
+      },
+      "gourmetSirloinPlate": {
+        "title": "Gourmet sirloin",
+        "alt": "Gourmet sirloin dish plated with purée, sauce and microgreens"
+      },
+      "lambRack": {
+        "title": "Lamb",
+        "alt": "Roasted lamb rack plated with vegetables, herbs and sauce"
+      },
+      "salmonCanapes": {
+        "title": "Salmon canapés",
+        "alt": "Salmon canapés finished with roe and fresh microgreens"
+      },
+      "citrusTart": {
+        "title": "Citrus tart",
+        "alt": "Citrus tart finished with cream, orange segments, edible flowers and a delicate citrus garnish"
+      },
+      "pastryPiping": {
+        "title": "Pastry in progress",
+        "alt": "Hands carefully piping cream onto an individual pastry in warm kitchen light"
+      },
+      "elegantDinnerTable": {
+        "title": "Celebration table",
+        "alt": "Elegant dining table prepared with flowers, candles and a plated dish for a special celebration"
+      },
+      "beetrootSalad": {
+        "title": "Seasonal vegetables",
+        "alt": "Refined beetroot and seasonal vegetable dish with fresh leaves and creamy elements"
+      },
+      "chefFinishingDish": {
+        "title": "Final touch",
+        "alt": "Gerson Canales carefully finishing a plated dish in a professional kitchen"
+      },
+      "petitFours": {
+        "title": "Petit fours",
+        "alt": "Selection of handcrafted petit fours and small desserts presented on an elegant ceramic plate"
+      },
+      "beetrootSaladCandlelight": {
+        "title": "Beetroot salad",
+        "alt": "Refined beetroot salad with creamy cheese, pistachios, edible flowers and microgreens in a warm candlelit setting"
+      },
+      "glazedDuckPlate": {
+        "title": "Glazed duck",
+        "alt": "Glazed sliced duck breast served with purée, roasted vegetables, sauce and microgreens in a warm candlelit setting"
+      }
+    },
+    "finalChapter": {
+      "label": "The final detail",
+      "title": "A finish to remember",
+      "description": "Pastry, seasonal ingredients and thoughtful finishing touches complete the experience with the same care given to every savoury dish."
+    }
+  },
+  "about": {
+    "hero": {
+      "label": "About the chef",
+      "title": "Gerson Canales",
+      "description": "I cook to create connections and moments that stay with you.",
+      "imageAlt": "Portrait of chef Gerson Canales in a professional kitchen"
+    },
+    "origins": {
+      "label": "My origins",
+      "title": "From Honduras to Spain",
+      "description": "My journey in the kitchen began in Honduras, where I discovered the value of ingredients, hospitality and consistent hard work. In Spain, I continued learning, expanded my experience and confirmed that cooking is also a way of caring for others.",
+      "imageAlt": "Gerson Canales during a personal moment in his journey"
+    },
+    "journey": {
+      "label": "My journey",
+      "title": "Places that taught me to see the world differently",
+      "description": "Travelling, working and learning across different cultures has shaped the way I understand cooking.",
+      "items": [
+        {
+          "id": "sicily",
+          "title": "Sicily",
+          "description": "Tradition, ingredients and the Mediterranean.",
+          "image": "/images/about/gerson-sicily-coast.webp",
+          "alt": "Gerson Canales during a trip through Sicily"
+        },
+        {
+          "id": "iceland",
+          "title": "Iceland",
+          "description": "Nature, experience and new perspectives.",
+          "image": "/images/about/gerson-iceland-harbor.webp",
+          "alt": "Gerson Canales at a harbour in Iceland"
+        },
+        {
+          "id": "mozambique",
+          "title": "Mozambique",
+          "description": "People, ingredients and cooperation.",
+          "image": "/images/about/gerson-mozambique-community.webp",
+          "alt": "Gerson Canales sharing a moment with children in Mozambique"
+        }
+      ]
+    },
+    "story": {
+      "ariaLabel": "Gerson Canales' professional journey",
+      "craft": {
+        "label": "My craft",
+        "title": "Cooking means understanding the ingredients and every detail",
+        "description": "Technique, order and passion in service of flavour. I work with real, seasonal ingredients, treated with respect and brought to their best expression in every dish.",
+        "imageAlt": "Gerson Canales finishing several dishes during a service"
+      },
+      "pastry": {
+        "label": "Pastry",
+        "title": "Sweet creations are also part of my story",
+        "description": "Pastry is where balance begins. Textures, memories and small pleasures that complete the experience.",
+        "imageAlt": "Dessert created as part of Gerson Canales' culinary proposal"
+      },
+      "teaching": {
+        "label": "Teaching and sharing",
+        "title": "To teach is to multiply",
+        "description": "I enjoy teaching, sharing knowledge and helping other cooks grow. Because when someone learns, we all move forward.",
+        "imageAlt": "Gerson Canales working alongside another cook during a service"
+      },
+      "table": {
+        "label": "Around the table",
+        "title": "More than a dinner, an experience",
+        "description": "I create personalized dining experiences for celebrations, gatherings and special moments that leave a lasting impression.",
+        "imageAlt": "Table prepared for a private dining experience"
+      }
+    },
+    "philosophy": {
+      "label": "Work philosophy",
+      "title": "A professional and approachable way of understanding cuisine",
+      "description": "The aim is to provide a carefully planned experience from beginning to end, combining organization, attention to detail and clear communication with the client."
+    },
+    "values": {
+      "label": "His way of working",
+      "title": "The values behind every proposal",
+      "empty": "There are no professional values available yet.",
+      "items": [
+        {
+          "id": "personalization",
+          "title": "Personalization",
+          "description": "Every menu and service is adapted to the characteristics of the occasion and the client's preferences."
+        },
+        {
+          "id": "attention-to-detail",
+          "title": "Attention to detail",
+          "description": "Planning, presentation and service coordination are carefully managed to provide a consistent experience."
+        },
+        {
+          "id": "closeness",
+          "title": "Approachability",
+          "description": "Direct communication helps to understand every idea and turn it into a realistic dining proposal."
+        }
+      ]
+    },
+    "services": {
+      "label": "Private chef & catering",
+      "title": "Experiences for different types of gatherings",
+      "description": "Private dinners, celebrations, small corporate events and proposals tailored to every occasion.",
+      "action": "View experiences"
+    },
+    "quoteCta": {
+      "label": "Tell me your idea",
+      "title": "Are you planning an event?",
+      "description": "Share the details of your celebration or gathering and let us prepare a dining proposal tailored to your needs.",
+      "action": "Contact"
+    }
+  },
+  "services": {
+    "hero": {
+      "label": "Services",
+      "titleLine1": "Private chef",
+      "titleLine2": "& catering",
+      "description": "Dining experiences tailored to you.",
+      "imageAlt": "Gourmet scallop dish with sauce, edible flowers and microgreens"
+    },
+    "experiences": {
+      "label": "Cuisine that connects",
+      "title": "We create intimate experiences around the table",
+      "description": "Creative cuisine, seasonal ingredients and thoughtful service in every detail, so all you need to do is enjoy.",
+      "empty": "There are no experiences available yet.",
+      "items": [
+        {
+          "id": "private-dining",
+          "title": "Private chef at home",
+          "description": "Enjoy a unique dining experience in the comfort of your home.",
+          "image": "/images/services/services-private-dining.webp",
+          "imageAlt": "Private dining table with a gourmet dish served by candlelight",
+          "icon": "/images/services/services-private-dining-icon.webp"
+        },
+        {
+          "id": "celebrations",
+          "title": "Celebrations",
+          "description": "We create memorable moments for special occasions.",
+          "image": "/images/services/services-celebration.webp",
+          "imageAlt": "Guests raising their glasses during an intimate candlelit celebration",
+          "icon": "/images/services/services-celebration-icon.webp"
+        },
+        {
+          "id": "custom-catering",
+          "title": "Tailored catering",
+          "description": "Personalized proposals for private and corporate events.",
+          "image": "/images/services/services-custom-catering.webp",
+          "imageAlt": "Selection of small bites prepared for a catering service",
+          "icon": "/images/services/services-custom-catering-icon.webp"
+        }
+      ]
+    },
+    "document": {
+      "loading": "Checking available sample...",
+      "label": "Explore a real proposal",
+      "title": "Catering sample",
+      "description": "Download an illustrative sample to discover the style of cuisine, selection of bites and way each experience can be presented.",
+      "download": "Download sample (PDF)",
+      "downloading": "Preparing download...",
+      "format": "PDF format",
+      "error": "The download could not be prepared. Please try again.",
+      "previewTitle": "Catering sample",
+      "samples": {
+        "gilda": {
+          "title": "Mixed gildas",
+          "description": "A selection of small bites to begin the experience."
+        },
+        "salmon": {
+          "title": "Salmon wraps",
+          "description": "Salmon, soft cream, fresh leaves and citrus notes."
+        },
+        "pistachio": {
+          "title": "Pistachio cupcake",
+          "description": "A small sweet detail to complete the proposal."
+        }
+      }
+    },
+    "process": {
+      "title": "Tailored to you, always",
+      "steps": [
+        {
+          "id": "ideas",
+          "title": "We get to know your ideas",
+          "description": "We listen, understand and define the experience.",
+          "icon": "/images/services/services-process-ideas-icon.webp"
+        },
+        {
+          "id": "menu",
+          "title": "We design the menu",
+          "description": "A personalized proposal using seasonal ingredients.",
+          "icon": "/images/services/services-process-menu-icon.webp"
+        },
+        {
+          "id": "service",
+          "title": "We take care of everything",
+          "description": "Shopping, mise en place, service and presentation.",
+          "icon": "/images/services/services-process-service-icon.webp"
+        },
+        {
+          "id": "enjoy",
+          "title": "You simply enjoy",
+          "description": "We take care of every detail.",
+          "icon": "/images/services/services-process-enjoy-icon.webp"
+        }
+      ]
+    }
+  },
+  "quoteRequest": {
+    "eyebrow": "Personalised quote",
+    "title": "Tell me how you imagine your event",
+    "description": "Complete the form with the main details. This information will help me prepare a proposal adapted to the type of event, number of guests and service requirements.",
+    "form": {
+      "name": {
+        "label": "Name",
+        "placeholder": "Your full name",
+        "required": "Name is required.",
+        "invalid": "Enter a valid name without numbers."
+      },
+      "email": {
+        "label": "Email address",
+        "placeholder": "name@example.com",
+        "required": "Email address is required.",
+        "invalid": "Enter a valid email address."
+      },
+      "phone": {
+        "label": "Phone number",
+        "placeholder": "Your phone number",
+        "invalid": "Enter a valid phone number."
+      },
+      "eventType": {
+        "label": "Type of event",
+        "placeholder": "Select an option",
+        "required": "Select a type of event.",
+        "options": {
+          "privateDinner": "Private dinner",
+          "familyCelebration": "Family celebration",
+          "corporateEvent": "Corporate event",
+          "meetingCatering": "Meeting catering",
+          "other": "Other type of event"
+        }
+      },
+      "eventDate": {
+        "label": "Event date",
+        "future": "Select a date after today."
+      },
+      "guestCount": {
+        "label": "Number of guests",
+        "required": "The number of guests is required.",
+        "min": "There must be at least one guest."
+      },
+      "location": {
+        "label": "Event location",
+        "placeholder": "City, town or approximate address"
+      },
+      "dietaryRequirements": {
+        "label": "Allergies, intolerances and dietary requirements",
+        "placeholder": "Describe any relevant dietary requirements",
+        "help": "Include any allergies, intolerances, restrictions or preferences that should be considered."
+      },
+      "additionalInformation": {
+        "label": "Additional information",
+        "placeholder": "Tell us any other relevant details about the event",
+        "help": "You can include timings, venue characteristics, event style or any information that may help prepare the proposal."
+      },
+      "attachment": {
+        "label": "Attach a file",
+        "help": "You can attach a PDF, JPG or PNG file up to 10 MB.",
+        "selected": "Selected file",
+        "invalidType": "Select a valid PDF, JPG or PNG file.",
+        "maxSize": "The file must not be larger than 10 MB."
+      },
+      "privacy": {
+        "basicInfo": "Data controller: Gerson Gustavo Gonzalez Canales. Purpose: to manage and respond to your enquiry or quote request. Your data will not be used for advertising without separate consent.",
+        "label": "I have read the Privacy Policy and expressly consent to the processing of the information I provide, including, where applicable, information about allergies, intolerances or dietary requirements, in order to manage my request.",
+        "policyLink": "Read the Privacy Policy",
+        "required": "You must accept the privacy terms before sending the request."
+      },
+      "submit": "Send request",
+      "requiredFields": "Fields marked with * are required.",
+      "success": "Your request has been sent successfully.",
+      "error": "Your request could not be sent. Please try again."
+    },
+    "leaveDialog": {
+      "eyebrow": "Unsaved changes",
+      "title": "Are you sure you want to leave?",
+      "description": "The information you entered in the form will be lost if you leave this page.",
+      "stay": "Keep editing",
+      "leave": "Leave without saving"
+    }
+  },
+  "admin": {
+    "login": {
+      "eyebrow": "Private area",
+      "title": "Admin access",
+      "description": "Enter your credentials to access the management dashboard.",
+      "form": {
+        "email": {
+          "label": "Email address",
+          "placeholder": "admin@example.com",
+          "required": "Email address is required.",
+          "invalid": "Enter a valid email address."
+        },
+        "password": {
+          "label": "Password",
+          "placeholder": "Enter your password",
+          "required": "Password is required."
+        },
+        "submit": "Sign in",
+        "submitting": "Signing in...",
+        "authenticationError": "The email address or password is incorrect."
+      }
+    },
+    "layout": {
+      "signOut": "Sign out",
+      "signingOut": "Signing out...",
+      "signOutDialog": {
+        "eyebrow": "Private area",
+        "title": "Do you want to sign out?",
+        "description": "You will need to sign in again to access the administration area.",
+        "cancel": "Cancel",
+        "confirm": "Sign out"
+      }
+    },
+    "status": {
+      "pending": "Pending",
+      "contacted": "Contacted",
+      "closed": "Closed"
+    },
+    "eventTypes": {
+      "privateDinner": "Private dinner",
+      "familyCelebration": "Family celebration",
+      "corporateEvent": "Corporate event",
+      "meetingCatering": "Meeting catering",
+      "other": "Other type of event"
+    },
+    "dashboard": {
+      "eyebrow": "Admin",
+      "title": "Quote requests",
+      "loading": "Loading quote requests...",
+      "error": "Unable to load quote requests.",
+      "empty": "There are no quote requests yet.",
+      "total": "Total requests: {{ count }}",
+      "table": {
+        "name": "Name",
+        "email": "Email",
+        "eventType": "Event type",
+        "eventDate": "Event date",
+        "guests": "Guests",
+        "createdAt": "Created at",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "viewDetails": "View details",
+      "manageServiceDocument": "Manage service document"
+    },
+    "quoteRequestDetail": {
+      "back": "Back to quote requests",
+      "title": "Quote request detail",
+      "loading": "Loading quote request...",
+      "error": "Unable to load this quote request.",
+      "notFound": "Quote request not found.",
+      "fields": {
+        "name": "Name",
+        "email": "Email",
+        "phone": "Phone",
+        "eventType": "Event type",
+        "eventDate": "Event date",
+        "guests": "Guests",
+        "location": "Location",
+        "dietaryRequirements": "Dietary requirements",
+        "additionalInformation": "Additional information",
+        "currentStatus": "Current status",
+        "createdAt": "Created at"
+      },
+      "attachment": {
+        "title": "Attachment",
+        "fallbackName": "Attached file",
+        "opening": "Opening attachment...",
+        "open": "Open attachment",
+        "none": "No attachment provided."
+      },
+      "statusControl": {
+        "label": "Status",
+        "updating": "Updating...",
+        "update": "Update status"
+      },
+      "delete": {
+        "title": "Delete request",
+        "description": "This action permanently deletes the quote request and its private attachment, if one exists.",
+        "action": "Delete request",
+        "deleting": "Deleting request...",
+        "confirm": "Are you sure you want to delete this quote request? This action cannot be undone."
+      }
+    },
+    "serviceDocument": {
+      "eyebrow": "Service document",
+      "title": "Manage service document",
+      "description": "Upload, replace or delete the PDF that visitors can download from the Services page.",
+      "loading": "Loading current document...",
+      "empty": "There is no service document published yet.",
+      "current": {
+        "title": "Current document",
+        "fileName": "File name",
+        "updatedAt": "Last updated"
+      },
+      "upload": {
+        "title": "Upload document",
+        "replaceTitle": "Replace document",
+        "label": "Select a PDF file",
+        "selectedFile": "Selected file"
+      },
+      "actions": {
+        "upload": "Upload document",
+        "uploading": "Uploading document...",
+        "replace": "Replace document",
+        "delete": "Delete document",
+        "deleting": "Deleting document..."
+      },
+      "feedback": {
+        "invalidFile": "Select a valid PDF file.",
+        "uploadSuccess": "The document was saved successfully.",
+        "deleteSuccess": "The document was deleted successfully.",
+        "error": "The operation could not be completed. Please try again."
+      },
+      "deleteDialog": {
+        "description": "Are you sure you want to delete the current document? It will no longer be available to visitors."
+      }
+    }
+  },
+  "notFound": {
+    "eyebrow": "Page not found",
+    "title": "This page does not exist",
+    "action": "Back to home"
+  },
+  "legal": {
+    "updated": "Last updated: September 2026",
+    "privacy": {
+      "eyebrow": "Legal information",
+      "title": "Privacy policy",
+      "intro": "This policy explains how personal data submitted through this website is processed and what rights you have.",
+      "controller": {
+        "title": "1. Data controller",
+        "text": "The data controller is Gerson Gustavo Gonzalez Canales. You may contact the controller regarding privacy matters at:"
+      },
+      "data": {
+        "title": "2. Personal data we process",
+        "text": "The website only requests information that is reasonably necessary to respond to enquiries and prepare catering or private-chef proposals.",
+        "items": {
+          "identification": "Identification and contact details, such as name, email address and telephone number.",
+          "event": "Information about the event, such as date, location, type of event, number of guests and additional information.",
+          "dietary": "Dietary information voluntarily supplied by you, which may include allergies, intolerances or other health-related information.",
+          "attachments": "Documents or images that you voluntarily attach to your request."
+        }
+      },
+      "purpose": {
+        "title": "3. Purpose of processing",
+        "text": "Personal data is processed to receive, assess, manage and respond to enquiries or quote requests, communicate with the interested person and, where appropriate, prepare a proposal related to the requested service."
+      },
+      "legalBasis": {
+        "title": "4. Legal basis",
+        "text": "The main legal basis is the processing necessary to take steps at your request before entering into a possible service relationship, together with your consent where applicable.",
+        "health": "If you voluntarily provide information about allergies, intolerances or dietary requirements that may reveal health information, it is processed on the basis of your explicit consent for the sole purpose of adapting the requested proposal or service."
+      },
+      "retention": {
+        "title": "5. Retention period",
+        "text": "If no service relationship is established, the information associated with an enquiry or quote request will normally be deleted within 12 months after the request is closed, unless it must be retained for a longer period to comply with a legal obligation or to deal with possible claims. If a service relationship is established, the data may be retained for the periods required by applicable law."
+      },
+      "recipients": {
+        "title": "6. Service providers and recipients",
+        "text": "Personal data is not sold. It may be processed by technology providers that are necessary to operate the website, store requests, send notifications or host the service, acting under their applicable contractual and data-protection terms. Current providers include:",
+        "transfers": "Some technology providers may process data from countries outside the European Economic Area. Where this occurs, the applicable legal safeguards, such as adequacy decisions or standard contractual clauses, must be used."
+      },
+      "rights": {
+        "title": "7. Your rights",
+        "text": "You may request access, rectification, erasure, objection, restriction of processing and data portability, and you may withdraw consent at any time where processing is based on consent. To exercise these rights, write to chefgersoncanales@gmail.com and identify the right you wish to exercise.",
+        "authority": "You also have the right to lodge a complaint with the Spanish Data Protection Agency (AEPD) if you believe that your personal data has not been processed in accordance with applicable law."
+      },
+      "security": {
+        "title": "8. Security",
+        "text": "Reasonable technical and organisational measures are applied to reduce the risk of unauthorised access, loss, alteration or disclosure of personal data. Access to the administration area and private attachments is restricted."
+      }
+    },
+    "notice": {
+      "eyebrow": "Legal information",
+      "title": "Legal notice",
+      "intro": "This notice regulates access to and use of this website and identifies the person responsible for its content.",
+      "owner": {
+        "title": "1. Website owner",
+        "text": "Website owner and contact person: Gerson Gustavo Gonzalez Canales."
+      },
+      "purpose": {
+        "title": "2. Purpose of the website",
+        "text": "The website presents private-chef and catering services and provides a channel through which users may request information or a personalised proposal."
+      },
+      "use": {
+        "title": "3. Conditions of use",
+        "text": "Users agree to use the website lawfully and in good faith, and not to use it for fraudulent, unlawful or harmful purposes or in a way that interferes with its normal operation."
+      },
+      "intellectualProperty": {
+        "title": "4. Intellectual and industrial property",
+        "text": "Unless otherwise indicated, the design, texts, photographs, graphic elements, brand assets and other original content of this website are protected by the applicable intellectual and industrial property rules. Their reproduction or commercial use without the corresponding authorisation is prohibited."
+      },
+      "liability": {
+        "title": "5. Liability",
+        "text": "Reasonable efforts are made to keep the information on the website accurate and the service available. However, continuous availability cannot be guaranteed, nor can responsibility be assumed for interruptions caused by third-party services, maintenance, technical incidents or circumstances beyond reasonable control."
+      },
+      "links": {
+        "title": "6. Third-party links",
+        "text": "The website may contain links to third-party websites or services. The owner is not responsible for the content, privacy practices or availability of external websites."
+      },
+      "law": {
+        "title": "7. Applicable law",
+        "text": "This website is governed by Spanish law and by any directly applicable European Union rules. Any dispute will be dealt with by the competent courts in accordance with the applicable consumer and procedural rules."
+      }
+    },
+    "cookies": {
+      "eyebrow": "Legal information",
+      "title": "Cookies policy",
+      "intro": "This page explains the current use of cookies and similar browser storage technologies on the website.",
+      "whatAre": {
+        "title": "1. What cookies are",
+        "text": "Cookies are small files or browser storage mechanisms that may be used to remember technical information, maintain sessions or collect information about how a website is used."
+      },
+      "currentUse": {
+        "title": "2. Current use on this website",
+        "text": "At the time of publication, the public website does not use advertising, behavioural profiling or audience-measurement cookies and no analytics or advertising platform has been intentionally integrated."
+      },
+      "technical": {
+        "title": "3. Strictly necessary technologies",
+        "text": "Strictly necessary technical storage may be used where required for security, basic operation or authentication in the restricted administration area. These technologies are not used to create advertising profiles."
+      },
+      "noTracking": {
+        "title": "4. No advertising or analytics consent banner",
+        "text": "Because no non-essential advertising or analytics cookies are currently used on the public website, no consent banner is displayed for those purposes."
+      },
+      "changes": {
+        "title": "5. Future changes",
+        "text": "If analytics, advertising, social-media tracking or other non-essential technologies are added in the future, this policy and the consent mechanism must be reviewed before those technologies are activated."
+      }
+    }
+  }
+}
