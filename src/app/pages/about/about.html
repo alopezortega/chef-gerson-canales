@@ -3,9 +3,10 @@
     <figure class="about-hero__media">
       <img
         class="about-hero__image"
-        src="/images/about/gerson-canales-about-hero.png"
+        ngSrc="/images/about/gerson-canales-about-hero.webp"
         [alt]="'about.hero.imageAlt' | translate"
-        loading="eager"
+        fill
+        priority
       />
     </figure>
 
@@ -33,9 +34,9 @@
       <figure class="about-origins__media">
         <img
           class="about-origins__image"
-          src="/images/about/gerson-origins-personal.png"
+          ngSrc="/images/about/gerson-origins-personal.webp"
           [alt]="'about.origins.imageAlt' | translate"
-          loading="lazy"
+          fill
         />
       </figure>
 
@@ -81,9 +82,9 @@
             <figure class="about-journey__card-media">
               <img
                 class="about-journey__card-image"
-                [src]="journeyItem.image"
+                [ngSrc]="journeyItem.image"
                 [alt]="journeyItem.alt"
-                loading="lazy"
+                fill
               />
             </figure>
 
@@ -119,9 +120,9 @@
       <figure class="about-story__media">
         <img
           class="about-story__image"
-          src="/images/about/gerson-kitchen-plating.png"
+          ngSrc="/images/about/gerson-kitchen-plating.webp"
           [alt]="'about.story.craft.imageAlt' | translate"
-          loading="lazy"
+          fill
         />
       </figure>
     </article>
@@ -130,9 +131,9 @@
       <figure class="about-story__media">
         <img
           class="about-story__image"
-          src="/images/about/gerson-dessert-story.png"
+          ngSrc="/images/about/gerson-dessert-story.webp"
           [alt]="'about.story.pastry.imageAlt' | translate"
-          loading="lazy"
+          fill
         />
       </figure>
 
@@ -169,9 +170,9 @@
       <figure class="about-story__media">
         <img
           class="about-story__image"
-          src="/images/about/gerson-risotto-plating.png"
+          ngSrc="/images/about/gerson-risotto-plating.webp"
           [alt]="'about.story.teaching.imageAlt' | translate"
-          loading="lazy"
+          fill
         />
       </figure>
     </article>
@@ -180,9 +181,9 @@
       <figure class="about-story__media">
         <img
           class="about-story__image"
-          src="/images/about/gerson-dining-experience.png"
+          ngSrc="/images/about/gerson-dining-experience.webp"
           [alt]="'about.story.table.imageAlt' | translate"
-          loading="lazy"
+          fill
         />
       </figure>
 

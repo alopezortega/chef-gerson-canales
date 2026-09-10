@@ -24,6 +24,7 @@ describe("NotFound", () => {
     component = fixture.componentInstance;
 
     fixture.detectChanges();
+    await fixture.whenStable();
   });
 
   it("should create", () => {
@@ -31,41 +32,42 @@ describe("NotFound", () => {
   });
 
   it("should render the 404 code", () => {
-    const element = fixture.nativeElement as HTMLElement;
+    const element: HTMLElement = fixture.nativeElement;
+    const code = element.querySelector(".not-found__code");
 
-    expect(
-      element.querySelector(".not-found__code")?.textContent?.trim(),
-    ).toBe("404");
+    expect(code?.textContent?.trim()).toBe("404");
   });
 
   it("should provide a link back to the home page", () => {
-    const element = fixture.nativeElement as HTMLElement;
-
-    const homeLink = element.querySelector<HTMLAnchorElement>(
+    const element: HTMLElement = fixture.nativeElement;
+    const link = element.querySelector<HTMLAnchorElement>(
       ".not-found__action",
     );
 
-    expect(homeLink).toBeTruthy();
-    expect(homeLink?.getAttribute("href")).toBe("/");
+    expect(link).toBeTruthy();
+    expect(link?.getAttribute("href")).toBe("/");
   });
 
   it("should provide desktop and mobile images", () => {
-    const element = fixture.nativeElement as HTMLElement;
+    const element: HTMLElement = fixture.nativeElement;
 
     const image = element.querySelector<HTMLImageElement>(
       ".not-found__image",
     );
 
-    const mobileSource = element.querySelector<HTMLSourceElement>(
+    const source = element.querySelector<HTMLSourceElement>(
       ".not-found__visual source",
     );
 
+    expect(image).toBeTruthy();
+    expect(source).toBeTruthy();
+
     expect(image?.getAttribute("src")).toBe(
-      "/images/not-found/not-found-hero.png",
+      "/images/not-found/not-found-hero.webp",
     );
 
-    expect(mobileSource?.getAttribute("srcset")).toBe(
-      "/images/not-found/not-found-hero-mobile.png",
+    expect(source?.getAttribute("srcset")).toBe(
+      "/images/not-found/not-found-hero-mobile.webp",
     );
   });
 });

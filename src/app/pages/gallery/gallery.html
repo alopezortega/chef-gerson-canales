@@ -7,7 +7,9 @@
 
       <img
         class="gallery__hero-divider"
-        src="/images/gallery/gallery-olive-divider.png"
+        ngSrc="/images/gallery/gallery-olive-divider.webp"
+        width="160"
+        height="53"
         alt=""
         aria-hidden="true"
       />
@@ -23,9 +25,12 @@
 
     <img
       class="gallery__hero-branch"
-      src="/images/gallery/gallery-olive-branch.png"
+      ngSrc="/images/gallery/gallery-olive-branch.webp"
+      width="480"
+      height="640"
       alt=""
       aria-hidden="true"
+      priority
     />
   </header>
 
@@ -37,8 +42,10 @@
         <figure class="gallery__featured">
           <img
             class="gallery__image gallery__image--featured"
-            [src]="featuredImage.imageUrl"
+            [ngSrc]="featuredImage.imageUrl"
             [alt]="featuredImage.altKey | translate"
+            fill
+            priority
           />
         </figure>
       }
@@ -68,9 +75,9 @@
             <figure class="gallery__media gallery__media--stories-main">
               <img
                 class="gallery__image"
-                [src]="ravioliImage.imageUrl"
+                [ngSrc]="ravioliImage.imageUrl"
                 [alt]="ravioliImage.altKey | translate"
-                loading="lazy"
+                fill
               />
             </figure>
           }
@@ -80,9 +87,9 @@
               <figure class="gallery__media">
                 <img
                   class="gallery__image"
-                  [src]="tableImage.imageUrl"
+                  [ngSrc]="tableImage.imageUrl"
                   [alt]="tableImage.altKey | translate"
-                  loading="lazy"
+                  fill
                 />
               </figure>
             }
@@ -91,9 +98,9 @@
               <figure class="gallery__media">
                 <img
                   class="gallery__image"
-                  [src]="platingImage.imageUrl"
+                  [ngSrc]="platingImage.imageUrl"
                   [alt]="platingImage.altKey | translate"
-                  loading="lazy"
+                  fill
                 />
               </figure>
             }
@@ -105,9 +112,9 @@
         <figure class="gallery__panorama">
           <img
             class="gallery__image gallery__image--panorama"
-            [src]="dinnerImage.imageUrl"
+            [ngSrc]="dinnerImage.imageUrl"
             [alt]="dinnerImage.altKey | translate"
-            loading="lazy"
+            fill
           />
         </figure>
       }
@@ -122,9 +129,9 @@
               <figure class="gallery__media">
                 <img
                   class="gallery__image"
-                  [src]="meringueImage.imageUrl"
+                  [ngSrc]="meringueImage.imageUrl"
                   [alt]="meringueImage.altKey | translate"
-                  loading="lazy"
+                  fill
                 />
               </figure>
             }
@@ -133,9 +140,9 @@
               <figure class="gallery__media">
                 <img
                   class="gallery__image"
-                  [src]="chocolateImage.imageUrl"
+                  [ngSrc]="chocolateImage.imageUrl"
                   [alt]="chocolateImage.altKey | translate"
-                  loading="lazy"
+                  fill
                 />
               </figure>
             }
@@ -161,9 +168,9 @@
             <figure class="gallery__media gallery__media--details-main">
               <img
                 class="gallery__image"
-                [src]="sphereImage.imageUrl"
+                [ngSrc]="sphereImage.imageUrl"
                 [alt]="sphereImage.altKey | translate"
-                loading="lazy"
+                fill
               />
             </figure>
           }
@@ -178,9 +185,9 @@
           <figure class="gallery__craft-featured">
             <img
               class="gallery__image"
-              [src]="chefImage.imageUrl"
+              [ngSrc]="chefImage.imageUrl"
               [alt]="chefImage.altKey | translate"
-              loading="lazy"
+              fill
             />
           </figure>
         }
@@ -206,9 +213,9 @@
             <figure class="gallery__media">
               <img
                 class="gallery__image"
-                [src]="galleryItem.imageUrl"
+                [ngSrc]="galleryItem.imageUrl"
                 [alt]="galleryItem.altKey | translate"
-                loading="lazy"
+                fill
               />
             </figure>
           }
@@ -221,9 +228,9 @@
             <figure class="gallery__media gallery__media--pastry-main">
               <img
                 class="gallery__image"
-                [src]="citrusTartImage.imageUrl"
+                [ngSrc]="citrusTartImage.imageUrl"
                 [alt]="citrusTartImage.altKey | translate"
-                loading="lazy"
+                fill
               />
             </figure>
           }
@@ -232,9 +239,9 @@
             <figure class="gallery__media gallery__media--pastry-process">
               <img
                 class="gallery__image"
-                [src]="pastryImage.imageUrl"
+                [ngSrc]="pastryImage.imageUrl"
                 [alt]="pastryImage.altKey | translate"
-                loading="lazy"
+                fill
               />
             </figure>
           }
@@ -244,9 +251,9 @@
           <figure class="gallery__final-panorama">
             <img
               class="gallery__image"
-              [src]="elegantTableImage.imageUrl"
+              [ngSrc]="elegantTableImage.imageUrl"
               [alt]="elegantTableImage.altKey | translate"
-              loading="lazy"
+              fill
             />
           </figure>
         }
@@ -272,9 +279,9 @@
             <figure class="gallery__media">
               <img
                 class="gallery__image"
-                [src]="beetrootImage.imageUrl"
+                [ngSrc]="beetrootImage.imageUrl"
                 [alt]="beetrootImage.altKey | translate"
-                loading="lazy"
+                fill
               />
             </figure>
           }
@@ -283,9 +290,9 @@
             <figure class="gallery__media gallery__media--chef-final">
               <img
                 class="gallery__image"
-                [src]="finishingImage.imageUrl"
+                [ngSrc]="finishingImage.imageUrl"
                 [alt]="finishingImage.altKey | translate"
-                loading="lazy"
+                fill
               />
             </figure>
           }
@@ -294,9 +301,9 @@
             <figure class="gallery__media gallery__media--petit-fours">
               <img
                 class="gallery__image"
-                [src]="petitFoursImage.imageUrl"
+                [ngSrc]="petitFoursImage.imageUrl"
                 [alt]="petitFoursImage.altKey | translate"
-                loading="lazy"
+                fill
               />
             </figure>
           }

@@ -5,7 +5,7 @@ import {
   PLATFORM_ID,
   signal,
 } from "@angular/core";
-import { isPlatformBrowser } from "@angular/common";
+import { isPlatformBrowser, NgOptimizedImage } from "@angular/common";
 import { RouterLink } from "@angular/router";
 import { TranslatePipe } from "@ngx-translate/core";
 
@@ -15,7 +15,12 @@ let hasPlayedHomeBrandIntro = false;
 
 @Component({
   selector: "app-home",
-  imports: [RouterLink, TranslatePipe, FinalCta],
+  imports: [
+    RouterLink,
+    TranslatePipe,
+    FinalCta,
+    NgOptimizedImage,
+  ],
   templateUrl: "./home.html",
   styleUrl: "./home.scss",
 })
